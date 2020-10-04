@@ -26,7 +26,7 @@ app.use(jsonServerMiddlewares)
 app.use(authMiddleware(argv.jwtAuth))
 app.use(delayingMiddleware(argv.delay))
 app.use(tenantMiddleware(argv.tenantRequired))
-app.use(pagingMiddleware(50))
+app.use(pagingMiddleware(50, { excludePatterns: ['/log'] }))
 app.use(failingMiddleware(argv.fail, argv.failUrls))
 app.use(employeeNameMiddleware(db))
 

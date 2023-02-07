@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "tokenId": {
+      "type": "string"
+    },
+    "tokenCode": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tokenId",
+    "tokenCode"
+  ],
+  "additionalProperties": false
+}

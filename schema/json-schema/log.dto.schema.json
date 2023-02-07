@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "faker": "random.uuid"
+    },
+    "date": {
+      "type": "string",
+      "faker": "date.recent"
+    },
+    "level": {
+      "enum": [
+        "DEBUG",
+        "INFO",
+        "WARN",
+        "ERROR"
+      ]
+    },
+    "account": {
+      "type": "string",
+      "faker": "random.uuid"
+    },
+    "content": {
+      "type": "string",
+      "faker": "lorem.sentence"
+    }
+  },
+  "required": [
+    "id",
+    "date",
+    "level",
+    "account",
+    "content"
+  ],
+  "additionalProperties": false
+}

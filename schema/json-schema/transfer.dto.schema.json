@@ -1,0 +1,50 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "faker": "random.uuid"
+    },
+    "amount": {
+      "type": "number",
+      "faker": {
+        "finance.amount": [
+          0,
+          10000
+        ]
+      }
+    },
+    "title": {
+      "type": "string",
+      "faker": "commerce.productName"
+    },
+    "payerAccount": {
+      "type": "string",
+      "faker": "finance.account"
+    },
+    "beneficiaryAccount": {
+      "type": "string",
+      "faker": "finance.account"
+    },
+    "beneficiaryAddress": {
+      "type": "string",
+      "faker": {
+        "fake": "{{address.streetAddress}}, {{address.city}}, {{address.country}}"
+      }
+    },
+    "scheduledAt": {
+      "type": "string",
+      "faker": "date.past"
+    }
+  },
+  "required": [
+    "id",
+    "amount",
+    "title",
+    "payerAccount",
+    "beneficiaryAccount",
+    "beneficiaryAddress",
+    "scheduledAt"
+  ],
+  "additionalProperties": false
+}

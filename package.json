@@ -19,11 +19,25 @@
     "base": "json-server db.json -d 1000 --middlewares ./mw/count.js"
   },
   "dependencies": {
-    "chalk": "^3.0.0",
+    "ajv": "^6.12.6",
+    "body-parser": "^1.20.0",
+    "chalk": "^4.1.2",
     "connect-pause": "^0.1.0",
-    "express-jwt": "^5.3.1",
-    "json-server": "^0.15.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "express-jwt": "^6.1.1",
+    "http-server": "^14.1.0",
+    "json-schema-faker": "^0.4.7",
+    "json-schema-to-typescript": "^10.1.5",
+    "json-server": "^0.17.0",
     "jsonwebtoken": "^8.5.1",
-    "yargs": "^15.0.1"
+    "ncp": "^2.0.0",
+    "socket.io": "^4.4.1",
+    "uuid": "^8.3.2",
+    "ws": "^8.8.0",
+    "yargs": "^17.4.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

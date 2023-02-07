@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "instruction": {
+      "type": "string"
+    },
+    "tokenId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "instruction",
+    "tokenId"
+  ],
+  "additionalProperties": false
+}

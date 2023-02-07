@@ -14,11 +14,11 @@ module.exports = (requiredAuth) => {
   }
 
   if (!requiredAuth){
-    logConfig(() => `No Authentication required`)
+    logConfig(`No Authentication required`)
     return pass
   }
 
-  logConfig(() => `JWT Authentication required with secret: ${maskedSecret(config.SECRET)}`)
+  logConfig(`JWT Authentication required with secret: ${maskedSecret(config.SECRET)}`)
 
   return jwt({
     secret: config.SECRET,

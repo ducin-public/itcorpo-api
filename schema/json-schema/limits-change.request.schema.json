@@ -1,0 +1,40 @@
+{
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "dailyLimit": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "dailyLimit"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "monthlyLimit": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "monthlyLimit"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "verificationMethod": {
+          "enum": ["SMS-CODE", "SCRATCH-CARD-CODE"]
+        }
+      },
+      "required": [
+        "verificationMethod"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

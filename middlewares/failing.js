@@ -34,7 +34,7 @@ const logFailingInfo = (failProbability, failUrlsCommaSeparated) => {
 }
 
 module.exports = (failProbability, failUrlsCommaSeparated) => {
-  logConfig(() => logFailingInfo(failProbability, failUrlsCommaSeparated))
+  logConfig(logFailingInfo(failProbability, failUrlsCommaSeparated))
 
   const failNow = () => Math.random() < failProbability
   const matchesUrls = matchingStrategy(failUrlsCommaSeparated)

@@ -14,7 +14,7 @@ module.exports = () => {
 
   return (err, req, res, next) => {
     // console.error(err); // full error message
-    logError(() => `"${err.message}" occured for ${req.method} ${req.originalUrl}`); // request URL only
+    logError(`"${err.message}" occurred for ${req.method} ${req.originalUrl}`); // request URL only
 
     if (err.name === 'UnauthorizedError') {
       res.status(401).sendFile(errorFilePath(err.status));

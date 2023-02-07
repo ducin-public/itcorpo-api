@@ -3,7 +3,7 @@ const { logConfig } = require('../lib/util')
 const config = require('../config.json')
 
 module.exports = () => {
-  logConfig(() => 'JWT authorization available under /auth')
+  logConfig('JWT authorization available under /auth')
 
   return (req, res, next) => {
     const token = jwt.sign({

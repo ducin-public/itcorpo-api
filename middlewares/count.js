@@ -1,5 +1,5 @@
 const baseUrl = url => url.split('?')[0]
-const queryParams = url => url.split('?')[1]
+const queryParams = url => url.split('?')[1] ?? ''
 const isCountRequest = (req) =>
   queryParams(req.originalUrl).includes('mode=count')
 

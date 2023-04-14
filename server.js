@@ -3,20 +3,8 @@ const jsonServer = require('json-server')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
-const app = jsonServer.create()
-const jsonServerMiddlewares = jsonServer.defaults()
-const jsonParser = bodyParser.json()
-
-const router = jsonServer.router('db.json')
 const countMiddleware = require('./middlewares/count')
 const logsMiddleware = require('./middlewares/logs')
-router.render = countMiddleware()
-
-const db = router.db
-
-const { argv } = require('./lib/cli')
-const { logInfo } = require('./lib/util')
-
 const authMiddleware = require('./middlewares/auth')
 const tenantMiddleware = require('./middlewares/tenant')
 const pagingMiddleware = require('./middlewares/paging')
@@ -24,6 +12,17 @@ const delayingMiddleware = require('./middlewares/delaying')
 const failingMiddleware = require('./middlewares/failing')
 const errorMiddleware = require('./middlewares/error')
 const employeeNameMiddleware = require('./middlewares/employee_name')
+
+const app = jsonServer.create()
+const jsonServerMiddlewares = jsonServer.defaults()
+const jsonParser = bodyParser.json()
+
+const router = jsonServer.router('db.json')
+router.render = countMiddleware()
+const db = router.db
+
+const { argv } = require('./lib/cli')
+const { logInfo } = require('./lib/util')
 
 app.use(cors())
 app.use(jsonParser, logsMiddleware)

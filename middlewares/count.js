@@ -1,6 +1,7 @@
 const baseUrl = url => url.split('?')[0]
+const queryParams = url => url.split('?')[1]
 const isCountRequest = (req) =>
-  baseUrl(req.originalUrl).includes('count') || baseUrl(req.originalUrl).includes('count/')
+  queryParams(req.originalUrl).includes('mode=count')
 
 module.exports = () =>
   (req, res) => {

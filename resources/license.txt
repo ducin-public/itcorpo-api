@@ -1,6 +1,6 @@
 Lorem Ipsum License
 
-Copyright (c) 2019 Tomasz Ducin IT Solutions
+Copyright (c) 2024 Tomasz Ducin IT Solutions
 
 Permission is Lorem ipsum hereby granted, dolor sit amet, free of charge,
 to any person obtaining a copy consectetur adipiscing elit. Proin nibh augue

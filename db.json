@@ -181,18 +181,6 @@
   ],
   "benefits": [
     {
-      "id": "4c4863a716314d40",
-      "beneficiary": {
-        "name": "Mona Deuschle",
-        "email": "Mona_Deuschle90@softix.de"
-      },
-      "city": "Frankfurt am Main",
-      "country": "Germany",
-      "service": "cafeteria.io",
-      "monthlyFee": 100,
-      "subscribedAtDate": "2018-05-01"
-    },
-    {
       "id": "60965cfccf2844a6",
       "beneficiary": {
         "name": "Eva Koster",
@@ -203,18 +191,6 @@
       "service": "lunch-card",
       "monthlyFee": 250,
       "subscribedAtDate": "2016-01-01"
-    },
-    {
-      "id": "9dbee8c693364257",
-      "beneficiary": {
-        "name": "Iris Groot",
-        "email": "irgr@softix.nl"
-      },
-      "city": "Utrecht",
-      "country": "Netherlands",
-      "service": "healthcare",
-      "monthlyFee": 200,
-      "subscribedAtDate": "2016-10-01"
     },
     {
       "id": "866d5ad4743149d6",
@@ -1391,30 +1367,6 @@
       "service": "healthcare",
       "monthlyFee": 200,
       "subscribedAtDate": "2017-07-01"
-    },
-    {
-      "id": "112cb468b5104d40",
-      "beneficiary": {
-        "name": "Mila Kähler",
-        "email": "mikä@softix.com"
-      },
-      "city": "München",
-      "country": "Germany",
-      "service": "healthcare",
-      "monthlyFee": 200,
-      "subscribedAtDate": "2017-09-01"
-    },
-    {
-      "id": "8fd21d8a2f4a40d4",
-      "beneficiary": {
-        "name": "Léa Barbier",
-        "email": "léba@softix.fr"
-      },
-      "city": "Brest",
-      "country": "France",
-      "service": "healthcare",
-      "monthlyFee": 200,
-      "subscribedAtDate": "2018-03-01"
     },
     {
       "id": "4d90f897ad334363",
@@ -65072,336 +65024,639 @@
       "country": "Italy",
       "city": "Torino",
       "address": "Marini Borgo 151",
+      "capacity": 123,
       "estate": {
         "owner": "Bleeding-Edge Estates Inc",
         "phone": "368 142 611",
         "monthlyRental": 15000,
         "account": "IT68 X070 0696 5127 414L 0118 380"
       },
+      "amenities": [
+        "Plants",
+        "Water cooler",
+        "Conference rooms",
+        "Outdoor seating",
+        "Nap pods"
+      ],
       "imgURL": "torino-566r-Y0ly-Uixj-YmSj-rN4T.jpg"
     },
     {
       "country": "Poland",
       "city": "Warszawa",
       "address": "Al. Orestes Manor 130",
+      "capacity": 139,
       "estate": {
         "owner": "End-To-End Estates and Sons",
         "phone": "76-747-50-78",
         "monthlyRental": 11000,
         "account": "PL43 0926 5994 1051 3200 0501 5166"
       },
+      "amenities": [
+        "Open space"
+      ],
       "imgURL": "warszawa-eC7F-oKud-3bgI-id2Q-z3Hj.jpg"
     },
     {
       "country": "Germany",
       "city": "Frankfurt am Main",
       "address": "Madeleine Viaduct 138",
+      "capacity": 198,
       "estate": {
         "owner": "Wireless Estates Group",
         "phone": "(0784) 722411467",
         "monthlyRental": 19000,
         "account": "DE15 5009 0090 8040 1721 38"
       },
+      "amenities": [
+        "Wi-Fi",
+        "Quiet rooms",
+        "Standing desks",
+        "Free parking",
+        "Outdoor seating",
+        "Conference rooms",
+        "Water cooler",
+        "Private desks",
+        "Refrigerator"
+      ],
       "imgURL": "frankfurt-am-main-IZYD-ntdi-1tqf-dHW4-ePhq.jpg"
     },
     {
       "country": "United States of America",
       "city": "Dallas",
       "address": "Jazlyn Gardens 197",
+      "capacity": 34,
       "estate": {
         "owner": "Holistic Estates Group",
         "phone": "931-169-7075 x11129",
         "monthlyRental": 34000,
         "account": "US95 4352 0017 8858 3002 7387"
       },
+      "amenities": [
+        "Open space",
+        "Bike racks",
+        "IT support",
+        "Private desks",
+        "Recycling bins",
+        "Snacks",
+        "Team events",
+        "Conference rooms",
+        "Game room",
+        "Free parking",
+        "Printing",
+        "Tea",
+        "Fruit Mondays",
+        "Plants",
+        "Gym",
+        "Lockers",
+        "Standing desks",
+        "Nap pods",
+        "Ping-pong",
+        "Outdoor seating",
+        "Wi-Fi"
+      ],
       "imgURL": "dallas-FRnb-75Z3-h1PG-r1Fj-FfEK.jpg"
     },
     {
       "country": "France",
       "city": "Brest",
       "address": "Noa Saint-Jacques 37",
+      "capacity": 174,
       "estate": {
         "owner": "Leading-Edge Estates and Sons",
         "phone": "0375434924",
         "monthlyRental": 11000,
         "account": "FR04 0934 0060 3301 08G4 2112 953"
       },
+      "amenities": [
+        "Bike racks",
+        "Snacks",
+        "24/7 access",
+        "Wi-Fi"
+      ],
       "imgURL": "brest-wYiy-v7jE-Y3wr-Ze8M-prEi.jpg"
     },
     {
       "country": "France",
       "city": "Paris",
       "address": "Nicolas Joubert 185",
+      "capacity": 190,
       "estate": {
         "owner": "Robust Estates LLC",
         "phone": "+33 431386166",
         "monthlyRental": 18000,
         "account": "FR56 0361 8300 6013 3249 2NY6 447"
       },
+      "amenities": [
+        "Refrigerator",
+        "Private desks",
+        "Conference rooms",
+        "Fruit Mondays",
+        "Water cooler",
+        "24/7 access",
+        "Microwave",
+        "Bike racks",
+        "Outdoor seating",
+        "Ping-pong"
+      ],
       "imgURL": "paris-ioeJ-We5j-Xb69-CFvW-ru6m.jpg"
     },
     {
       "country": "United Kingdom",
       "city": "Plymouth",
       "address": "Cummerata Landing 169",
+      "capacity": 126,
       "estate": {
         "owner": "Integrated Estates LLC",
         "phone": "015309 09707",
         "monthlyRental": 16000,
         "account": "GB96 VISP 0546 6201 0089 49"
       },
+      "amenities": [
+        "IT support",
+        "Fruit Mondays",
+        "Water cooler",
+        "Ping-pong",
+        "Coffee"
+      ],
       "imgURL": "plymouth-5Bdr-QbQQ-eEhE-gAxi-5dCP.jpg"
     },
     {
       "country": "Spain",
       "city": "Madrid",
       "address": "Roldán Camino 147",
+      "capacity": 82,
       "estate": {
         "owner": "Bleeding-edge Estates LLC",
         "phone": "960 984 863",
         "monthlyRental": 11000,
         "account": "ES81 0190 4200 4891 0053 7822"
       },
+      "amenities": [
+        "Showers",
+        "Fruit Mondays",
+        "Nap pods",
+        "Snacks",
+        "IT support",
+        "Recycling bins",
+        "Tea",
+        "Outdoor seating",
+        "Coffee",
+        "Printing",
+        "Free parking",
+        "Plants"
+      ],
       "imgURL": "madrid-F7Z4-PXYY-4Y7y-MGmk-DApU.jpg"
     },
     {
       "country": "United Kingdom",
       "city": "London",
       "address": "Emelia Plaza 70",
+      "capacity": 87,
       "estate": {
         "owner": "Enterprise Estates and Sons",
         "phone": "0117 008 5191",
         "monthlyRental": 53000,
         "account": "GB58 IPES 1004 4740 0400 89"
       },
+      "amenities": [
+        "Conference rooms",
+        "Tea",
+        "Free parking"
+      ],
       "imgURL": "london-z7dq-5DRO-8sFm-wNGY-F0nd.jpg"
     },
     {
       "country": "United Kingdom",
       "city": "Bracknell",
       "address": "Nikolaus Rue 42",
+      "capacity": 49,
       "estate": {
         "owner": "Best-Of-Breed People Estates Inc",
         "phone": "0924 810 4060",
         "monthlyRental": 26000,
         "account": "GB58 LZTJ 6100 7380 3590 04"
       },
+      "amenities": [
+        "Team events",
+        "Bike racks",
+        "Plants"
+      ],
       "imgURL": "bracknell-Nu9O-oYX8-P2K4-D6Cy-5mb1.jpg"
     },
     {
       "country": "Spain",
       "city": "Granada",
       "address": "Sergio Bloque 72",
+      "capacity": 85,
       "estate": {
         "owner": "Rich Estates Group",
         "phone": "919.969.442",
         "monthlyRental": 6000,
         "account": "ES54 0300 7005 0364 6902 0608"
       },
+      "amenities": [
+        "Free parking",
+        "Hand sanitizers",
+        "Nap pods",
+        "Showers",
+        "Wi-Fi",
+        "Outdoor seating",
+        "Ping-pong",
+        "Snacks",
+        "Refrigerator"
+      ],
       "imgURL": "granada-fDRf-tTgk-61JS-wCxl-18Yz.jpg"
     },
     {
       "country": "Poland",
       "city": "Radom",
       "address": "Al. Erast Wells 33",
+      "capacity": 94,
       "estate": {
         "owner": "Scalable Estates LLC",
         "phone": "55-307-26-28",
         "monthlyRental": 6000,
         "account": "PL52 0194 6605 9400 8802 2769 0091"
       },
+      "amenities": [
+        "Tea",
+        "Plants",
+        "Fruit Mondays",
+        "Water cooler",
+        "Refrigerator",
+        "Snacks",
+        "Coffee",
+        "Quiet rooms",
+        "Ping-pong",
+        "Printing",
+        "24/7 access",
+        "Outdoor seating",
+        "Private desks",
+        "Conference rooms"
+      ],
       "imgURL": "radom-ZFxp-Vkyz-01tX-YhJX-FvwE.jpg"
     },
     {
       "country": "United Kingdom",
       "city": "Reading",
       "address": "Lionel Ford 159",
+      "capacity": 96,
       "estate": {
         "owner": "World-Class Estates Inc",
         "phone": "0500 550507",
         "monthlyRental": 23000,
         "account": "GB90 BOFA 4006 7627 0051 08"
       },
+      "amenities": [
+        "Wi-Fi",
+        "Conference rooms",
+        "Fruit Mondays",
+        "Private desks",
+        "Plants"
+      ],
       "imgURL": "reading-cK7Y-lQrq-xQt6-CDG2-pISl.jpg"
     },
     {
       "country": "France",
       "city": "Rennes",
       "address": "Sacha Laffitte 39",
+      "capacity": 158,
       "estate": {
         "owner": "Minor-Class Estates LLC",
         "phone": "0370364123",
         "monthlyRental": 14000,
         "account": "FR83 4091 5609 69O9 6360 F425 438"
       },
+      "amenities": [
+        "Hand sanitizers",
+        "Standing desks",
+        "Refrigerator",
+        "Nap pods",
+        "Tea",
+        "Gym",
+        "Snacks"
+      ],
       "imgURL": "rennes-NGMz-Y9fQ-4QY5-IlYR-pQno.jpg"
     },
     {
       "country": "Netherlands",
       "city": "Den Haag",
       "address": "Visser plantsoen 79",
+      "capacity": 45,
       "estate": {
         "owner": "Efficient Estates LLC",
         "phone": "0684552686",
         "monthlyRental": 13000,
         "account": "NL32 PZXG 0100 4892 79"
       },
+      "amenities": [
+        "24/7 access",
+        "Snacks",
+        "Coffee",
+        "Plants",
+        "Open space",
+        "Bike racks",
+        "IT support",
+        "Lockers",
+        "Private desks",
+        "Quiet rooms",
+        "Ping-pong",
+        "Outdoor seating",
+        "Gym",
+        "Team events",
+        "Standing desks"
+      ],
       "imgURL": "den-haag-ahwk-zebu-L6KN-zUx9-hZEV.jpg"
     },
     {
       "country": "Poland",
       "city": "Łódź",
       "address": "ul. Kosiński Mews 1",
+      "capacity": 175,
       "estate": {
         "owner": "B2B Estates LLC",
         "phone": "43-582-42-85",
         "monthlyRental": 20000,
         "account": "PL60 4940 0146 0008 9635 6005 9462"
       },
+      "amenities": [
+        "Snacks",
+        "Conference rooms",
+        "Fruit Mondays"
+      ],
       "imgURL": "lodz-cpzj-Fi1e-0BTM-tSsl-dhJR.jpg"
     },
     {
       "country": "Poland",
       "city": "Wrocław",
       "address": "ul. Przybysz Creek 71",
+      "capacity": 192,
       "estate": {
         "owner": "Frictionless Estates LLC",
         "phone": "43-591-70-09",
         "monthlyRental": 13000,
         "account": "PL04 2500 1249 1006 1764 8022 0032"
       },
+      "amenities": [
+        "Refrigerator",
+        "Snacks",
+        "Team events",
+        "Microwave",
+        "Water cooler",
+        "Private desks",
+        "Quiet rooms",
+        "Open space",
+        "Outdoor seating",
+        "Gym",
+        "Air conditioning",
+        "Coffee",
+        "IT support",
+        "Nap pods",
+        "Showers"
+      ],
       "imgURL": "wroclaw-YiMX-ogrX-CPHu-N9CV-Q43k.jpg"
     },
     {
       "country": "Netherlands",
       "city": "Utrecht",
       "address": "Bakker straat 61",
+      "capacity": 130,
       "estate": {
         "owner": "Dot Estates LLC",
         "phone": "2555252860",
         "monthlyRental": 19000,
         "account": "NL16 HTLT 5101 0300 76"
       },
+      "amenities": [
+        "Microwave",
+        "Snacks",
+        "Game room",
+        "Air conditioning",
+        "Quiet rooms",
+        "Showers",
+        "Gym",
+        "Fruit Mondays",
+        "Hand sanitizers",
+        "Refrigerator",
+        "Ping-pong",
+        "Team events",
+        "Outdoor seating",
+        "Recycling bins",
+        "24/7 access"
+      ],
       "imgURL": "utrecht-NVvk-MSz6-DpWY-osco-d6Nn.jpg"
     },
     {
       "country": "Poland",
       "city": "Lublin",
       "address": "ul. Janusz Groves 193",
+      "capacity": 41,
       "estate": {
         "owner": "Student Flats",
         "phone": "32-523-36-76",
         "monthlyRental": 17000,
         "account": "PL17 4020 9002 8045 4307 0003 2097"
       },
+      "amenities": [
+        "Hand sanitizers",
+        "Coffee",
+        "Conference rooms",
+        "Microwave",
+        "IT support",
+        "Tea",
+        "Standing desks",
+        "Ping-pong",
+        "Wi-Fi",
+        "Team events"
+      ],
       "imgURL": "lublin-OxBY-NJPx-QTVS-dQ88-w286.jpg"
     },
     {
       "country": "Poland",
       "city": "Gdańsk",
       "address": "ul. Prus Land 62",
+      "capacity": 68,
       "estate": {
         "owner": "User-Centric Estates Group",
         "phone": "54-599-64-97",
         "monthlyRental": 9000,
         "account": "PL79 0011 0048 3805 5289 5507 8559"
       },
+      "amenities": [
+        "Showers",
+        "Lockers",
+        "Coffee",
+        "Tea",
+        "IT support",
+        "Hand sanitizers",
+        "Wi-Fi",
+        "Conference rooms",
+        "Gym",
+        "Air conditioning",
+        "Standing desks",
+        "Printing"
+      ],
       "imgURL": "gdansk-n2ZQ-zRj8-6oJL-hc8N-JD7b.jpg"
     },
     {
       "country": "Germany",
       "city": "Darmstadt",
       "address": "Abicht Street 196",
+      "capacity": 55,
       "estate": {
         "owner": "Visionary Estates and Sons",
         "phone": "+49-156-3494533",
         "monthlyRental": 20000,
         "account": "DE57 7030 2238 0400 5997 60"
       },
+      "amenities": [
+        "Plants",
+        "Air conditioning",
+        "Fruit Mondays",
+        "Recycling bins"
+      ],
       "imgURL": "darmstadt-U2Ul-fm37-FF8X-uArP-OtBg.jpg"
     },
     {
       "country": "United Kingdom",
       "city": "Manchester",
       "address": "Kailee Knolls 46",
+      "capacity": 57,
       "estate": {
         "owner": "B2B Estates Group",
         "phone": "0800 043 8564",
         "monthlyRental": 18000,
         "account": "GB65 FVIB 0051 3930 0708 44"
       },
+      "amenities": [
+        "IT support",
+        "Showers",
+        "Open space",
+        "Ping-pong",
+        "Air conditioning"
+      ],
       "imgURL": "manchester-z2Ae-8o5Z-Pj35-YfrS-BSci.jpg"
     },
     {
       "country": "France",
       "city": "Lille",
       "address": "Blanchard Lepic 10",
+      "capacity": 154,
       "estate": {
         "owner": "Viral Estates Group",
         "phone": "+33 433348418",
         "monthlyRental": 11000,
         "account": "FR29 3008 5208 1633 D179 1461 361"
       },
+      "amenities": [
+        "Nap pods",
+        "Plants",
+        "Tea"
+      ],
       "imgURL": "lille-RLKg-0sXe-AOP8-aiwZ-5KGS.jpg"
     },
     {
       "country": "Netherlands",
       "city": "Amsterdam",
       "address": "Emma laan 81",
+      "capacity": 148,
       "estate": {
         "owner": "B2C Estates and Sons",
         "phone": "(7364) 079343",
         "monthlyRental": 10000,
         "account": "NL86 AMUJ 9303 4156 60"
       },
+      "amenities": [
+        "Fruit Mondays",
+        "Refrigerator",
+        "Ping-pong",
+        "Wi-Fi",
+        "IT support"
+      ],
       "imgURL": "amsterdam-6Uf6-XCKJ-qTKq-ISt2-B3SE.jpg"
     },
     {
       "country": "Germany",
       "city": "München",
       "address": "Lorenz Courts 0",
+      "capacity": 107,
       "estate": {
         "owner": "Innovative Estates Inc",
         "phone": "+49-4004-85895958",
         "monthlyRental": 46000,
         "account": "DE37 0031 8915 5320 9040 01"
       },
+      "amenities": [
+        "Snacks",
+        "Private desks",
+        "Quiet rooms",
+        "Gym",
+        "Free parking"
+      ],
       "imgURL": "munchen-MmUh-Prcz-CV80-ueMv-g9LR.jpg"
     },
     {
       "country": "United States of America",
       "city": "Milpitas",
       "address": "Destinee Passage 142",
+      "capacity": 46,
       "estate": {
         "owner": "Transparent Estates LLC",
         "phone": "993.015.3348",
         "monthlyRental": 18000,
         "account": "US13 9006 0700 2500 3933 2082"
       },
+      "amenities": [
+        "Wi-Fi",
+        "Coffee",
+        "Microwave",
+        "Showers",
+        "Bike racks",
+        "Tea",
+        "IT support",
+        "Free parking"
+      ],
       "imgURL": "milpitas-CKbb-fwJs-1JCD-xthJ-Q5dp.jpg"
     },
     {
       "country": "United States of America",
       "city": "San Francisco",
       "address": "Lind Ramp 75",
+      "capacity": 83,
       "estate": {
         "owner": "Real-Time Estates LLC",
         "phone": "1-896-167-1555",
         "monthlyRental": 17000,
         "account": "US76 5650 4372 7100 9904 2698"
       },
+      "amenities": [
+        "Conference rooms",
+        "Fruit Mondays",
+        "Refrigerator",
+        "Outdoor seating",
+        "Recycling bins",
+        "Free parking",
+        "Snacks",
+        "Air conditioning"
+      ],
       "imgURL": "san-francisco-yT4p-9bAD-eiVF-Lmdy-lT3g.jpg"
     },
     {
       "country": "Italy",
       "city": "Roma",
       "address": "Vinicio Rotonda 55",
+      "capacity": 141,
       "estate": {
         "owner": "SPQR Properties",
         "phone": "+54 420 1229750",
         "monthlyRental": 10000,
         "account": "IT28 Z000 0617 909U 3691 M617 0JA"
       },
+      "amenities": [
+        "Recycling bins",
+        "Tea",
+        "Lockers"
+      ],
       "imgURL": "roma-bsuq-q7zW-DIqc-dpDJ-f0OC.jpg"
     }
   ],
@@ -65409,6 +65664,7 @@
     {
       "id": "579ef28f-c539-41ff-abe2-e4f6b1c1afed",
       "name": "Licensed Cotton Pants",
+      "status": "on-hold",
       "budget": 490000,
       "startDate": "2013-04-16",
       "endDate": "2019-04-27",
@@ -65488,6 +65744,7 @@
     {
       "id": "47796f42-c056-4034-a86f-b6ac617f2ec5",
       "name": "Handcrafted Granite Pizza",
+      "status": "active",
       "budget": 681000,
       "startDate": "2014-05-08",
       "endDate": "2020-02-03",
@@ -65543,6 +65800,7 @@
     {
       "id": "da0ae143-a456-4bdf-8f96-747895a7ffa3",
       "name": "Ergonomic Soft Pizza",
+      "status": "on-hold",
       "budget": 337000,
       "startDate": "2015-02-26",
       "endDate": "2020-06-05",
@@ -65630,6 +65888,7 @@
     {
       "id": "731f8760-f251-4d9f-93d6-0bbe27fe3377",
       "name": "Tasty Cotton Computer",
+      "status": "active",
       "budget": 7190000,
       "startDate": "2012-03-15",
       "endDate": "2018-10-18",
@@ -65701,6 +65960,7 @@
     {
       "id": "e504fd36-608e-4893-9401-9cd83cab03a1",
       "name": "Rustic Soft Tuna",
+      "status": "completed",
       "budget": 767000,
       "startDate": "2011-04-12",
       "endDate": "2021-01-24",
@@ -65760,6 +66020,7 @@
     {
       "id": "8dc16114-4e81-42d3-a08c-e63fe8dc07c8",
       "name": "Unbranded Concrete Soap",
+      "status": "completed",
       "budget": 5831000,
       "startDate": "2015-01-14",
       "endDate": "2019-08-02",
@@ -65819,6 +66080,7 @@
     {
       "id": "38b19d02-36c3-4ce9-87d7-e8573e9a9caf",
       "name": "Handmade Steel Tuna",
+      "status": "active",
       "budget": 3661000,
       "startDate": "2011-02-13",
       "endDate": "2020-11-30",
@@ -65878,6 +66140,7 @@
     {
       "id": "b7f64a59-a0d6-4805-a9a8-38fb37e57c6a",
       "name": "Intelligent Soft Computer",
+      "status": "on-hold",
       "budget": 5470000,
       "startDate": "2016-07-27",
       "endDate": "2020-10-27",
@@ -65925,6 +66188,7 @@
     {
       "id": "f1f9027c-f85f-4870-b04f-266461d653ce",
       "name": "Generic Frozen Mouse",
+      "status": "planning",
       "budget": 5873000,
       "startDate": "2013-11-21",
       "endDate": "2020-06-20",
@@ -65988,6 +66252,7 @@
     {
       "id": "6ff48068-a749-42bd-8df2-5176a57be4bc",
       "name": "Sleek Plastic Pants",
+      "status": "completed",
       "budget": 6807000,
       "startDate": "2016-06-04",
       "endDate": "2020-11-30",
@@ -66047,6 +66312,7 @@
     {
       "id": "2e40b214-7fc3-43df-95d7-3780b9eb0e82",
       "name": "Licensed Rubber Sausages",
+      "status": "active",
       "budget": 592000,
       "startDate": "2015-02-10",
       "endDate": "2020-02-22",
@@ -66110,6 +66376,7 @@
     {
       "id": "8d6ee91f-607d-4cbe-8cf1-eb889c934678",
       "name": "Intelligent Fresh Keyboard",
+      "status": "active",
       "budget": 3107000,
       "startDate": "2012-03-24",
       "endDate": "2019-09-06",
@@ -66173,6 +66440,7 @@
     {
       "id": "4d713030-c7b7-40fe-87d3-5000c1de1bd8",
       "name": "Unbranded Metal Computer",
+      "status": "on-hold",
       "budget": 4403000,
       "startDate": "2016-11-18",
       "endDate": "2020-10-22",
@@ -66260,6 +66528,7 @@
     {
       "id": "6f02c3fb-d56b-4425-82c1-1f0fcbaec375",
       "name": "Unbranded Fresh Pizza",
+      "status": "completed",
       "budget": 308000,
       "startDate": "2015-01-28",
       "endDate": "2019-10-25",
@@ -66331,6 +66600,7 @@
     {
       "id": "d834cf54-1632-4f7e-a1d7-819bcc0ee6aa",
       "name": "Practical Concrete Sausages",
+      "status": "active",
       "budget": 524000,
       "startDate": "2011-01-06",
       "endDate": "2019-09-24",
@@ -66390,6 +66660,7 @@
     {
       "id": "597fad59-5122-4258-b8f9-66d80d4fd714",
       "name": "Small Cotton Soap",
+      "status": "active",
       "budget": 763000,
       "startDate": "2016-03-07",
       "endDate": "2019-07-19",
@@ -66445,6 +66716,7 @@
     {
       "id": "2e7ce83c-2b08-4764-8697-f2fbf92e25b2",
       "name": "Generic Rubber Pizza",
+      "status": "completed",
       "budget": 776000,
       "startDate": "2017-09-28",
       "endDate": "2020-03-11",
@@ -66504,6 +66776,7 @@
     {
       "id": "e244d24c-8cfb-4761-9575-3c90655ee033",
       "name": "Rustic Wooden Keyboard",
+      "status": "on-hold",
       "budget": 3808000,
       "startDate": "2010-09-28",
       "endDate": "2019-08-24",
@@ -66555,6 +66828,7 @@
     {
       "id": "e21a137d-d95a-4cef-ac50-ef3d2fb66d44",
       "name": "Intelligent Metal Table",
+      "status": "active",
       "budget": 2972000,
       "startDate": "2012-05-19",
       "endDate": "2020-03-01",
@@ -66626,6 +66900,7 @@
     {
       "id": "4ea27833-8a34-4943-bbca-ec14c0ed6fe3",
       "name": "Incredible Concrete Shirt",
+      "status": "completed",
       "budget": 742000,
       "startDate": "2011-02-10",
       "endDate": "2018-06-26",
@@ -66685,6 +66960,7 @@
     {
       "id": "bfd21248-fca4-4425-9cb9-de74d53ed0cc",
       "name": "Rustic Frozen Sausages",
+      "status": "planning",
       "budget": 227000,
       "startDate": "2013-12-13",
       "endDate": "2020-08-26",
@@ -66748,6 +67024,7 @@
     {
       "id": "96e7ed40-3c16-4d6b-a9ed-1c1162b79539",
       "name": "Fantastic Fresh Bacon",
+      "status": "on-hold",
       "budget": 7069000,
       "startDate": "2014-12-11",
       "endDate": "2020-11-15",
@@ -66803,6 +67080,7 @@
     {
       "id": "1b05249e-1f6a-4bc2-bc1d-136c6adeb686",
       "name": "Practical Metal Sausages",
+      "status": "planning",
       "budget": 5055000,
       "startDate": "2011-09-16",
       "endDate": "2019-05-30",
@@ -66866,6 +67144,7 @@
     {
       "id": "2ab9f02e-d5b3-467e-b1a2-5ab26d0503b6",
       "name": "Tasty Rubber Shoes",
+      "status": "active",
       "budget": 634000,
       "startDate": "2012-01-01",
       "endDate": "2019-08-22",
@@ -66921,6 +67200,7 @@
     {
       "id": "21baf181-46f7-4d05-917f-76fcc3feda47",
       "name": "Small Plastic Pants",
+      "status": "completed",
       "budget": 294000,
       "startDate": "2017-07-29",
       "endDate": "2020-02-15",
@@ -67000,6 +67280,7 @@
     {
       "id": "3b1775dd-5291-465f-808c-2dbdaa085713",
       "name": "Unbranded Metal Bike",
+      "status": "completed",
       "budget": 5393000,
       "startDate": "2010-10-28",
       "endDate": "2018-08-23",
@@ -67047,6 +67328,7 @@
     {
       "id": "f3fdd726-7869-482d-8791-d69ed48fc05e",
       "name": "Handcrafted Metal Chips",
+      "status": "on-hold",
       "budget": 483000,
       "startDate": "2017-04-20",
       "endDate": "2019-01-26",
@@ -67102,6 +67384,7 @@
     {
       "id": "8c0a0d91-b963-4d56-9c31-4bf9ebdad6bb",
       "name": "Incredible Rubber Mouse",
+      "status": "on-hold",
       "budget": 7765000,
       "startDate": "2016-06-05",
       "endDate": "2021-03-08",
@@ -67173,6 +67456,7 @@
     {
       "id": "e854434e-a57e-473d-9c49-f038a45aeb46",
       "name": "Fantastic Granite Pants",
+      "status": "planning",
       "budget": 207000,
       "startDate": "2012-01-02",
       "endDate": "2019-04-26",
@@ -67240,6 +67524,7 @@
     {
       "id": "3184e0ad-ece9-4ddf-bc6d-b824d3fc1f89",
       "name": "Small Frozen Salad",
+      "status": "planning",
       "budget": 664000,
       "startDate": "2011-08-11",
       "endDate": "2021-01-14",
@@ -67291,6 +67576,7 @@
     {
       "id": "158ad395-e29c-46fe-ad05-fb3623f04bcb",
       "name": "Practical Metal Table",
+      "status": "planning",
       "budget": 217000,
       "startDate": "2014-12-14",
       "endDate": "2020-09-16",
@@ -67354,6 +67640,7 @@
     {
       "id": "fa0d6240-a6b1-465b-954e-28e688454377",
       "name": "Ergonomic Soft Bacon",
+      "status": "planning",
       "budget": 420000,
       "startDate": "2011-08-18",
       "endDate": "2019-09-25",
@@ -67409,6 +67696,7 @@
     {
       "id": "f598c2c0-400f-449d-be7a-2eb6cac04f2a",
       "name": "Tasty Fresh Tuna",
+      "status": "on-hold",
       "budget": 3363000,
       "startDate": "2018-01-24",
       "endDate": "2018-10-07",
@@ -67484,6 +67772,7 @@
     {
       "id": "86c0cd06-bd83-4d50-82d7-d1c10743ec48",
       "name": "Small Frozen Hat",
+      "status": "planning",
       "budget": 4525000,
       "startDate": "2012-05-03",
       "endDate": "2021-01-27",
@@ -67563,6 +67852,7 @@
     {
       "id": "2734bc74-23f8-416a-8b97-bba927329485",
       "name": "Unbranded Steel Sausages",
+      "status": "completed",
       "budget": 3273000,
       "startDate": "2011-03-04",
       "endDate": "2019-11-07",
@@ -67598,6 +67888,7 @@
     {
       "id": "abe507ea-42a2-47c4-884a-f9255da36d01",
       "name": "Intelligent Rubber Pizza",
+      "status": "planning",
       "budget": 303000,
       "startDate": "2014-07-26",
       "endDate": "2020-12-10",
@@ -67673,6 +67964,7 @@
     {
       "id": "6eb66b37-1996-4a2a-a110-be6a299bc541",
       "name": "Gorgeous Steel Pizza",
+      "status": "on-hold",
       "budget": 279000,
       "startDate": "2016-03-17",
       "endDate": "2019-08-01",
@@ -67756,6 +68048,7 @@
     {
       "id": "07be6358-4c88-4665-b403-ce1c8b8f05fa",
       "name": "Small Frozen Cheese",
+      "status": "completed",
       "budget": 610000,
       "startDate": "2014-07-16",
       "endDate": "2020-09-08",
@@ -67811,6 +68104,7 @@
     {
       "id": "5decf099-8b20-4512-be8b-65496da8c086",
       "name": "Ergonomic Frozen Pants",
+      "status": "completed",
       "budget": 719000,
       "startDate": "2012-08-16",
       "endDate": "2019-08-03",
@@ -67886,6 +68180,7 @@
     {
       "id": "1f8e7c15-7e03-4a26-b5d0-88a72f178694",
       "name": "Awesome Frozen Bacon",
+      "status": "active",
       "budget": 263000,
       "startDate": "2013-04-20",
       "endDate": "2020-04-17",
@@ -67929,6 +68224,7 @@
     {
       "id": "5785bbc1-70a7-494c-b3af-bfd1083413e2",
       "name": "Gorgeous Fresh Pizza",
+      "status": "on-hold",
       "budget": 773000,
       "startDate": "2013-07-01",
       "endDate": "2019-12-26",
@@ -68008,6 +68304,7 @@
     {
       "id": "0075e62d-efc1-4f28-b0a6-c088900fd67a",
       "name": "Rustic Plastic Chicken",
+      "status": "active",
       "budget": 2436000,
       "startDate": "2015-02-01",
       "endDate": "2018-12-28",
@@ -68059,6 +68356,7 @@
     {
       "id": "1a16bb18-e236-489b-aefe-932337d23b1f",
       "name": "Gorgeous Fresh Bike",
+      "status": "active",
       "budget": 6218000,
       "startDate": "2017-11-03",
       "endDate": "2020-02-03",
@@ -68134,6 +68432,7 @@
     {
       "id": "8fd5d72e-8ac8-4855-9337-9f6f47fd5753",
       "name": "Incredible Steel Chips",
+      "status": "completed",
       "budget": 539000,
       "startDate": "2018-02-09",
       "endDate": "2019-11-14",
@@ -68213,6 +68512,7 @@
     {
       "id": "b661394a-45a1-40a3-b4e9-ffbb2d98411e",
       "name": "Small Rubber Towels",
+      "status": "completed",
       "budget": 267000,
       "startDate": "2015-02-09",
       "endDate": "2019-05-16",
@@ -68272,6 +68572,7 @@
     {
       "id": "4b149cf3-909b-49a4-8caf-d96d7ab4fbc9",
       "name": "Licensed Concrete Chips",
+      "status": "active",
       "budget": 243000,
       "startDate": "2016-01-13",
       "endDate": "2020-03-06",
@@ -68323,6 +68624,7 @@
     {
       "id": "77477d44-c322-428b-bf9a-59d5f6d6a48b",
       "name": "Licensed Concrete Chair",
+      "status": "completed",
       "budget": 3809000,
       "startDate": "2015-09-24",
       "endDate": "2019-12-14",
@@ -68414,6 +68716,7 @@
     {
       "id": "7717c861-ca63-4ceb-b24d-a6f173ee2843",
       "name": "Small Wooden Fish",
+      "status": "on-hold",
       "budget": 3833000,
       "startDate": "2011-01-02",
       "endDate": "2020-04-06",
@@ -68473,6 +68776,7 @@
     {
       "id": "5d379fe7-52d9-4831-8b66-be54d9aab25c",
       "name": "Handcrafted Soft Bacon",
+      "status": "planning",
       "budget": 532000,
       "startDate": "2011-07-24",
       "endDate": "2019-02-16",
@@ -68552,6 +68856,7 @@
     {
       "id": "1cd6e5c1-2733-4111-9ab7-b5f2e334d9fe",
       "name": "Small Steel Tuna",
+      "status": "completed",
       "budget": 314000,
       "startDate": "2012-08-27",
       "endDate": "2020-05-27",
@@ -68607,6 +68912,7 @@
     {
       "id": "fded698e-df3d-4483-9359-cfd8537d979f",
       "name": "Gorgeous Fresh Pants",
+      "status": "completed",
       "budget": 3928000,
       "startDate": "2012-04-23",
       "endDate": "2019-12-21",
@@ -68658,6 +68964,7 @@
     {
       "id": "6aa3c367-e8f6-43cc-9042-3c19594fadb6",
       "name": "Unbranded Granite Car",
+      "status": "completed",
       "budget": 4729000,
       "startDate": "2018-01-15",
       "endDate": "2020-07-02",
@@ -68713,6 +69020,7 @@
     {
       "id": "158c4f20-2209-417c-b659-49cc9bb7c31d",
       "name": "Intelligent Plastic Chips",
+      "status": "completed",
       "budget": 3958000,
       "startDate": "2014-07-11",
       "endDate": "2018-07-05",
@@ -68796,6 +69104,7 @@
     {
       "id": "d8b91063-57a9-454f-8534-b80528b74c9b",
       "name": "Practical Plastic Chips",
+      "status": "completed",
       "budget": 404000,
       "startDate": "2018-05-12",
       "endDate": "2018-10-22",
@@ -68851,6 +69160,7 @@
     {
       "id": "8ff77ccc-5b97-443d-b6b4-a3564706e4df",
       "name": "Handcrafted Fresh Fish",
+      "status": "on-hold",
       "budget": 770000,
       "startDate": "2011-01-31",
       "endDate": "2020-04-01",
@@ -68906,6 +69216,7 @@
     {
       "id": "852b697f-1d11-4cfd-ab26-5aa2f926e79d",
       "name": "Gorgeous Fresh Bacon",
+      "status": "active",
       "budget": 354000,
       "startDate": "2014-07-09",
       "endDate": "2020-06-22",
@@ -68989,6 +69300,24 @@
       ],
       "manager": 2670735,
       "description": "Est velit sed saepe totam laboriosam quod eligendi.\nQuos magni impedit.\nEos praesentium et nostrum quidem voluptas unde."
+    },
+    {
+      "name": "asdasdf",
+      "description": "asdf",
+      "status": "on-hold",
+      "budget": "90000",
+      "startDate": "2024-12-11",
+      "endDate": "2024-12-06",
+      "id": "0pVqadE"
+    },
+    {
+      "name": "asd",
+      "description": "asdf",
+      "status": "planning",
+      "budget": "10000",
+      "startDate": "2024-12-06",
+      "endDate": "2024-12-11",
+      "id": "y6flx8g"
     }
   ]
 }

@@ -1,11 +1,12 @@
-import logger from '../utils/logger';
+import { logger } from '../lib/logger';
 import { migrateOffices } from './migrate-offices';
 import { migrateProjects } from './migrate-projects';
-import { dbPath, readDatabaseFile, writeDatabaseFile } from './file-utils';
+import { readDatabaseFile, writeDatabaseFile } from './file-utils';
 import { DatabaseContent } from './types';
+import { FILES } from '../lib/files';
 
 logger.info('Starting database migration...');
-const dbContent: DatabaseContent = readDatabaseFile(dbPath);
+const dbContent: DatabaseContent = readDatabaseFile(FILES.DATABASE_FILE);
 // const updatedOffices = migrateOffices(dbContent.offices, dbContent.officeAmenities || []);
 const updatedProjects = migrateProjects(dbContent.projects || []);
 
@@ -15,4 +16,4 @@ const updatedContent: DatabaseContent = {
     projects: updatedProjects
 };
 
-writeDatabaseFile(dbPath, updatedContent);
+writeDatabaseFile(FILES.DATABASE_FILE, updatedContent);

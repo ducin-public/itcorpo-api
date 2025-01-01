@@ -12,6 +12,7 @@ module.exports = expressAjv.validatorFactory;
 */
 const Ajv = require('ajv');
 const jsonSchema = require('./json-schema')
+const chalk = require('chalk')
 
 const ajv = new Ajv();
 const validateFunctions = {
@@ -22,13 +23,11 @@ const validateFunctions = {
   limitsChangeRequest: ajv.compile(jsonSchema.limitsChangeRequest),
 };
 
-const { logError } = require('../lib/util');
-
 const generateValidateBodyMiddleware = (validate) =>
   (req, res, next) => {
     var valid = validate(req.body);
     if (!valid) {
-      logError(validate.errors)
+      console.log(chalk.red('ERROR > ') + validate.errors)
       return res.status(400).send(validate.errors)
     }
   }

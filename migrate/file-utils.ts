@@ -1,9 +1,6 @@
 import fs from 'fs';
-import path from 'path';
-import logger from '../utils/logger';
 import { DatabaseContent } from './types';
-
-export const dbPath = path.join(__dirname, '../', 'db.json');
+import { logger } from '../lib/logger';
 
 export function readDatabaseFile(filePath: string): DatabaseContent {
     try {
@@ -21,7 +18,7 @@ export function readDatabaseFile(filePath: string): DatabaseContent {
 export function writeDatabaseFile(filePath: string, data: DatabaseContent): void {
     try {
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-        logger.success('Database write completed successfully');
+        logger.info('Database write completed successfully');
     } catch (error) {
         logger.error('Failed to write database:', (error as Error).message);
         throw error;

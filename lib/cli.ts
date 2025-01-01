@@ -1,4 +1,16 @@
-const argv = require('yargs')
+import yargs from 'yargs';
+
+export interface __CLIParams__ {
+  jwtAuth: boolean;
+  delay: number;
+  tenantRequired: boolean;
+  fail: number;
+  /** comma-separated */
+  failUrls: string;
+  port: number;
+}
+
+export const argv = yargs(process.argv.slice(2))
   .option('port', {
     alias: 'p',
     default: 3000,
@@ -33,8 +45,6 @@ const argv = require('yargs')
     describe: 'TenantID header is required',
     type: 'boolean'
   })
-  .argv
+  .parseSync();
 
-module.exports = {
-  argv
-}
+export type CLIParams = typeof argv;

@@ -1,6 +1,6 @@
-import { generateApi } from 'swagger-typescript-api';
 import path from 'path';
-import logger from '../utils/logger';
+import { generateApi } from 'swagger-typescript-api';
+import { logger } from '../lib/logger';
 
 const generate = async (): Promise<void> => {
   try {
@@ -21,7 +21,7 @@ const generate = async (): Promise<void> => {
       }
     });
     
-    logger.success('API types generated successfully');
+    logger.info('API types generated successfully');
   } catch (error) {
     logger.error('Failed to generate API types:', error instanceof Error ? error.message : String(error));
     process.exit(1);

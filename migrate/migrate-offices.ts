@@ -1,4 +1,4 @@
-import logger from '../utils/logger';
+import { logger } from '../lib/logger';
 import { Office } from './types';
 
 function getRandomInt(min: number, max: number): number {

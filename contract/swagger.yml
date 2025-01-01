@@ -9,6 +9,25 @@ servers:
     description: Local development server
 
 paths:
+  /auth:
+    get:
+      summary: Get JWT authentication token
+      operationId: getAuthToken
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: Successfully generated JWT token
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                properties:
+                  token:
+                    type: string
+                    description: JWT token signed with server's secret
 
   /benefits:
     get:
@@ -770,6 +789,32 @@ paths:
           description: Employee deleted successfully
         '404':
           description: Employee not found
+
+  /license:
+    get:
+      summary: Get license information
+      description: Returns the license text for the API
+      tags:
+        - System
+      parameters:
+        - in: header
+          name: Content-Type
+          required: true
+          schema:
+            type: string
+            enum: ["text/plain"]
+          description: Must be text/plain
+      responses:
+        '200':
+          description: License text retrieved successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Invalid content type requested
+        '503':
+          description: License file not available
 
 components:
   schemas:

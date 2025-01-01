@@ -1,9 +1,8 @@
-const { generateApi } = require('swagger-typescript-api');
-const path = require('path');
+import { generateApi } from 'swagger-typescript-api';
+import path from 'path';
+import logger from '../utils/logger';
 
-const logger = require('../utils/logger');
-
-const generate = async () => {
+const generate = async (): Promise<void> => {
   try {
     await generateApi({
       name: "api.ts",
@@ -13,7 +12,7 @@ const generate = async () => {
       generateRouteTypes: true,
       generateResponses: true,
       modular: true,
-      generateUnionEnums:true,
+      generateUnionEnums: true,
       prettier: {
         printWidth: 80,
         tabWidth: 2,
@@ -24,7 +23,7 @@ const generate = async () => {
     
     logger.success('API types generated successfully');
   } catch (error) {
-    logger.error('Failed to generate API types:', error.message);
+    logger.error('Failed to generate API types:', error instanceof Error ? error.message : String(error));
     process.exit(1);
   }
 };

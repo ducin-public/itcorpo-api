@@ -39,7 +39,7 @@ app.use(employeeNameMiddleware(db))
 
 const additionalResources = require('./resources')
 app.use('/banking', require('./middlewares/banking'))
-app.use(swaggerRouter)  // Add Swagger UI router before other routes
+app.use(swaggerRouter)
 app.use(additionalResources)
 app.use(router)
 app.use(errorMiddleware())

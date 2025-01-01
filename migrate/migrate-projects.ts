@@ -1,34 +1,37 @@
-const logger = require("../utils/logger");
+import logger from '../utils/logger';
+import { Project } from './types';
 
-const domainPrefixes = [
+const domainPrefixes: string[] = [
     'Smart', 'Intelligent', 'Auto', 'Digital', 'Cyber', 'Neural', 'Cloud', 
     'Quantum', 'Data', 'AI', 'ML', 'Secure', 'Connected', 'Virtual', 'Edge',
     'Blockchain', 'IoT', 'Mobile', 'Enterprise', 'Hybrid'
 ];
 
-const industryDomains = [
+const industryDomains: string[] = [
     'Health', 'Med', 'Car', 'Vehicle', 'Bank', 'Finance', 'Research', 
     'Analytics', 'Security', 'Payment', 'Learning', 'Diagnostic', 'Trading',
     'Manufacturing', 'Robotics', 'Authentication', 'Supply'
 ];
 
-const projectTypes = [
+const projectTypes: string[] = [
     'Platform', 'System', 'Hub', 'Framework', 'Engine', 'Portal', 'Suite',
     'Network', 'Solution', 'Interface', 'Core', 'Module', 'Service', 'API',
     'Analytics', 'Chain', 'Assistant'
 ];
 
-const fancyPrefixes = [
+const fancyPrefixes: string[] = [
     'Next-Gen', 'Ultra', 'Future', 'Meta', 'Omega', 'Prime', 'Advanced',
     'Revolutionary', 'Dynamic', 'Quantum-Edge'
 ];
 
-const getRandomElement = (array) => array[Math.floor(Math.random() * array.length)];
+const getRandomElement = <T>(array: T[]): T => array[Math.floor(Math.random() * array.length)];
 
-const generateNewProjectName = () => {
-    // First generate base name parts
-    const getBaseParts = () => {
-        const patterns = [
+const generateNewProjectName = (): string => {
+    type PatternFunction = () => string[];
+    type WeightedPattern = [number, PatternFunction];
+
+    const getBaseParts = (): string[] => {
+        const patterns: WeightedPattern[] = [
             [0.4, () => [getRandomElement(domainPrefixes), getRandomElement(industryDomains)]],
             [0.3, () => [getRandomElement(domainPrefixes), getRandomElement(industryDomains), getRandomElement(projectTypes)]],
             [0.2, () => [getRandomElement(industryDomains), getRandomElement(projectTypes)]],
@@ -48,19 +51,15 @@ const generateNewProjectName = () => {
         return patterns[0][1]();
     };
 
-    // Then apply formatting
     const nameParts = getBaseParts();
     const formatStyle = Math.random();
 
     if (formatStyle < 0.6) {
-        // Space-separated (60% chance)
         return nameParts.join(' ');
     } else if (formatStyle < 0.8) {
-        // Concatenated (20% chance)
         return nameParts.join('');
     } else {
-        // Fancy version (20% chance)
-        const fancyOptions = [
+        const fancyOptions: (() => string)[] = [
             () => `${getRandomElement(fancyPrefixes)} ${nameParts.join(' ')}`,
             () => `Project ${nameParts.join(' ')}`,
             () => `${nameParts.join('-')} ${getRandomElement(['2.0', 'Pro', 'Enterprise', 'X'])}`,
@@ -70,14 +69,10 @@ const generateNewProjectName = () => {
     }
 };
 
-const migrateProjects = (projects) => {
+export const migrateProjects = (projects: Project[]): Project[] => {
     logger.info(`Found ${projects.length} projects to process`);
     return projects.map(project => ({
         ...project,
         name: generateNewProjectName()
     }));
-};
-
-module.exports = {
-    migrateProjects
 };

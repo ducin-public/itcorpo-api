@@ -1,3 +1,4 @@
+import { OfficeAmenity } from './amenity';
 import { Phone } from './shared';
 
 export type Office = {
@@ -5,11 +6,12 @@ export type Office = {
   "city": string;
   "address": string;
   "capacity": number;
+  "amenities": OfficeAmenity[];
+  "monthlyRental": number;
   "estate": {
     "owner": string;
     "phone": Phone;
-    "monthlyRental": number;
+    "account": string;
   };
-  "amenities": string[];
   "imgURL": string;
 };

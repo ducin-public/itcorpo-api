@@ -4,19 +4,17 @@
   "private": true,
   "author": {
     "name": "Tomasz Ducin",
-    "email": "tomasz@ducin.it",
-    "url": "http://ducin.it"
+    "email": "tomasz@ducin.dev",
+    "url": "https://ducin.dev"
   },
-  "keywords": [
-    "mock",
-    "api",
-    "rest",
-    "test",
-    "spa"
-  ],
   "scripts": {
     "start": "node server",
-    "base": "json-server db.json -d 1000 --middlewares ./mw/count.js"
+    "base": "json-server db.json -d 1000 --middlewares ./mw/count.js",
+    "migrate:database": "node migrate/migrate.js",
+    "contract:generate-types": "node scripts/generate-api-types.js",
+    "contract:generate-types:dev": "nodemon --watch contract/swagger.yml --ext yml,yaml -x 'npm run contract:generate-types'",
+    "dev": "concurrently \"npm run server:dev\" \"npm run contract:generate-types:dev\"",
+    "server:dev": "nodemon server"
   },
   "dependencies": {
     "ajv": "^6.12.6",
@@ -31,13 +29,19 @@
     "json-schema-to-typescript": "^10.1.5",
     "json-server": "^0.17.0",
     "jsonwebtoken": "^8.5.1",
-    "ncp": "^2.0.0",
     "socket.io": "^4.4.1",
-    "uuid": "^8.3.2",
+    "uuid": "^11.0.3",
     "ws": "^8.8.0",
-    "yargs": "^17.4.1"
+    "yargs": "^17.4.1",
+    "swagger-typescript-api": "^13.0.23",
+    "swagger-ui-express": "^4.6.3",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "concurrently": "^8.2.0"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   }
 }

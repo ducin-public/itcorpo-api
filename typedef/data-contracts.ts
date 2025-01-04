@@ -200,7 +200,7 @@ export interface ExpenseInput {
  */
 export type Skill = string;
 
-/** @example {"id":1234,"nationality":"DE","departmentId":5,"keycardId":"KC-9876","account":"DE89 3704 0044 0532 0130 00","salary":75000,"office":["Berlin","HQ"],"firstName":"Hans","lastName":"Schmidt","title":"Senior Developer","contractType":"PERMANENT","email":"hans.schmidt@itcorpo.com","hiredAt":"2020-01-15T00:00:00.000Z","expiresAt":"2025-01-14T23:59:59.999Z","personalInfo":{"age":35,"phone":"+49 123 456789","email":"hans.schmidt@gmail.com","dateOfBirth":"1988-05-20T00:00:00.000Z","address":{"street":"Alexanderplatz 1","city":"Berlin","country":"Germany"}},"skills":["JavaScript","TypeScript","React"],"bio":"Experienced developer with focus on frontend technologies","imgURL":"hans-schmidt-profile.jpg"} */
+/** @example {"id":1234,"nationality":"DE","department":"Marketing","keycardId":"KC-9876","account":"DE89 3704 0044 0532 0130 00","salary":75000,"office":["Berlin","HQ"],"firstName":"Hans","lastName":"Schmidt","title":"Senior Developer","contractType":"PERMANENT","email":"hans.schmidt@itcorpo.com","hiredAt":"2020-01-15T00:00:00.000Z","expiresAt":"2025-01-14T23:59:59.999Z","personalInfo":{"age":35,"phone":"+49 123 456789","email":"hans.schmidt@gmail.com","dateOfBirth":"1988-05-20T00:00:00.000Z","address":{"street":"Alexanderplatz 1","city":"Berlin","country":"Germany"}},"skills":["JavaScript","TypeScript","React"],"bio":"Experienced developer with focus on frontend technologies","imgURL":"hans-schmidt-profile.jpg"} */
 export interface Employee {
   id: number;
   nationality: Nationality;
@@ -246,7 +246,7 @@ export interface Employee {
 
 export interface EmployeeInput {
   nationality: Nationality;
-  departmentId: number;
+  department: string;
   keycardId: string;
   account: string;
   /** Monetary value in EUR */

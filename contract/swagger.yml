@@ -1357,7 +1357,7 @@ components:
       example:
         id: 1234
         nationality: "DE"
-        departmentId: 5
+        department: Marketing
         keycardId: "KC-9876"
         account: "DE89 3704 0044 0532 0130 00"
         salary: 75000
@@ -1386,7 +1386,7 @@ components:
       type: object
       required:
         - nationality
-        - departmentId
+        - department
         - keycardId
         - account
         - salary
@@ -1404,8 +1404,8 @@ components:
       properties:
         nationality:
           $ref: '#/components/schemas/Nationality'
-        departmentId:
-          type: integer
+        department:
+          type: string
         keycardId:
           type: string
         account:

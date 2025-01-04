@@ -1,5 +1,5 @@
 import { logger } from '../lib/logger';
-import { Project } from './types';
+import { DatabaseContent, Project } from './migration-types';
 
 const domainPrefixes: string[] = [
     'Smart', 'Intelligent', 'Auto', 'Digital', 'Cyber', 'Neural', 'Cloud', 
@@ -69,8 +69,9 @@ const generateNewProjectName = (): string => {
     }
 };
 
-export const migrateProjects = (projects: Project[]): Project[] => {
-    logger.info(`Found ${projects.length} projects to process`);
+export const migrateProjects = (dbContent: DatabaseContent): Project[] => {
+    const projects = dbContent.projects;
+    logger.debug(`Found ${projects.length} projects to process`);
     return projects.map(project => ({
         ...project,
         name: generateNewProjectName()

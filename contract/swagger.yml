@@ -148,7 +148,7 @@ paths:
         '404':
           description: Benefit not found
 
-  /office-amenities:
+  /offices/amenities:
     get:
       summary: Retrieve list of possible office amenities
       description: Returns an array of office amenity objects that can be assigned to offices
@@ -988,7 +988,7 @@ components:
         amenities:
           type: array
           items:
-            $ref: '#/components/schemas/OfficeAmenity'
+            type: string
         imgURL:
           type: string
       example:
@@ -1267,7 +1267,7 @@ components:
       required:
         - id
         - nationality
-        - departmentId
+        - department
         - keycardId
         - account
         - salary
@@ -1287,8 +1287,8 @@ components:
           type: integer
         nationality:
           $ref: '#/components/schemas/Nationality'
-        departmentId:
-          type: integer
+        department:
+          type: string
         keycardId:
           type: string
         account:

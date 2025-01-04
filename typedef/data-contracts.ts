@@ -94,7 +94,7 @@ export interface Office {
     phone: string;
     account: string;
   };
-  amenities: OfficeAmenity[];
+  amenities: string[];
   imgURL?: string;
 }
 
@@ -204,7 +204,7 @@ export type Skill = string;
 export interface Employee {
   id: number;
   nationality: Nationality;
-  departmentId: number;
+  department: string;
   keycardId: string;
   account: string;
   /** Monetary value in EUR */

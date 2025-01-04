@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { DatabaseContent } from './types';
+import { DatabaseContent } from './migration-types';
 import { logger } from '../lib/logger';
 
 export function readDatabaseFile(filePath: string): DatabaseContent {

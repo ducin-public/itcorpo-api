@@ -9,22 +9,27 @@
  * ---------------------------------------------------------------
  */
 
-import { Money } from "./data-contracts";
-
-export namespace OfficeAmenities {
+export namespace Auth {
   /**
-   * No description
-   * @tags Offices
-   * @name GetOfficeAmenitiesCount
-   * @summary Get total number of office amenities
-   * @request GET:/office-amenities/count
-   * @response `200` `Money` Successful operation
-   */
-  export namespace GetOfficeAmenitiesCount {
+ * No description
+ * @tags Auth
+ * @name GetAuthToken
+ * @summary Get JWT authentication token
+ * @request GET:/auth
+ * @response `200` `{
+  \** JWT token signed with server's secret *\
+    token: string,
+
+}` Successfully generated JWT token
+*/
+  export namespace GetAuthToken {
     export type RequestParams = {};
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Money;
+    export type ResponseBody = {
+      /** JWT token signed with server's secret */
+      token: string;
+    };
   }
 }

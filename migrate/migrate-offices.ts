@@ -1,5 +1,6 @@
 import { logger } from '../lib/logger';
-import { Office } from './types';
+import { OfficeAmenity } from '../typedef-old';
+import { DatabaseContent, Office } from './migration-types';
 
 function getRandomInt(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -27,11 +28,13 @@ function getOfficeCapacity(country: string): number {
     return getRandomInt(30, 200);
 }
 
-export function migrateOffices(offices: Office[]): Office[] {
-    logger.info(`Found ${offices.length} offices to process`);
-    return offices.map(({ country, city, address, capacity, monthlyRental, ...office }) => {
+export function migrateOffices(dbContent: DatabaseContent): Office[] {
+    const offices = dbContent.offices;
+    logger.debug(`Found ${offices.length} offices to process`);
+    return offices.map(({ country, city, address, capacity, monthlyRental, estate, amenities, ...office }) => {
         return {
-            country, city, address, capacity, monthlyRental,
+            country, city, address, capacity, monthlyRental, estate,
+            amenities: (amenities as any as OfficeAmenity[]).map(a => a.name),
             ...office,
         };
     });

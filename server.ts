@@ -48,13 +48,6 @@ app.use(
     validateResponses: false
   }),
 );
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  logger.error(err)
-  res.status(err.status || 500).json({
-    message: err.message,
-    errors: err.errors,
-  });
-});
 app.use(jsonServer.rewriter(require('./routes.json')));
 app.use(jsonServerMiddlewares);
 

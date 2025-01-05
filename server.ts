@@ -1,7 +1,9 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import jsonServer from 'json-server';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import * as OpenApiValidator from 'express-openapi-validator';
 
 import { argv } from './lib/cli';
 import { logger } from './lib/logger';
@@ -21,6 +23,7 @@ import { licenseRouter } from './resources/license';
 import { authRouter } from './resources/auth';
 import { departmentsRouter } from './resources/departments';
 import { officesRouter } from './resources/office';
+import { FILES } from './lib/files';
 
 interface JSONServerDatabase {
   getState: () => any;
@@ -37,6 +40,21 @@ const db: JSONServerDatabase = router.db;
 
 app.use(cors());
 app.use(jsonParser, logsMiddleware);
+app.use(cookieParser());
+app.use(
+  OpenApiValidator.middleware({
+    apiSpec: FILES.SWAGGER_FILE,
+    validateRequests: true,
+    validateResponses: false
+  }),
+);
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  logger.error(err)
+  res.status(err.status || 500).json({
+    message: err.message,
+    errors: err.errors,
+  });
+});
 app.use(jsonServer.rewriter(require('./routes.json')));
 app.use(jsonServerMiddlewares);
 

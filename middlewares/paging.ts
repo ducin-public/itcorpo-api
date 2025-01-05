@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+
 import { logger } from '../lib/logger';
 
 interface PagingOptions {

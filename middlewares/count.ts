@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import { logger } from '../lib/logger';
 
 const baseUrl = (url: string): string => url.split('?')[0];

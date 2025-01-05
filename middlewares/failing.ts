@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+
 import { appConfig } from '../lib/config';
 import { pass } from './pass';
 import { logger } from '../lib/logger';

@@ -9,6 +9,11 @@
  * ---------------------------------------------------------------
  */
 
+export interface ErrorResponse {
+  code?: string;
+  message: string;
+}
+
 /** @example {"US":"United States","UK":"United Kingdom","DE":"Germany"} */
 export type Geo = Record<string, string>;
 
@@ -33,31 +38,100 @@ export type Email = string;
  */
 export type Phone = string;
 
-/** @example "LUNCH_CARD" */
-export type BenefitServiceType =
-  | "LUNCH_CARD"
+/** @example "HEALTHCARE" */
+export type BenefitCategory =
   | "HEALTHCARE"
-  | "SPORT_SYSTEM"
-  | "CAFETERIA_IO";
+  | "SPORT_WELLNESS"
+  | "LUNCH_FOOD"
+  | "CULTURE_RECREATION";
 
-/** @example {"id":"60965cfccf2844a6","beneficiary":{"name":"Eva Koster","email":"evko@softix.nl"},"city":"Utrecht","country":"Netherlands","service":"lunch-card","monthlyFee":250,"subscribedAtDate":"2016-01-01"} */
-export interface Benefit {
-  id: string;
-  beneficiary: {
+export interface BenefitService {
+  code: string;
+  /**
+   * Display name of the service
+   * @example "Medicover Healthcare Premium"
+   */
+  name: string;
+  category: BenefitCategory;
+  provider: {
+    /** @example "Medicover" */
     name: string;
-    /** @format email */
-    email: string;
+    /**
+     * @format uri
+     * @example "https://medicover.com"
+     */
+    website: string;
+    /** Email address string */
+    contactEmail: Email;
+    /** Phone number string */
+    supportPhone: Phone;
+    description?: string;
   };
-  country: string;
-  city: string;
-  service: string;
-  /** Monetary value in EUR */
-  monthlyFee: Money;
-  /** @format date */
-  subscribedAtDate: string;
+  /** @example "Premium healthcare package including dental and specialist care" */
+  description: string;
+  /** @example ["PL","DE","NL"] */
+  availableCountries: string[];
+  /**
+   * Combined features and limitations in a formatted text
+   * @example "Features:
+   * - Dental care
+   * - 24/7 hotline
+   * - Mobile app
+   *
+   * Limitations:
+   * - 14 days waiting period
+   * - Excludes pre-existing conditions"
+   */
+  details?: string;
+  /** @example "1 month notice required" */
+  cancellationPolicy?: string;
 }
 
-export interface BenefitInput {
+export type BenefitChargeStatus =
+  | "PENDING"
+  | "PAID"
+  | "OVERDUE"
+  | "CANCELLED"
+  | "REFUNDED";
+
+export interface BenefitCharge {
+  /** @format uuid */
+  id: string;
+  employeeId: number;
+  subscriptionId: string;
+  providerServiceCode: string;
+  /** @format date */
+  billingPeriodStart: string;
+  /** @format date */
+  billingPeriodEnd: string;
+  /** Monetary value in EUR */
+  amount: Money;
+  status: BenefitChargeStatus;
+}
+
+/** @example {"id":"60965cfccf2844a6","beneficiary":{"name":"Eva Koster","email":"evko@softix.nl"},"city":"Utrecht","country":"Netherlands","service":{"name":"MultiSport Active Plus","provider":"Benefit Systems"},"monthlyFee":250,"subscribedAtDate":"2016-01-01","cancelledAtDate":"2016-05-31"} */
+export interface BenefitSubscription {
+  id: string;
+  service: {
+    name: string;
+    provider: string;
+  };
+  beneficiary: {
+    name: string;
+    /** @format email */
+    email: string;
+  };
+  country: string;
+  city: string;
+  /** Monetary value in EUR */
+  monthlyFee: Money;
+  /** @format date */
+  subscribedAtDate: string;
+  /** @format date */
+  cancelledAtDate?: string;
+}
+
+export interface BenefitSubscriptionInput {
   beneficiary: {
     name: string;
     /** @format email */
@@ -70,6 +144,8 @@ export interface BenefitInput {
   monthlyFee: Money;
   /** @format date */
   subscribedAtDate: string;
+  /** @format date */
+  cancelledAtDate?: string;
 }
 
 /** @example {"code":"parking","name":"PARKING"} */
@@ -82,6 +158,7 @@ export interface OfficeAmenity {
 
 /** @example {"country":"Netherlands","city":"Amsterdam","address":"Damrak 81","capacity":150,"monthlyRental":10000,"estate":{"owner":"B2C Estates and Sons","phone":"(7364) 079343","account":"NL86 AMUJ 9303 4156 60"},"amenities":[{"code":"OUTDOOR_SEATING","name":"Outdoor seating"},{"code":"OPEN_SPACE","name":"Open space"}],"imgURL":"amsterdam-6Uf6-XCKJ-qTKq-ISt2-B3SE.jpg"} */
 export interface Office {
+  code: string;
   country: string;
   city: string;
   address: string;
@@ -99,6 +176,7 @@ export interface Office {
 }
 
 export interface OfficeInput {
+  code: string;
   country: string;
   city: string;
   address: string;
@@ -113,6 +191,24 @@ export interface OfficeInput {
   };
   amenities: OfficeAmenity[];
   imgURL?: string;
+}
+
+export interface OfficesSearchCriteria {
+  /**
+   * Comma-separated list of country codes to filter by
+   * @example "PL,DE"
+   */
+  countries?: string;
+  /**
+   * Comma-separated list of amenity codes to filter by
+   * @example "PARKING,SHOWER"
+   */
+  amenities?: string;
+  /**
+   * Full text search across country, city, address and estate owner fields
+   * @example "Amsterdam central"
+   */
+  phrase?: string;
 }
 
 /** @example "ACTIVE" */

@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { expressjwt } from 'express-jwt';
+
 import { pass } from './pass';
 import { appConfig } from '../lib/config';
 import { logger } from '../lib/logger';

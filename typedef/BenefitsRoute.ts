@@ -9,23 +9,61 @@
  * ---------------------------------------------------------------
  */
 
-import { Benefit, BenefitInput, Money } from "./data-contracts";
+import {
+  BenefitCharge,
+  BenefitService,
+  BenefitSubscription,
+  BenefitSubscriptionInput,
+  Money,
+} from "./data-contracts";
 
 export namespace Benefits {
+  /**
+   * No description
+   * @tags Benefits
+   * @name GetBenefitServices
+   * @summary List all available benefit services
+   * @request GET:/benefits/services
+   * @response `200` `(BenefitService)[]` Successful operation
+   */
+  export namespace GetBenefitServices {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = BenefitService[];
+  }
+
+  /**
+   * No description
+   * @tags Benefits
+   * @name GetBenefitCharges
+   * @summary List all benefit charges
+   * @request GET:/benefits/charges
+   * @response `200` `(BenefitCharge)[]` Successful operation
+   */
+  export namespace GetBenefitCharges {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = BenefitCharge[];
+  }
+
   /**
    * No description
    * @tags Benefits
    * @name GetBenefits
    * @summary List all benefits
    * @request GET:/benefits
-   * @response `200` `(Benefit)[]` Successful operation
+   * @response `200` `(BenefitSubscription)[]` Successful operation
    */
   export namespace GetBenefits {
     export type RequestParams = {};
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Benefit[];
+    export type ResponseBody = BenefitSubscription[];
   }
 
   /**
@@ -34,15 +72,15 @@ export namespace Benefits {
    * @name CreateBenefit
    * @summary Create a new benefit
    * @request POST:/benefits
-   * @response `201` `Benefit` Benefit created successfully
+   * @response `201` `BenefitSubscription` Benefit created successfully
    * @response `400` `void` Invalid input
    */
   export namespace CreateBenefit {
     export type RequestParams = {};
     export type RequestQuery = {};
-    export type RequestBody = BenefitInput;
+    export type RequestBody = BenefitSubscriptionInput;
     export type RequestHeaders = {};
-    export type ResponseBody = Benefit;
+    export type ResponseBody = BenefitSubscription;
   }
 
   /**
@@ -67,7 +105,7 @@ export namespace Benefits {
    * @name GetBenefitById
    * @summary Get benefit by ID
    * @request GET:/benefits/{benefitId}
-   * @response `200` `Benefit` Successful operation
+   * @response `200` `BenefitSubscription` Successful operation
    * @response `404` `void` Benefit not found
    */
   export namespace GetBenefitById {
@@ -77,7 +115,7 @@ export namespace Benefits {
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Benefit;
+    export type ResponseBody = BenefitSubscription;
   }
 
   /**
@@ -86,7 +124,7 @@ export namespace Benefits {
    * @name UpdateBenefit
    * @summary Update benefit
    * @request PUT:/benefits/{benefitId}
-   * @response `200` `Benefit` Benefit updated successfully
+   * @response `200` `BenefitSubscription` Benefit updated successfully
    * @response `400` `void` Invalid input
    * @response `404` `void` Benefit not found
    */
@@ -95,9 +133,9 @@ export namespace Benefits {
       benefitId: string;
     };
     export type RequestQuery = {};
-    export type RequestBody = BenefitInput;
+    export type RequestBody = BenefitSubscriptionInput;
     export type RequestHeaders = {};
-    export type ResponseBody = Benefit;
+    export type ResponseBody = BenefitSubscription;
   }
 
   /**

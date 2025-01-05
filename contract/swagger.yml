@@ -29,6 +29,38 @@ paths:
                     type: string
                     description: JWT token signed with server's secret
 
+  /benefits/services:
+    get:
+      summary: List all available benefit services
+      operationId: getBenefitServices
+      tags:
+        - Benefits
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenefitService'
+
+  /benefits/charges:
+    get:
+      summary: List all benefit charges
+      operationId: getBenefitCharges
+      tags:
+        - Benefits
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenefitCharge'
+
   /benefits:
     get:
       summary: List all benefits
@@ -43,7 +75,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Benefit'
+                  $ref: '#/components/schemas/BenefitSubscription'
     post:
       summary: Create a new benefit
       operationId: createBenefit
@@ -54,14 +86,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BenefitInput'
+              $ref: '#/components/schemas/BenefitSubscriptionInput'
       responses:
         '201':
           description: Benefit created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Benefit'
+                $ref: '#/components/schemas/BenefitSubscription'
         '400':
           description: Invalid input
 
@@ -98,7 +130,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Benefit'
+                $ref: '#/components/schemas/BenefitSubscription'
         '404':
           description: Benefit not found
     
@@ -118,14 +150,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BenefitInput'
+              $ref: '#/components/schemas/BenefitSubscriptionInput'
       responses:
         '200':
           description: Benefit updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Benefit'
+                $ref: '#/components/schemas/BenefitSubscription'
         '404':
           description: Benefit not found
         '400':
@@ -165,7 +197,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/OfficeAmenity'
 
-  /office-amenities/count:
+  /offices/amenities/count:
     get:
       summary: Get total number of office amenities
       operationId: getOfficeAmenitiesCount
@@ -186,6 +218,22 @@ paths:
       operationId: getOffices
       tags:
         - Offices
+      parameters:
+        - name: countries
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/OfficesSearchCriteria/properties/countries'
+        - name: amenities
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/OfficesSearchCriteria/properties/amenities'
+        - name: phrase
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/OfficesSearchCriteria/properties/phrase'
       responses:
         '200':
           description: Successful operation
@@ -222,6 +270,22 @@ paths:
       operationId: getOfficesCount
       tags:
         - Offices
+      parameters:
+        - name: countries
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/OfficesSearchCriteria/properties/countries'
+        - name: amenities
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/OfficesSearchCriteria/properties/amenities'
+        - name: phrase
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/OfficesSearchCriteria/properties/phrase'
       responses:
         '200':
           description: Successful operation
@@ -231,10 +295,10 @@ paths:
                 type: integer
                 example: 25
 
-  /offices/{officeId}:
+  /offices/{officeCode}:
     get:
       summary: Get office by ID
-      operationId: getOfficeById
+      operationId: getOfficeByCode
       tags:
         - Offices
       parameters:
@@ -818,6 +882,16 @@ paths:
 
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - message
+
     Geo:
       type: object
       additionalProperties:
@@ -846,16 +920,112 @@ components:
       pattern: "^[+]?[(]?[0-9]{1,4}[)]?[-\\s\\./0-9]*$"
       description: Phone number string
 
-    BenefitServiceType:
+    BenefitCategory:
       type: string
       enum:
-        - "LUNCH_CARD"
         - "HEALTHCARE"
-        - "SPORT_SYSTEM"
-        - "CAFETERIA_IO"
-      example: "LUNCH_CARD"
+        - "SPORT_WELLNESS"
+        - "LUNCH_FOOD"
+        - "CULTURE_RECREATION"
+      example: "HEALTHCARE"
 
-    Benefit:
+    BenefitService:
+      type: object
+      required:
+        - code
+        - name
+        - category
+        - provider
+        - description
+        - availableCountries
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+          description: Display name of the service
+          example: "Medicover Healthcare Premium"
+        category:
+          $ref: '#/components/schemas/BenefitCategory'
+        provider:
+          type: object
+          required:
+            - name
+            - website
+            - contactEmail
+            - supportPhone
+          properties:
+            name: 
+              type: string
+              example: "Medicover"
+            website:
+              type: string
+              format: uri
+              example: "https://medicover.com"
+            contactEmail:
+              $ref: '#/components/schemas/Email'
+            supportPhone:
+              $ref: '#/components/schemas/Phone'
+            description:
+              type: string
+        description:
+          type: string
+          example: "Premium healthcare package including dental and specialist care"
+        availableCountries:
+          type: array
+          items:
+            type: string
+          example: ["PL", "DE", "NL"]
+        details:
+          type: string
+          description: Combined features and limitations in a formatted text
+          example: "Features:\n- Dental care\n- 24/7 hotline\n- Mobile app\n\nLimitations:\n- 14 days waiting period\n- Excludes pre-existing conditions"
+        cancellationPolicy:
+          type: string
+          example: "1 month notice required"
+
+    BenefitChargeStatus:
+      type: string
+      enum:
+        - "PENDING"
+        - "PAID"
+        - "OVERDUE"
+        - "CANCELLED"
+        - "REFUNDED"
+
+    BenefitCharge:
+      type: object
+      required:
+        - id
+        - employeeId
+        - subscriptionId
+        - providerServiceCode
+        - billingPeriodStart
+        - billingPeriodEnd
+        - amount
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        employeeId:
+          type: integer
+        subscriptionId:
+          type: string
+        providerServiceCode:
+          type: string
+        billingPeriodStart:
+          type: string
+          format: date
+        billingPeriodEnd:
+          type: string
+          format: date
+        amount:
+          $ref: '#/components/schemas/Money'
+        status:
+          $ref: '#/components/schemas/BenefitChargeStatus'
+
+    BenefitSubscription:
       type: object
       required:
         - id
@@ -868,6 +1038,63 @@ components:
       properties:
         id:
           type: string
+        service:
+          type: object
+          required:
+            - name
+            - provider
+          properties:
+            name:
+              type: string
+            provider:
+              type: string
+        beneficiary:
+          type: object
+          required:
+            - name
+            - email
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+              format: email
+        country:
+          type: string
+        city:
+          type: string
+        monthlyFee:
+          $ref: '#/components/schemas/Money'
+        subscribedAtDate:
+          type: string
+          format: date
+        cancelledAtDate:
+          type: string
+          format: date
+      example:
+        id: "60965cfccf2844a6"
+        beneficiary:
+          name: "Eva Koster"
+          email: "evko@softix.nl"
+        city: "Utrecht"
+        country: "Netherlands"
+        service:
+          name: "MultiSport Active Plus"
+          provider: "Benefit Systems"
+        monthlyFee: 250
+        subscribedAtDate: "2016-01-01"
+        cancelledAtDate: "2016-05-31"
+    
+    BenefitSubscriptionInput:
+      type: object
+      required:
+        - beneficiary
+        - country
+        - city
+        - service
+        - monthlyFee
+        - subscribedAtDate
+      properties:
         beneficiary:
           type: object
           required:
@@ -890,47 +1117,7 @@ components:
         subscribedAtDate:
           type: string
           format: date
-      example:
-        id: "60965cfccf2844a6"
-        beneficiary:
-          name: "Eva Koster"
-          email: "evko@softix.nl"
-        city: "Utrecht"
-        country: "Netherlands"
-        service: "lunch-card"
-        monthlyFee: 250
-        subscribedAtDate: "2016-01-01"
-    
-    BenefitInput:
-      type: object
-      required:
-        - beneficiary
-        - country
-        - city
-        - service
-        - monthlyFee
-        - subscribedAtDate
-      properties:
-        beneficiary:
-          type: object
-          required:
-            - name
-            - email
-          properties:
-            name:
-              type: string
-            email:
-              type: string
-              format: email
-        country:
-          type: string
-        city:
-          type: string
-        service:
-          type: string
-        monthlyFee:
-          $ref: '#/components/schemas/Money'
-        subscribedAtDate:
+        cancelledAtDate:
           type: string
           format: date
 
@@ -953,6 +1140,7 @@ components:
     Office:
       type: object
       required:
+        - code
         - country
         - city
         - address
@@ -961,6 +1149,8 @@ components:
         - amenities
         - monthlyRental
       properties:
+        code:
+          type: string
         country:
           type: string
         city:
@@ -1011,6 +1201,7 @@ components:
     OfficeInput:
       type: object
       required:
+        - code
         - country
         - city
         - address
@@ -1019,6 +1210,8 @@ components:
         - amenities
         - monthlyRental
       properties:
+        code:
+          type: string
         country:
           type: string
         city:
@@ -1049,6 +1242,22 @@ components:
             $ref: '#/components/schemas/OfficeAmenity'
         imgURL:
           type: string
+
+    OfficesSearchCriteria:
+      type: object
+      properties:
+        countries:
+          type: string
+          description: Comma-separated list of country codes to filter by
+          example: "PL,DE"
+        amenities:
+          type: string
+          description: Comma-separated list of amenity codes to filter by
+          example: "PARKING,SHOWER"
+        phrase:
+          type: string
+          description: Full text search across country, city, address and estate owner fields
+          example: "Amsterdam central"
 
     ProjectStatus:
       type: string

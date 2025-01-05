@@ -1,11 +1,14 @@
-import { Office, OfficeAmenity, Project, Benefit, Employee, Department } from "../typedef/data-contracts";
-export { Office, OfficeAmenity, Project, Benefit, Employee, Department } from "../typedef/data-contracts";
+import { Office, OfficeAmenity, Project, BenefitSubscription, Employee, Department, BenefitService, BenefitCharge } from "../typedef/data-contracts";
+export { Office, OfficeAmenity, Project, BenefitSubscription, Employee, Department, BenefitService, BenefitCharge } from "../typedef/data-contracts";
 
 export interface DatabaseContent {
-    benefits: Benefit[];
+    benefitServices: BenefitService[];
+    benefits: BenefitSubscription[];
+    benefitCharges: BenefitCharge[];
     departments: Department[];
     employees: Employee[];
     offices: Office[];
     projects: Project[];
     officeAmenities: OfficeAmenity[];
+    [key: string]: any;
 }

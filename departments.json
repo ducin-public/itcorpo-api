@@ -1,0 +1,815 @@
+{
+  "departments": [
+    {
+      "id": 1,
+      "name": "Management"
+    },
+    {
+      "id": 2,
+      "name": "Sales"
+    },
+    {
+      "id": 3,
+      "name": "Accounting"
+    },
+    {
+      "id": 4,
+      "name": "Human Resources"
+    },
+    {
+      "id": 5,
+      "name": "Marketing"
+    },
+    {
+      "id": 6,
+      "name": "Development"
+    },
+    {
+      "id": 7,
+      "name": "Support"
+    }
+  ],
+  "geo": {
+    "US": "United States of America",
+    "UK": "United Kingdom",
+    "DE": "Germany",
+    "FR": "France",
+    "NL": "Netherlands",
+    "PL": "Poland",
+    "IT": "Italy",
+    "ES": "Spain"
+  },
+  "officeAmenities": [
+    {
+      "code": "WIFI",
+      "name": "Wi-Fi"
+    },
+    {
+      "code": "CONFERENCE_ROOMS",
+      "name": "Conference rooms"
+    },
+    {
+      "code": "KITCHEN",
+      "name": "Kitchen"
+    },
+    {
+      "code": "FREE_PARKING",
+      "name": "Free parking"
+    },
+    {
+      "code": "BIKE_RACKS",
+      "name": "Bike racks"
+    },
+    {
+      "code": "SHOWERS",
+      "name": "Showers"
+    },
+    {
+      "code": "AIR_CONDITIONING",
+      "name": "Air conditioning"
+    },
+    {
+      "code": "QUIET_ROOMS",
+      "name": "Quiet rooms"
+    },
+    {
+      "code": "STANDING_DESKS",
+      "name": "Standing desks"
+    },
+    {
+      "code": "OUTDOOR_SEATING",
+      "name": "Outdoor seating"
+    },
+    {
+      "code": "WATER_COOLER",
+      "name": "Water cooler"
+    },
+    {
+      "code": "PRIVATE_DESKS",
+      "name": "Private desks"
+    },
+    {
+      "code": "REFRIGERATOR",
+      "name": "Refrigerator"
+    },
+    {
+      "code": "NAP_PODS",
+      "name": "Nap pods"
+    },
+    {
+      "code": "OPEN_SPACE",
+      "name": "Open space"
+    },
+    {
+      "code": "IT_SUPPORT",
+      "name": "IT support"
+    },
+    {
+      "code": "RECYCLING_BINS",
+      "name": "Recycling bins"
+    },
+    {
+      "code": "SNACKS",
+      "name": "Snacks"
+    },
+    {
+      "code": "TEAM_EVENTS",
+      "name": "Team events"
+    },
+    {
+      "code": "GAME_ROOM",
+      "name": "Game room"
+    },
+    {
+      "code": "PRINTING",
+      "name": "Printing"
+    },
+    {
+      "code": "FRUIT_MONDAYS",
+      "name": "Fruit Mondays"
+    },
+    {
+      "code": "GYM",
+      "name": "Gym"
+    },
+    {
+      "code": "LOCKERS",
+      "name": "Lockers"
+    },
+    {
+      "code": "PING_PONG",
+      "name": "Ping-pong"
+    },
+    {
+      "code": "TWENTY_FOUR_SEVEN",
+      "name": "24/7 access"
+    },
+    {
+      "code": "MICROWAVE",
+      "name": "Microwave"
+    },
+    {
+      "code": "HAND_SANITIZERS",
+      "name": "Hand sanitizers"
+    }
+  ],
+  "offices": [
+    {
+      "code": "it-torino",
+      "country": "Italy",
+      "city": "Torino",
+      "address": "Via Giuseppe Garibaldi 151",
+      "capacity": 120,
+      "monthlyRental": 15000,
+      "estate": {
+        "owner": "Immobiliare Piemonte S.p.A.",
+        "phone": "+39 011 234 5678",
+        "account": "IT68 X070 0696 5127 414L 0118 380"
+      },
+      "amenities": [
+        "Hand sanitizers",
+        "Fruit Mondays",
+        "Recycling bins",
+        "IT support",
+        "Showers",
+        "Kitchen",
+        "24/7 access",
+        "Quiet rooms",
+        "Game room",
+        "Printing",
+        "Air conditioning",
+        "Team events",
+        "Wi-Fi"
+      ],
+      "imgURL": "torino-566r-Y0ly-Uixj-YmSj-rN4T.jpg"
+    },
+    {
+      "code": "pl-warsaw",
+      "country": "Poland",
+      "city": "Warszawa",
+      "address": "ul. Marszałkowska 130",
+      "capacity": 140,
+      "monthlyRental": 11000,
+      "estate": {
+        "owner": "Warszawskie Nieruchomości Sp. z o.o.",
+        "phone": "22 123 45 67",
+        "account": "PL43 0926 5994 1051 3200 0501 5166"
+      },
+      "amenities": [
+        "Private desks",
+        "Microwave",
+        "Team events",
+        "Lockers",
+        "IT support",
+        "Free parking",
+        "Recycling bins",
+        "Standing desks",
+        "Nap pods",
+        "24/7 access",
+        "Ping-pong",
+        "Quiet rooms"
+      ],
+      "imgURL": "warszawa-eC7F-oKud-3bgI-id2Q-z3Hj.jpg"
+    },
+    {
+      "code": "de-frankfurt",
+      "country": "Germany",
+      "city": "Frankfurt am Main",
+      "address": "Kaiserstraße 138",
+      "capacity": 200,
+      "monthlyRental": 19000,
+      "estate": {
+        "owner": "Frankfurter Immobilien GmbH",
+        "phone": "069 12345678",
+        "account": "DE15 5009 0090 8040 1721 38"
+      },
+      "amenities": [
+        "Wi-Fi",
+        "24/7 access",
+        "Conference rooms",
+        "Fruit Mondays",
+        "Kitchen",
+        "Free parking",
+        "Outdoor seating",
+        "Open space",
+        "IT support",
+        "Bike racks",
+        "Standing desks",
+        "Game room",
+        "Gym",
+        "Showers"
+      ],
+      "imgURL": "frankfurt-am-main-IZYD-ntdi-1tqf-dHW4-ePhq.jpg"
+    },
+    {
+      "code": "us-dallas",
+      "country": "United States of America",
+      "city": "Dallas",
+      "address": "McKinney Avenue 197",
+      "capacity": 30,
+      "monthlyRental": 34000,
+      "estate": {
+        "owner": "Texas Commercial Properties LLC",
+        "phone": "(214) 555-0123",
+        "account": "US95 4352 0017 8858 3002 7387"
+      },
+      "amenities": [
+        "Showers",
+        "Hand sanitizers",
+        "Recycling bins",
+        "24/7 access",
+        "Fruit Mondays",
+        "Ping-pong",
+        "Bike racks",
+        "Water cooler",
+        "Outdoor seating",
+        "Printing",
+        "Private desks",
+        "Free parking",
+        "Kitchen",
+        "Conference rooms",
+        "Snacks",
+        "Game room",
+        "Wi-Fi",
+        "Standing desks",
+        "Refrigerator",
+        "Quiet rooms",
+        "Lockers",
+        "Air conditioning",
+        "Microwave"
+      ],
+      "imgURL": "dallas-FRnb-75Z3-h1PG-r1Fj-FfEK.jpg"
+    },
+    {
+      "code": "fr-brest",
+      "country": "France",
+      "city": "Brest",
+      "address": "Rue de Siam 37",
+      "capacity": 170,
+      "monthlyRental": 11000,
+      "estate": {
+        "owner": "SCI Bretagne Immobilier",
+        "phone": "02 98 12 34 56",
+        "account": "FR04 0934 0060 3301 08G4 2112 953"
+      },
+      "amenities": [
+        "Air conditioning",
+        "Nap pods",
+        "Wi-Fi",
+        "IT support",
+        "Hand sanitizers",
+        "Conference rooms",
+        "Kitchen",
+        "Bike racks",
+        "Ping-pong"
+      ],
+      "imgURL": "brest-wYiy-v7jE-Y3wr-Ze8M-prEi.jpg"
+    },
+    {
+      "code": "fr-paris",
+      "country": "France",
+      "city": "Paris",
+      "address": "Rue de Rivoli 185",
+      "capacity": 190,
+      "monthlyRental": 18000,
+      "estate": {
+        "owner": "Société Immobilière de Paris SA",
+        "phone": "01 42 12 34 56",
+        "account": "FR56 0361 8300 6013 3249 2NY6 447"
+      },
+      "amenities": [
+        "Microwave",
+        "Wi-Fi",
+        "Outdoor seating",
+        "IT support",
+        "Team events",
+        "Snacks",
+        "24/7 access",
+        "Conference rooms",
+        "Lockers",
+        "Bike racks",
+        "Showers",
+        "Gym"
+      ],
+      "imgURL": "paris-ioeJ-We5j-Xb69-CFvW-ru6m.jpg"
+    },
+    {
+      "code": "uk-plymouth",
+      "country": "United Kingdom",
+      "city": "Plymouth",
+      "address": "Armada Way 169",
+      "capacity": 130,
+      "monthlyRental": 16000,
+      "estate": {
+        "owner": "Devon Property Holdings Ltd",
+        "phone": "01752 123456",
+        "account": "GB96 VISP 0546 6201 0089 49"
+      },
+      "amenities": [
+        "Kitchen",
+        "Nap pods",
+        "Hand sanitizers",
+        "Conference rooms",
+        "24/7 access",
+        "Showers"
+      ],
+      "imgURL": "plymouth-5Bdr-QbQQ-eEhE-gAxi-5dCP.jpg"
+    },
+    {
+      "code": "es-madrid",
+      "country": "Spain",
+      "city": "Madrid",
+      "address": "Calle Gran Vía 147",
+      "capacity": 80,
+      "monthlyRental": 11000,
+      "estate": {
+        "owner": "Inmobiliaria Madrileña S.L.",
+        "phone": "910 234 567",
+        "account": "ES81 0190 4200 4891 0053 7822"
+      },
+      "amenities": [
+        "Wi-Fi",
+        "Conference rooms",
+        "Open space",
+        "Kitchen",
+        "Free parking",
+        "Showers",
+        "Printing",
+        "IT support",
+        "Team events",
+        "Hand sanitizers",
+        "Recycling bins"
+      ],
+      "imgURL": "madrid-F7Z4-PXYY-4Y7y-MGmk-DApU.jpg"
+    },
+    {
+      "code": "uk-london",
+      "country": "United Kingdom",
+      "city": "London",
+      "address": "Oxford Street 70",
+      "capacity": 90,
+      "monthlyRental": 53000,
+      "estate": {
+        "owner": "London Commercial Properties Ltd",
+        "phone": "020 7123 4567",
+        "account": "GB58 IPES 1004 4740 0400 89"
+      },
+      "amenities": [
+        "Water cooler",
+        "IT support",
+        "Conference rooms"
+      ],
+      "imgURL": "london-z7dq-5DRO-8sFm-wNGY-F0nd.jpg"
+    },
+    {
+      "code": "uk-bracknell",
+      "country": "United Kingdom",
+      "city": "Bracknell",
+      "address": "High Street 42",
+      "capacity": 50,
+      "monthlyRental": 26000,
+      "estate": {
+        "owner": "Best-Of-Breed People Estates Inc",
+        "phone": "0924 810 4060",
+        "account": "GB58 LZTJ 6100 7380 3590 04"
+      },
+      "amenities": [
+        "Refrigerator",
+        "Showers",
+        "Private desks"
+      ],
+      "imgURL": "bracknell-Nu9O-oYX8-P2K4-D6Cy-5mb1.jpg"
+    },
+    {
+      "code": "es-granada",
+      "country": "Spain",
+      "city": "Granada",
+      "address": "Calle Reyes Católicos 72",
+      "capacity": 90,
+      "monthlyRental": 6000,
+      "estate": {
+        "owner": "Inmobiliaria Andaluza S.L.",
+        "phone": "958 123 456",
+        "account": "ES54 0300 7005 0364 6902 0608"
+      },
+      "amenities": [
+        "Game room",
+        "Water cooler",
+        "Open space",
+        "Ping-pong",
+        "24/7 access",
+        "Free parking",
+        "Printing"
+      ],
+      "imgURL": "granada-fDRf-tTgk-61JS-wCxl-18Yz.jpg"
+    },
+    {
+      "code": "pl-radom",
+      "country": "Poland",
+      "city": "Radom",
+      "address": "ul. Żeromskiego 33",
+      "capacity": 90,
+      "monthlyRental": 6000,
+      "estate": {
+        "owner": "Radomskie Nieruchomości Sp. z o.o.",
+        "phone": "48 321 45 67",
+        "account": "PL52 0194 6605 9400 8802 2769 0091"
+      },
+      "amenities": [
+        "Recycling bins",
+        "Game room",
+        "Fruit Mondays",
+        "Gym"
+      ],
+      "imgURL": "radom-ZFxp-Vkyz-01tX-YhJX-FvwE.jpg"
+    },
+    {
+      "code": "uk-reading",
+      "country": "United Kingdom",
+      "city": "Reading",
+      "address": "Broad Street 159",
+      "capacity": 100,
+      "monthlyRental": 23000,
+      "estate": {
+        "owner": "World-Class Estates Inc",
+        "phone": "0500 550507",
+        "account": "GB90 BOFA 4006 7627 0051 08"
+      },
+      "amenities": [
+        "Standing desks"
+      ],
+      "imgURL": "reading-cK7Y-lQrq-xQt6-CDG2-pISl.jpg"
+    },
+    {
+      "code": "fr-rennes",
+      "country": "France",
+      "city": "Rennes",
+      "address": "Rue de la Monnaie 39",
+      "capacity": 160,
+      "monthlyRental": 14000,
+      "estate": {
+        "owner": "Minor-Class Estates LLC",
+        "phone": "0370364123",
+        "account": "FR83 4091 5609 69O9 6360 F425 438"
+      },
+      "amenities": [
+        "Free parking",
+        "Showers",
+        "24/7 access",
+        "Private desks",
+        "Bike racks",
+        "Kitchen",
+        "Refrigerator",
+        "Snacks",
+        "IT support"
+      ],
+      "imgURL": "rennes-NGMz-Y9fQ-4QY5-IlYR-pQno.jpg"
+    },
+    {
+      "code": "nl-haag",
+      "country": "Netherlands",
+      "city": "Den Haag",
+      "address": "Lange Voorhout 79",
+      "capacity": 50,
+      "monthlyRental": 13000,
+      "estate": {
+        "owner": "Haagse Vastgoed B.V.",
+        "phone": "070 123 4567",
+        "account": "NL32 PZXG 0100 4892 79"
+      },
+      "amenities": [
+        "Standing desks",
+        "Kitchen",
+        "Private desks",
+        "Open space",
+        "Microwave",
+        "Conference rooms",
+        "Gym",
+        "Lockers",
+        "Ping-pong",
+        "Hand sanitizers",
+        "Showers"
+      ],
+      "imgURL": "den-haag-ahwk-zebu-L6KN-zUx9-hZEV.jpg"
+    },
+    {
+      "code": "pl-lodz",
+      "country": "Poland",
+      "city": "Łódź",
+      "address": "ul. Piotrkowska 101",
+      "capacity": 180,
+      "monthlyRental": 20000,
+      "estate": {
+        "owner": "Łódzkie Centrum Nieruchomości Sp. z o.o.",
+        "phone": "42 123 45 67",
+        "account": "PL60 4940 0146 0008 9635 6005 9462"
+      },
+      "amenities": [
+        "24/7 access",
+        "Bike racks",
+        "Gym",
+        "Water cooler",
+        "Printing",
+        "Game room",
+        "Snacks"
+      ],
+      "imgURL": "lodz-cpzj-Fi1e-0BTM-tSsl-dhJR.jpg"
+    },
+    {
+      "code": "pl-wroclaw",
+      "country": "Poland",
+      "city": "Wrocław",
+      "address": "ul. Świdnicka 71",
+      "capacity": 190,
+      "monthlyRental": 13000,
+      "estate": {
+        "owner": "Frictionless Estates LLC",
+        "phone": "43-591-70-09",
+        "account": "PL04 2500 1249 1006 1764 8022 0032"
+      },
+      "amenities": [
+        "24/7 access",
+        "Kitchen",
+        "Open space",
+        "Microwave",
+        "Quiet rooms"
+      ],
+      "imgURL": "wroclaw-YiMX-ogrX-CPHu-N9CV-Q43k.jpg"
+    },
+    {
+      "code": "nl-utrecht",
+      "country": "Netherlands",
+      "city": "Utrecht",
+      "address": "Oudegracht 61",
+      "capacity": 130,
+      "monthlyRental": 19000,
+      "estate": {
+        "owner": "Utrecht Vastgoed B.V.",
+        "phone": "030 234 5678",
+        "account": "NL16 HTLT 5101 0300 76"
+      },
+      "amenities": [
+        "Showers",
+        "Wi-Fi",
+        "Conference rooms",
+        "Team events",
+        "Recycling bins"
+      ],
+      "imgURL": "utrecht-NVvk-MSz6-DpWY-osco-d6Nn.jpg"
+    },
+    {
+      "code": "pl-lublin",
+      "country": "Poland",
+      "city": "Lublin",
+      "address": "ul. Krakowskie Przedmieście 193",
+      "capacity": 40,
+      "monthlyRental": 17000,
+      "estate": {
+        "owner": "Lubelskie Nieruchomości Sp. z o.o.",
+        "phone": "81 234 56 78",
+        "account": "PL17 4020 9002 8045 4307 0003 2097"
+      },
+      "amenities": [
+        "Bike racks",
+        "Water cooler",
+        "Free parking",
+        "Lockers"
+      ],
+      "imgURL": "lublin-OxBY-NJPx-QTVS-dQ88-w286.jpg"
+    },
+    {
+      "code": "pl-gdansk",
+      "country": "Poland",
+      "city": "Gdańsk",
+      "address": "ul. Długa 62",
+      "capacity": 70,
+      "monthlyRental": 9000,
+      "estate": {
+        "owner": "User-Centric Estates Group",
+        "phone": "54-599-64-97",
+        "account": "PL79 0011 0048 3805 5289 5507 8559"
+      },
+      "amenities": [
+        "IT support",
+        "Showers",
+        "Quiet rooms"
+      ],
+      "imgURL": "gdansk-n2ZQ-zRj8-6oJL-hc8N-JD7b.jpg"
+    },
+    {
+      "code": "de-darmstadt",
+      "country": "Germany",
+      "city": "Darmstadt",
+      "address": "Wilhelminenstraße 196",
+      "capacity": 60,
+      "monthlyRental": 20000,
+      "estate": {
+        "owner": "Darmstadt Immobilien GmbH",
+        "phone": "06151 123456",
+        "account": "DE57 7030 2238 0400 5997 60"
+      },
+      "amenities": [
+        "Quiet rooms",
+        "Air conditioning",
+        "Snacks"
+      ],
+      "imgURL": "darmstadt-U2Ul-fm37-FF8X-uArP-OtBg.jpg"
+    },
+    {
+      "code": "uk-manchester",
+      "country": "United Kingdom",
+      "city": "Manchester",
+      "address": "Deansgate 46",
+      "capacity": 60,
+      "monthlyRental": 18000,
+      "estate": {
+        "owner": "B2B Estates Group",
+        "phone": "0800 043 8564",
+        "account": "GB65 FVIB 0051 3930 0708 44"
+      },
+      "amenities": [
+        "Air conditioning",
+        "Private desks",
+        "Team events"
+      ],
+      "imgURL": "manchester-z2Ae-8o5Z-Pj35-YfrS-BSci.jpg"
+    },
+    {
+      "code": "fr-lille",
+      "country": "France",
+      "city": "Lille",
+      "address": "Rue Faidherbe 10",
+      "capacity": 150,
+      "monthlyRental": 11000,
+      "estate": {
+        "owner": "Viral Estates Group",
+        "phone": "+33 433348418",
+        "account": "FR29 3008 5208 1633 D179 1461 361"
+      },
+      "amenities": [
+        "Open space"
+      ],
+      "imgURL": "lille-RLKg-0sXe-AOP8-aiwZ-5KGS.jpg"
+    },
+    {
+      "code": "nl-amsterdam",
+      "country": "Netherlands",
+      "city": "Amsterdam",
+      "address": "Damrak 81",
+      "capacity": 150,
+      "monthlyRental": 10000,
+      "estate": {
+        "owner": "B2C Estates and Sons",
+        "phone": "(7364) 079343",
+        "account": "NL86 AMUJ 9303 4156 60"
+      },
+      "amenities": [
+        "Outdoor seating",
+        "Open space",
+        "Showers",
+        "Microwave",
+        "Air conditioning"
+      ],
+      "imgURL": "amsterdam-6Uf6-XCKJ-qTKq-ISt2-B3SE.jpg"
+    },
+    {
+      "code": "de-munchen",
+      "country": "Germany",
+      "city": "München",
+      "address": "Kaufingerstraße 20",
+      "capacity": 110,
+      "monthlyRental": 46000,
+      "estate": {
+        "owner": "Münchener Immobilien GmbH",
+        "phone": "089 123456",
+        "account": "DE37 0031 8915 5320 9040 01"
+      },
+      "amenities": [
+        "Outdoor seating",
+        "Standing desks",
+        "Gym",
+        "Private desks",
+        "Nap pods",
+        "Refrigerator",
+        "IT support",
+        "Hand sanitizers",
+        "Wi-Fi",
+        "Quiet rooms",
+        "Team events",
+        "24/7 access",
+        "Printing",
+        "Free parking"
+      ],
+      "imgURL": "munchen-MmUh-Prcz-CV80-ueMv-g9LR.jpg"
+    },
+    {
+      "code": "us-milpitas",
+      "country": "United States of America",
+      "city": "Milpitas",
+      "address": "Great Mall Parkway 142",
+      "capacity": 50,
+      "monthlyRental": 18000,
+      "estate": {
+        "owner": "Bay Area Properties LLC",
+        "phone": "(408) 555-0123",
+        "account": "US13 9006 0700 2500 3933 2082"
+      },
+      "amenities": [
+        "Kitchen",
+        "Air conditioning",
+        "Printing",
+        "Conference rooms",
+        "Ping-pong",
+        "24/7 access",
+        "Gym",
+        "Bike racks",
+        "IT support"
+      ],
+      "imgURL": "milpitas-CKbb-fwJs-1JCD-xthJ-Q5dp.jpg"
+    },
+    {
+      "code": "us-san-francisco",
+      "country": "United States of America",
+      "city": "San Francisco",
+      "address": "Market Street 75",
+      "capacity": 80,
+      "monthlyRental": 17000,
+      "estate": {
+        "owner": "SF Commercial Real Estate LLC",
+        "phone": "(415) 555-0123",
+        "account": "US76 5650 4372 7100 9904 2698"
+      },
+      "amenities": [
+        "Printing",
+        "Hand sanitizers",
+        "Team events",
+        "Free parking",
+        "Open space",
+        "Recycling bins",
+        "IT support"
+      ],
+      "imgURL": "san-francisco-yT4p-9bAD-eiVF-Lmdy-lT3g.jpg"
+    },
+    {
+      "code": "it-rome",
+      "country": "Italy",
+      "city": "Roma",
+      "address": "Via del Corso 55",
+      "capacity": 140,
+      "monthlyRental": 10000,
+      "estate": {
+        "owner": "Immobiliare Roma Centro S.r.l.",
+        "phone": "+39 06 123 4567",
+        "account": "IT28 Z000 0617 909U 3691 M617 0JA"
+      },
+      "amenities": [
+        "Hand sanitizers",
+        "Wi-Fi",
+        "Gym",
+        "Printing",
+        "Conference rooms"
+      ],
+      "imgURL": "roma-bsuq-q7zW-DIqc-dpDJ-f0OC.jpg"
+    }
+  ]
+}

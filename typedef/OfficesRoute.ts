@@ -31,6 +31,22 @@ export namespace Offices {
   /**
    * No description
    * @tags Offices
+   * @name GetOfficeAmenitiesCount
+   * @summary Get total number of office amenities
+   * @request GET:/offices/amenities/count
+   * @response `200` `Money` Successful operation
+   */
+  export namespace GetOfficeAmenitiesCount {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Money;
+  }
+
+  /**
+   * No description
+   * @tags Offices
    * @name GetOffices
    * @summary List all offices
    * @request GET:/offices
@@ -38,7 +54,11 @@ export namespace Offices {
    */
   export namespace GetOffices {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      countries?: any;
+      amenities?: any;
+      phrase?: any;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = Office[];
@@ -71,7 +91,11 @@ export namespace Offices {
    */
   export namespace GetOfficesCount {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      countries?: any;
+      amenities?: any;
+      phrase?: any;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = Money;
@@ -80,15 +104,16 @@ export namespace Offices {
   /**
    * No description
    * @tags Offices
-   * @name GetOfficeById
+   * @name GetOfficeByCode
    * @summary Get office by ID
-   * @request GET:/offices/{officeId}
+   * @request GET:/offices/{officeCode}
    * @response `200` `Office` Successful operation
    * @response `404` `void` Office not found
    */
-  export namespace GetOfficeById {
+  export namespace GetOfficeByCode {
     export type RequestParams = {
       officeId: string;
+      officeCode: string;
     };
     export type RequestQuery = {};
     export type RequestBody = never;
@@ -101,7 +126,7 @@ export namespace Offices {
    * @tags Offices
    * @name UpdateOffice
    * @summary Update office
-   * @request PUT:/offices/{officeId}
+   * @request PUT:/offices/{officeCode}
    * @response `200` `Office` Office updated successfully
    * @response `400` `void` Invalid input
    * @response `404` `void` Office not found
@@ -109,6 +134,7 @@ export namespace Offices {
   export namespace UpdateOffice {
     export type RequestParams = {
       officeId: string;
+      officeCode: string;
     };
     export type RequestQuery = {};
     export type RequestBody = OfficeInput;
@@ -121,13 +147,14 @@ export namespace Offices {
    * @tags Offices
    * @name DeleteOffice
    * @summary Delete office
-   * @request DELETE:/offices/{officeId}
+   * @request DELETE:/offices/{officeCode}
    * @response `204` `void` Office deleted successfully
    * @response `404` `void` Office not found
    */
   export namespace DeleteOffice {
     export type RequestParams = {
       officeId: string;
+      officeCode: string;
     };
     export type RequestQuery = {};
     export type RequestBody = never;

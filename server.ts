@@ -16,8 +16,11 @@ import { authMiddleware } from './middlewares/auth';
 import { failingMiddleware } from './middlewares/failing';
 import { employeeNameMiddleware } from './middlewares/employee_name';
 import { errorMiddleware } from './middlewares/error';
+
 import { licenseRouter } from './resources/license';
 import { authRouter } from './resources/auth';
+import { departmentsRouter } from './resources/departments';
+import { officesRouter } from './resources/office';
 
 interface JSONServerDatabase {
   getState: () => any;
@@ -47,6 +50,8 @@ app.use(employeeNameMiddleware(db));
 app.use('/api', swaggerRouter);
 app.use('/license', licenseRouter);
 app.use('/auth', authRouter);
+app.use('/departments', departmentsRouter);
+app.use('/offices', officesRouter);
 app.use('/images', express.static('images'))
 app.use(router);
 app.use(errorMiddleware());

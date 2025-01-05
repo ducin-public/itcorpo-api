@@ -1,8 +1,3 @@
 {
-  "/finances/expenses*": "/expenses$1",
-  "/offices/amenities*": "/officeAmenities$1",
-
-  "/:resource/:id/count": "/:resource/:id?mode=count",
-  "/:resource/count?:query": "/:resource?:query&mode=count",
-  "/:resource/count": "/:resource?mode=count"
+  "/finances/expenses*": "/expenses$1"
 }

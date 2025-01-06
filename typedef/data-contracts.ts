@@ -121,6 +121,7 @@ export interface BenefitSubscription {
     /** @format email */
     email: string;
   };
+  category: BenefitCategory;
   country: string;
   city: string;
   /** Monetary value in EUR */
@@ -146,6 +147,19 @@ export interface BenefitSubscriptionInput {
   subscribedAtDate: string;
   /** @format date */
   cancelledAtDate?: string;
+}
+
+export interface BenefitsSearchCriteria {
+  /** Filter benefits by service name */
+  serviceName?: string;
+  /** Filter benefits by employee IDs */
+  employeeIds?: number[];
+  /** Minimum monthly fee amount */
+  feeFrom?: Money;
+  /** Maximum monthly fee amount */
+  feeTo?: Money;
+  /** Filter by benefit status */
+  status?: "ACTIVE" | "CANCELLED";
 }
 
 /** @example {"code":"parking","name":"PARKING"} */
@@ -248,6 +262,19 @@ export interface ProjectInput {
   }[];
   manager: number;
   description: string;
+}
+
+export interface ProjectsSearchCriteria {
+  /** Filter projects by name */
+  projectName?: string;
+  /** Filter projects by status */
+  status?: ProjectStatus;
+  /** Filter projects by team member IDs */
+  teamMembers?: number[];
+  /** Minimum project budget amount */
+  budgetFrom?: Money;
+  /** Maximum project budget amount */
+  budgetTo?: Money;
 }
 
 /** @example "US" */
@@ -380,4 +407,17 @@ export interface EmployeeInput {
   skills: Skill[];
   bio: string;
   imgURL?: string;
+}
+
+export interface EmployeesSearchCriteria {
+  /** Filter employees by name */
+  employeeName?: string;
+  /** Filter employees by department ID */
+  departmentId?: number;
+  /** Filter employees by skills */
+  skills?: Skill[];
+  /** Minimum salary amount */
+  salaryFrom?: Money;
+  /** Maximum salary amount */
+  salaryTo?: Money;
 }

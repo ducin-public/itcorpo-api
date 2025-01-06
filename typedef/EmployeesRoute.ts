@@ -22,7 +22,13 @@ export namespace Employees {
    */
   export namespace GetEmployees {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      employeeName?: any;
+      departmentId?: any;
+      skills?: any;
+      salaryFrom?: any;
+      salaryTo?: any;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = Employee[];
@@ -55,7 +61,13 @@ export namespace Employees {
    */
   export namespace GetEmployeesCount {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      employeeName?: any;
+      departmentId?: any;
+      skills?: any;
+      salaryFrom?: any;
+      salaryTo?: any;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = Money;

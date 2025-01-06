@@ -67,6 +67,32 @@ paths:
       operationId: getBenefits
       tags:
         - Benefits
+      parameters:
+        - name: serviceName
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/serviceName'
+        - name: employeeIds
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/employeeIds'
+        - name: feeFrom
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeFrom'
+        - name: feeTo
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeTo'
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/status'
       responses:
         '200':
           description: Successful operation
@@ -103,6 +129,32 @@ paths:
       operationId: getBenefitsCount
       tags:
         - Benefits
+      parameters:
+        - name: serviceName
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/serviceName'
+        - name: employeeIds
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/employeeIds'
+        - name: feeFrom
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeFrom'
+        - name: feeTo
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeTo'
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/status'
       responses:
         '200':
           description: Successful operation
@@ -369,6 +421,32 @@ paths:
       operationId: getProjects
       tags:
         - Projects
+      parameters:
+        - name: projectName
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/projectName'
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/status'
+        - name: teamMembers
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembers'
+        - name: budgetFrom
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/budgetFrom'
+        - name: budgetTo
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/budgetTo'
       responses:
         '200':
           description: Successful operation
@@ -405,6 +483,32 @@ paths:
       operationId: getProjectsCount
       tags:
         - Projects
+      parameters:
+        - name: projectName
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/projectName'
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/status'
+        - name: teamMembers
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembers'
+        - name: budgetFrom
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/budgetFrom'
+        - name: budgetTo
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/budgetTo'
       responses:
         '200':
           description: Successful operation
@@ -741,6 +845,32 @@ paths:
       operationId: getEmployees
       tags:
         - Employees
+      parameters:
+        - name: employeeName
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/employeeName'
+        - name: departmentId
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/departmentId'
+        - name: skills
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
+        - name: salaryFrom
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryFrom'
+        - name: salaryTo
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
       responses:
         '200':
           description: Successful operation
@@ -777,6 +907,32 @@ paths:
       operationId: getEmployeesCount
       tags:
         - Employees
+      parameters:
+        - name: employeeName
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/employeeName'
+        - name: departmentId
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/departmentId'
+        - name: skills
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
+        - name: salaryFrom
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryFrom'
+        - name: salaryTo
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
       responses:
         '200':
           description: Successful operation
@@ -1099,6 +1255,7 @@ components:
       required:
         - id
         - beneficiary
+        - category
         - country
         - city
         - service
@@ -1128,6 +1285,8 @@ components:
             email:
               type: string
               format: email
+        category:
+          $ref: '#/components/schemas/BenefitCategory'
         country:
           type: string
         city:
@@ -1189,6 +1348,28 @@ components:
         cancelledAtDate:
           type: string
           format: date
+
+    BenefitsSearchCriteria:
+      type: object
+      properties:
+        serviceName:
+          type: string
+          description: Filter benefits by service name
+        employeeIds:
+          type: array
+          items:
+            type: integer
+          description: Filter benefits by employee IDs
+        feeFrom:
+          $ref: '#/components/schemas/Money'
+          description: Minimum monthly fee amount
+        feeTo:
+          $ref: '#/components/schemas/Money'
+          description: Maximum monthly fee amount
+        status:
+          type: string
+          enum: ["ACTIVE", "CANCELLED"]
+          description: Filter by benefit status
 
     OfficeAmenity:
       type: object
@@ -1433,6 +1614,27 @@ components:
           type: integer
         description:
           type: string
+
+    ProjectsSearchCriteria:
+      type: object
+      properties:
+        projectName:
+          type: string
+          description: Filter projects by name
+        status:
+          $ref: '#/components/schemas/ProjectStatus'
+          description: Filter projects by status
+        teamMembers:
+          type: array
+          items:
+            type: integer
+          description: Filter projects by team member IDs
+        budgetFrom:
+          $ref: '#/components/schemas/Money'
+          description: Minimum project budget amount
+        budgetTo:
+          $ref: '#/components/schemas/Money'
+          description: Maximum project budget amount
 
     Nationality:
       type: string
@@ -1749,3 +1951,24 @@ components:
           type: string
         imgURL:
           type: string
+
+    EmployeesSearchCriteria:
+      type: object
+      properties:
+        employeeName:
+          type: string
+          description: Filter employees by name
+        departmentId:
+          type: integer
+          description: Filter employees by department ID
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+          description: Filter employees by skills
+        salaryFrom:
+          $ref: '#/components/schemas/Money'
+          description: Minimum salary amount
+        salaryTo:
+          $ref: '#/components/schemas/Money'
+          description: Maximum salary amount

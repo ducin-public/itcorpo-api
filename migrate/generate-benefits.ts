@@ -78,6 +78,7 @@ const generateSingleSubscription = (
             name: service.name,
             provider: service.provider.name
         },
+        category: service.category,
         country: employee.personalInfo.address.country,
         city: employee.personalInfo.address.city,
         monthlyFee: PRICE_RANGES[service.code][employee.nationality],
@@ -163,7 +164,7 @@ const generateCharges = (
 }
 
 export const generateBenefits = (db: DatabaseContent) => {
-    const allSubscriptions: BenefitSubscription[] = []  // renamed to avoid shadowing
+    const allSubscriptions: BenefitSubscription[] = []
     const charges: BenefitCharge[] = []
 
     db.employees.forEach(employee => {
@@ -178,8 +179,8 @@ export const generateBenefits = (db: DatabaseContent) => {
                 : [availableServices[Math.floor(Math.random() * availableServices.length)]]
 
             for (const service of servicesToAssign) {
-                const employeeSubscriptions = generateSubscriptionsOfAnEmployee(employee, service)  // renamed
-                allSubscriptions.push(...employeeSubscriptions)  // push to outer array
+                const employeeSubscriptions = generateSubscriptionsOfAnEmployee(employee, service)
+                allSubscriptions.push(...employeeSubscriptions)
 
                 for (const subscription of employeeSubscriptions) {   
                     const subscriptionCharges = generateCharges(subscription, employee.id, service)

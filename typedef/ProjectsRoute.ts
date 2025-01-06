@@ -22,7 +22,13 @@ export namespace Projects {
    */
   export namespace GetProjects {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      projectName?: any;
+      status?: any;
+      teamMembers?: any;
+      budgetFrom?: any;
+      budgetTo?: any;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = Project[];
@@ -55,7 +61,13 @@ export namespace Projects {
    */
   export namespace GetProjectsCount {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      projectName?: any;
+      status?: any;
+      teamMembers?: any;
+      budgetFrom?: any;
+      budgetTo?: any;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = Money;

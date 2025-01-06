@@ -60,7 +60,13 @@ export namespace Benefits {
    */
   export namespace GetBenefits {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      serviceName?: any;
+      employeeIds?: any;
+      feeFrom?: any;
+      feeTo?: any;
+      status?: any;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = BenefitSubscription[];
@@ -93,7 +99,13 @@ export namespace Benefits {
    */
   export namespace GetBenefitsCount {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      serviceName?: any;
+      employeeIds?: any;
+      feeFrom?: any;
+      feeTo?: any;
+      status?: any;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = Money;

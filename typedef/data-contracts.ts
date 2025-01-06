@@ -149,6 +149,12 @@ export interface BenefitSubscriptionInput {
   cancelledAtDate?: string;
 }
 
+/**
+ * Status filter for benefit subscriptions
+ * @example "ACTIVE"
+ */
+export type BenefitSubscriptionSearchStatus = "ALL" | "ACTIVE" | "CANCELLED";
+
 export interface BenefitsSearchCriteria {
   /**
    * Filter benefits by service name
@@ -170,11 +176,8 @@ export interface BenefitsSearchCriteria {
    * @example "500.50"
    */
   feeTo?: string;
-  /**
-   * Filter by benefit status
-   * @example "ACTIVE"
-   */
-  status?: "ALL" | "ACTIVE" | "CANCELLED";
+  /** Status filter for benefit subscriptions */
+  status?: BenefitSubscriptionSearchStatus;
 }
 
 /** @example {"code":"parking","name":"PARKING"} */

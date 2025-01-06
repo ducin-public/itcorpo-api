@@ -1349,6 +1349,12 @@ components:
           type: string
           format: date
 
+    BenefitSubscriptionSearchStatus:
+      type: string
+      enum: ["ALL", "ACTIVE", "CANCELLED"]
+      description: Status filter for benefit subscriptions
+      example: "ACTIVE"
+
     BenefitsSearchCriteria:
       type: object
       properties:
@@ -1369,10 +1375,7 @@ components:
           description: Maximum monthly fee amount
           example: "500.50"
         status:
-          type: string
-          enum: ["ALL", "ACTIVE", "CANCELLED"]
-          description: Filter by benefit status
-          example: "ACTIVE"
+          $ref: '#/components/schemas/BenefitSubscriptionSearchStatus'
 
     OfficeAmenity:
       type: object

@@ -150,15 +150,30 @@ export interface BenefitSubscriptionInput {
 }
 
 export interface BenefitsSearchCriteria {
-  /** Filter benefits by service name */
+  /**
+   * Filter benefits by service name
+   * @example "MultiSport"
+   */
   serviceName?: string;
-  /** Filter benefits by employee IDs */
-  employeeIds?: number[];
-  /** Minimum monthly fee amount */
-  feeFrom?: Money;
-  /** Maximum monthly fee amount */
-  feeTo?: Money;
-  /** Filter by benefit status */
+  /**
+   * Comma-separated list of employee IDs to filter by
+   * @example "123,456,789"
+   */
+  employeeIds?: string;
+  /**
+   * Minimum monthly fee amount
+   * @example "100"
+   */
+  feeFrom?: string;
+  /**
+   * Maximum monthly fee amount
+   * @example "500.50"
+   */
+  feeTo?: string;
+  /**
+   * Filter by benefit status
+   * @example "ACTIVE"
+   */
   status?: "ACTIVE" | "CANCELLED";
 }
 
@@ -265,16 +280,31 @@ export interface ProjectInput {
 }
 
 export interface ProjectsSearchCriteria {
-  /** Filter projects by name */
+  /**
+   * Filter projects by name
+   * @example "Cloud migration"
+   */
   projectName?: string;
-  /** Filter projects by status */
+  /**
+   * Filter projects by status
+   * @example "ACTIVE"
+   */
   status?: ProjectStatus;
-  /** Filter projects by team member IDs */
-  teamMembers?: number[];
-  /** Minimum project budget amount */
-  budgetFrom?: Money;
-  /** Maximum project budget amount */
-  budgetTo?: Money;
+  /**
+   * Filter projects by team member IDs
+   * @example "123,456,789"
+   */
+  teamMembers?: string;
+  /**
+   * Minimum project budget amount
+   * @example "10000"
+   */
+  budgetFrom?: string;
+  /**
+   * Maximum project budget amount
+   * @example "50000"
+   */
+  budgetTo?: string;
 }
 
 /** @example "US" */
@@ -410,14 +440,29 @@ export interface EmployeeInput {
 }
 
 export interface EmployeesSearchCriteria {
-  /** Filter employees by name */
+  /**
+   * Filter employees by name
+   * @example "John Doe"
+   */
   employeeName?: string;
-  /** Filter employees by department ID */
-  departmentId?: number;
-  /** Filter employees by skills */
-  skills?: Skill[];
-  /** Minimum salary amount */
-  salaryFrom?: Money;
-  /** Maximum salary amount */
-  salaryTo?: Money;
+  /**
+   * Filter employees by department ID
+   * @example "123"
+   */
+  departmentId?: string;
+  /**
+   * Filter employees by skills
+   * @example "JavaScript,React"
+   */
+  skills?: string;
+  /**
+   * Minimum salary amount
+   * @example "5000"
+   */
+  salaryFrom?: string;
+  /**
+   * Maximum salary amount
+   * @example "10000"
+   */
+  salaryTo?: string;
 }

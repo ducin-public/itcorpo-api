@@ -1355,21 +1355,24 @@ components:
         serviceName:
           type: string
           description: Filter benefits by service name
+          example: "MultiSport"
         employeeIds:
-          type: array
-          items:
-            type: integer
-          description: Filter benefits by employee IDs
+          type: string
+          description: Comma-separated list of employee IDs to filter by
+          example: "123,456,789"
         feeFrom:
-          $ref: '#/components/schemas/Money'
+          type: string
           description: Minimum monthly fee amount
+          example: "100"
         feeTo:
-          $ref: '#/components/schemas/Money'
+          type: string
           description: Maximum monthly fee amount
+          example: "500.50"
         status:
           type: string
           enum: ["ACTIVE", "CANCELLED"]
           description: Filter by benefit status
+          example: "ACTIVE"
 
     OfficeAmenity:
       type: object
@@ -1621,20 +1624,23 @@ components:
         projectName:
           type: string
           description: Filter projects by name
+          example: "Cloud migration"
         status:
           $ref: '#/components/schemas/ProjectStatus'
           description: Filter projects by status
+          example: "ACTIVE"
         teamMembers:
-          type: array
-          items:
-            type: integer
+          type: string
           description: Filter projects by team member IDs
+          example: "123,456,789"
         budgetFrom:
-          $ref: '#/components/schemas/Money'
+          type: string
           description: Minimum project budget amount
+          example: "10000"
         budgetTo:
-          $ref: '#/components/schemas/Money'
+          type: string
           description: Maximum project budget amount
+          example: "50000"
 
     Nationality:
       type: string
@@ -1958,17 +1964,20 @@ components:
         employeeName:
           type: string
           description: Filter employees by name
+          example: "John Doe"
         departmentId:
-          type: integer
+          type: string
           description: Filter employees by department ID
+          example: "123"
         skills:
-          type: array
-          items:
-            $ref: '#/components/schemas/Skill'
+          type: string
           description: Filter employees by skills
+          example: "JavaScript,React"
         salaryFrom:
-          $ref: '#/components/schemas/Money'
+          type: string
           description: Minimum salary amount
+          example: "5000"
         salaryTo:
-          $ref: '#/components/schemas/Money'
+          type: string
           description: Maximum salary amount
+          example: "10000"

@@ -174,7 +174,7 @@ export interface BenefitsSearchCriteria {
    * Filter by benefit status
    * @example "ACTIVE"
    */
-  status?: "ACTIVE" | "CANCELLED";
+  status?: "ALL" | "ACTIVE" | "CANCELLED";
 }
 
 /** @example {"code":"parking","name":"PARKING"} */

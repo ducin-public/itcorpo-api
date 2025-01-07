@@ -1,15 +1,5 @@
 import yargs from 'yargs';
 
-export interface __CLIParams__ {
-  jwtAuth: boolean;
-  delay: number;
-  tenantRequired: boolean;
-  fail: number;
-  /** comma-separated */
-  failUrls: string;
-  port: number;
-}
-
 export const argv = yargs(process.argv.slice(2))
   .option('port', {
     alias: 'p',
@@ -46,5 +36,3 @@ export const argv = yargs(process.argv.slice(2))
     type: 'boolean'
   })
   .parseSync();
-
-export type CLIParams = typeof argv;

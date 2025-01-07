@@ -469,3 +469,11 @@ export interface EmployeesSearchCriteria {
    */
   salaryTo?: string;
 }
+
+export interface HealthStatus {
+  /** @example "ERROR" */
+  status?: string;
+  /** @example "Database connection failed" */
+  message?: string;
+  [key: string]: any;
+}

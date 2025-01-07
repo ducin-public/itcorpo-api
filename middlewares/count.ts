@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 
 import { logger } from '../lib/logger';
 
-const baseUrl = (url: string): string => url.split('?')[0];
 const queryParams = (url: string): string => url.split('?')[1] ?? '';
 const isCountRequest = (req: Request): boolean =>
   queryParams(req.originalUrl).includes('mode=count');

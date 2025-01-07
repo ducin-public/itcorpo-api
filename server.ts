@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import compression from 'compression'
 import * as OpenApiValidator from 'express-openapi-validator';
 
-import { argv } from './lib/cli';
+import { cliConfig } from './lib/config';
 import { logger } from './lib/logger';
 
 import { countMiddleware } from './middlewares/count';
@@ -27,6 +27,9 @@ import { departmentsRouter } from './resources/departments';
 import { officesRouter } from './resources/office';
 import { FILES } from './lib/files';
 import { HTTPCacheMiddleware } from './middlewares/http-cache';
+import { configRouter } from './resources/config';
+import { healthCheckRouter } from './resources/health-check';
+import { rewriteRouter } from './middlewares/rewrite';
 
 interface JSONServerDatabase {
   getState: () => any;
@@ -36,7 +39,7 @@ interface JSONServerDatabase {
 const app = jsonServer.create();
 const jsonParser = bodyParser.json();
 
-const router = jsonServer.router('db.json');
+const router = jsonServer.router(FILES.JSONSERVER_DB_FILE);
 (router as any).render = countMiddleware; // TODO: json-server is still in beta, need to wait for the solution
 const db: JSONServerDatabase = router.db;
 
@@ -57,17 +60,24 @@ app.use(
     validateRequests: true,
     validateResponses: false,
     ignorePaths: (path: string) => {
-      return (path === '/' || path.startsWith('/api'))
+      return [
+        path === '/favicon.ico',
+        path === '/',
+        path.startsWith('/api'),
+        path.startsWith('/__'),
+        path.startsWith('/images'),
+      ].some(p => p)
     },
   }),
 );
-app.use(jsonServer.rewriter(require('./routes.json')));
+app.use(jsonServer.rewriter(require(FILES.ROUTES_FILE)));
+// app.use(rewriteRouter(require(FILES.ROUTES_FILE))); // FIXME
 
-app.use(authMiddleware(argv.jwtAuth));
-app.use(delayingMiddleware(() => 500 + Math.random() * argv.delay));
-app.use(tenantMiddleware(argv.tenantRequired));
+app.use(authMiddleware(cliConfig.jwtAuth));
+app.use(delayingMiddleware(() => 500 + Math.random() * cliConfig.delay));
+app.use(tenantMiddleware(cliConfig.tenantRequired));
 app.use(pagingMiddleware(50, { excludePatterns: ['/log'] }));
-app.use(failingMiddleware(argv.fail, argv.failUrls));
+app.use(failingMiddleware(cliConfig.fail, cliConfig.failUrls));
 app.use(employeeNameMiddleware(db));
 
 app.use('/license', licenseRouter);
@@ -75,15 +85,13 @@ app.use('/auth', authRouter);
 app.use('/departments', departmentsRouter);
 app.use('/offices', officesRouter);
 app.use('/images', express.static('images'))
+app.use('/health', healthCheckRouter);
 app.use('/api', swaggerRouter);
+app.use(configRouter());
 app.use(router);
 app.use(errorMiddleware());
 
-const URL = `http://localhost:${argv.port}`
-app.listen(argv.port, () => {
+const URL = `http://localhost:${cliConfig.port}`
+app.listen(cliConfig.port, () => {
   logger.info(`JSON Server is running on ${URL}`);
 });
-
-import('open').then(({ default: open }) => {
-  open(URL);
-})

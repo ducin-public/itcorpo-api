@@ -1,9 +1,8 @@
 import { join } from 'path';
 import { readFile, writeFile } from 'fs/promises';
 import { Department, Geo, Office, OfficeAmenity } from '../contract-types/data-contracts';
-import { logger } from '../lib/logger';
-
-const FILE_PATH = join(__dirname, '../departments.json');
+import { logger } from './logger';
+import { FILES } from './files';
 
 export interface DbSchema {
     departments: Department[];
@@ -64,7 +63,7 @@ class FileDb<T extends object> {
 }
 
 export const db = new FileDb<DbSchema>({
-    path: FILE_PATH,
+    path: FILES.DATABASE_FILE,
     requiredCollections: ['departments', 'offices', 'officeAmenities'] as const
 });
 

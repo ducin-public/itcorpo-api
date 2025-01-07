@@ -12,6 +12,33 @@ servers:
     description: Local development server
 
 paths:
+  /health:
+    get:
+      summary: Health Check
+      operationId: HealthCheck
+      tags:
+        - System
+      description: Endpoint to check the health of the API
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "OK"
+                  message:
+                    type: string
+                    example: "All systems operational"
+        '500':
+          description: API is not healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
 
   /auth:
     get:
@@ -1039,75 +1066,6 @@ paths:
           description: Invalid content type requested
         '503':
           description: License file not available
-  
-  /images/avatars/{imageName}:
-    get:
-      summary: Get image by name
-      description: Returns the image file by name
-      tags:
-        - System
-      parameters:
-        - name: imageName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Image file retrieved successfully
-          content:
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-        '404':
-          description: Image file not found
-  
-  /images/offices/{imageName}:
-    get:
-      summary: Get image by name
-      description: Returns the image file by name
-      tags:
-        - System
-      parameters:
-        - name: imageName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Image file retrieved successfully
-          content:
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-        '404':
-          description: Image file not found
-
-  /images/error/{imageName}:
-    get:
-      summary: Get image by name
-      description: Returns the image file by name
-      tags:
-        - System
-      parameters:
-        - name: imageName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Image file retrieved successfully
-          content:
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-        '404':
-          description: Image file not found
 
 components:
   schemas:
@@ -1988,3 +1946,15 @@ components:
           type: string
           description: Maximum salary amount
           example: "10000"
+
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "ERROR"
+        message:
+          type: string
+          example: "Database connection failed"
+      additionalProperties:
+        type: string

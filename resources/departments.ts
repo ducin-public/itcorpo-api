@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import { Department, ErrorResponse } from '../contract-types/data-contracts';
 import { Departments } from '../contract-types/DepartmentsRoute';
-import { db } from './db';
+import { db } from '../lib/db';
 
 const router = Router();
 
@@ -25,6 +25,16 @@ router.get('/', async (
         res.json(db.data.departments);
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch departments' });
+    }
+});
+
+// GET /departments/count
+router.get('/count', async (_req, res) => {
+    try {
+        await db.read();
+        res.json(db.data.departments.length);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to count departments' });
     }
 });
 

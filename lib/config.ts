@@ -2,6 +2,10 @@ import { z } from 'zod';
 
 import { logger } from '../lib/logger';
 import { FILES } from './files';
+import { argv } from './cli';
+
+const { port, delay, fail, failUrls, jwtAuth, tenantRequired } = argv;
+export const cliConfig = { port, delay, fail, failUrls, jwtAuth, tenantRequired };
 
 const AppConfigSchema = z.object({
   NAME: z.string(),

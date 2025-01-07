@@ -8,9 +8,10 @@
     "url": "https://ducin.dev"
   },
   "scripts": {
-    "start": "ts-node server",
-    "dev": "concurrently \"npm run server:dev\" \"npm run dev:prism-proxy\" \"npm run dev:contract:generate-types\"",
-    "server:dev": "nodemon server",
+    "start": "concurrently \"ts-node server\" \"npm run open\"",
+    "dev": "concurrently \"npm run server:dev\" \"npm run dev:prism-proxy\" \"npm run dev:contract:generate-types\" \"npm run open\"",
+    "open": "ts-node scripts/open-index",
+    "server:dev": "nodemon --ext ts,json --watch resources --watch middlewares --watch lib --watch server.ts server",
     "migrate:database": "ts-node migrate/migrate.ts",
     "contract:generate-types": "ts-node scripts/generate-api-types.ts",
     "dev:contract:generate-types": "nodemon --watch contract/swagger.yml --ext yml,yaml -x 'npm run contract:generate-types'",
@@ -27,6 +28,7 @@
     "express": "^4.21.2",
     "express-jwt": "^8.5.1",
     "express-openapi-validator": "^5.4.2",
+    "express-urlrewrite": "^2.0.3",
     "http-server": "^14.1.0",
     "json-schema-faker": "^0.4.7",
     "json-schema-to-typescript": "^10.1.5",

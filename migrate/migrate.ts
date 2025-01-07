@@ -8,7 +8,7 @@ import { generateBenefits } from './generate-benefits';
 import { FILES } from '../lib/files';
 
 logger.info('Starting database migration...');
-const dbContent: DatabaseContent = readDatabaseFile(FILES.DATABASE_FILE);
+const dbContent: DatabaseContent = readDatabaseFile(FILES.JSONSERVER_DB_FILE);
 const updatedOffices = migrateOffices(dbContent);
 const updatedProjects = migrateProjects(dbContent);
 const updatedEmployees = migrateEmployees(dbContent);
@@ -50,4 +50,4 @@ const updatedContent: DatabaseContent = {
     benefitCharges,
 };
 
-writeDatabaseFile(FILES.DATABASE_FILE, reorderDatabaseContentKeys(updatedContent));
+writeDatabaseFile(FILES.JSONSERVER_DB_FILE, reorderDatabaseContentKeys(updatedContent));

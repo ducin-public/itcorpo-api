@@ -5,7 +5,9 @@ import { appConfig, cliConfig } from '../lib/config';
 
 export const configRouter = (additional: object = {}) => {
   const router = express.Router();
+
   const routes = require(FILES.ROUTES_FILE);
+
   router.get('/__config', (_req, res) => {
     res.json({
       appConfig,
@@ -15,5 +17,6 @@ export const configRouter = (additional: object = {}) => {
       ...additional
     });
   });
+
   return router;
 };

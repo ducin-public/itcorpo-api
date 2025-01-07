@@ -4,8 +4,11 @@ import { logger } from '../lib/logger';
 import { FILES } from './files';
 import { argv } from './cli';
 
-const { port, delay, fail, failUrls, jwtAuth, tenantRequired, contractValidation } = argv;
-export const cliConfig = { port, delay, fail, failUrls, jwtAuth, tenantRequired, contractValidation };
+const { port, delayRange, fail, failUrls, jwtAuth, tenantRequired, contractValidation } = argv;
+export const cliConfig = {
+  port, fail, failUrls, jwtAuth, tenantRequired, contractValidation,
+  delayRange: delayRange.split('-').map(n => parseInt(n)) as [number, number]
+};
 
 const AppConfigSchema = z.object({
   NAME: z.string(),

@@ -77,7 +77,7 @@ app.use(jsonServer.rewriter(require(FILES.ROUTES_FILE)));
 // app.use(rewriteRouter(require(FILES.ROUTES_FILE))); // FIXME
 
 app.use(authMiddleware(cliConfig.jwtAuth));
-app.use(delayingMiddleware(() => 500 + Math.random() * cliConfig.delay));
+app.use(delayingMiddleware(cliConfig.delayRange));
 app.use(tenantMiddleware(cliConfig.tenantRequired));
 app.use(pagingMiddleware(50, { excludePatterns: ['/log'] }));
 app.use(failingMiddleware(cliConfig.fail, cliConfig.failUrls));
@@ -88,7 +88,7 @@ app.use('/auth', authRouter);
 app.use('/departments', departmentsRouter);
 app.use('/offices', officesRouter);
 app.use('/images', express.static('images'))
-app.use('/health', healthCheckRouter);
+app.use('/health', healthCheckRouter());
 app.use('/api', swaggerRouter);
 app.use(configRouter());
 app.use(router);
@@ -98,3 +98,5 @@ const URL = `http://localhost:${cliConfig.port}`
 app.listen(cliConfig.port, () => {
   logger.info(`JSON Server is running on ${URL}`);
 });
+
+// test: http://localhost:3000/employees/91720

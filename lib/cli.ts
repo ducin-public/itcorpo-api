@@ -7,11 +7,12 @@ export const argv = yargs(process.argv.slice(2))
     describe: 'Service port',
     type: 'number'
   })
-  .option('delay', {
+  .option('delayRange', {
     alias: 'd',
-    default: 1000,
-    describe: 'Minimum delay (+ random)',
-    type: 'number'
+    // default: "0-0",
+    default: "500-1000",
+    describe: 'Delay range in milliseconds in format: "from-to"',
+    type: 'string'
   })
   .option('fail', {
     alias: 'f',

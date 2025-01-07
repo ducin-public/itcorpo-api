@@ -251,9 +251,9 @@ paths:
         '400':
           description: Invalid input
 
-    delete:
-      summary: Delete benefit
-      operationId: deleteBenefit
+    patch:
+      summary: Cancel or renew benefit subscription
+      operationId: updateBenefitSubscriptionStatus
       tags:
         - Benefits
       parameters:
@@ -262,11 +262,39 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - operation
+              properties:
+                operation:
+                  type: string
+                  enum: ["CANCEL", "RENEW"]
       responses:
-        '204':
-          description: Benefit deleted successfully
+        '200':
+          description: Benefit subscription status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenefitSubscription'
+        '400':
+          description: Invalid request body format
         '404':
-          description: Benefit not found
+          description: Benefit subscription not found
+        '422':
+          description: Invalid operation for current subscription state
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cannot renew an active subscription"
 
   /offices/amenities:
     get:

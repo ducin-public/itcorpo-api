@@ -152,21 +152,29 @@ export namespace Benefits {
   }
 
   /**
-   * No description
-   * @tags Benefits
-   * @name DeleteBenefit
-   * @summary Delete benefit
-   * @request DELETE:/benefits/{benefitId}
-   * @response `204` `void` Benefit deleted successfully
-   * @response `404` `void` Benefit not found
-   */
-  export namespace DeleteBenefit {
+ * No description
+ * @tags Benefits
+ * @name UpdateBenefitSubscriptionStatus
+ * @summary Cancel or renew benefit subscription
+ * @request PATCH:/benefits/{benefitId}
+ * @response `200` `BenefitSubscription` Benefit subscription status updated successfully
+ * @response `400` `void` Invalid request body format
+ * @response `404` `void` Benefit subscription not found
+ * @response `422` `{
+  \** @example "Cannot renew an active subscription" *\
+    message?: string,
+
+}` Invalid operation for current subscription state
+*/
+  export namespace UpdateBenefitSubscriptionStatus {
     export type RequestParams = {
       benefitId: string;
     };
     export type RequestQuery = {};
-    export type RequestBody = never;
+    export type RequestBody = {
+      operation: "CANCEL" | "RENEW";
+    };
     export type RequestHeaders = {};
-    export type ResponseBody = void;
+    export type ResponseBody = BenefitSubscription;
   }
 }

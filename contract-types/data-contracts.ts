@@ -162,6 +162,11 @@ export interface BenefitsSearchCriteria {
    */
   serviceName?: string;
   /**
+   * Comma-separated list of category codes to filter by
+   * @example "HEALTHCARE,SPORT_WELLNESS"
+   */
+  categories?: string;
+  /**
    * Comma-separated list of employee IDs to filter by
    * @example "123,456,789"
    */
@@ -228,12 +233,12 @@ export interface OfficeInput {
 export interface OfficesSearchCriteria {
   /**
    * Comma-separated list of country codes to filter by
-   * @example "PL,DE"
+   * @example "PL,US"
    */
   countries?: string;
   /**
    * Comma-separated list of amenity codes to filter by
-   * @example "PARKING,SHOWER"
+   * @example "FREE_PARKING,SHOWER"
    */
   amenities?: string;
   /**
@@ -468,6 +473,7 @@ export interface EmployeesSearchCriteria {
    * @example "10000"
    */
   salaryTo?: string;
+  mode?: "STANDARD" | "SEARCH_FEED";
 }
 
 export interface HealthStatus {

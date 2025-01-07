@@ -10,7 +10,7 @@ import * as OpenApiValidator from 'express-openapi-validator';
 import { cliConfig } from './lib/config';
 import { logger } from './lib/logger';
 
-import { countMiddleware } from './middlewares/count';
+// import { countMiddleware } from './middlewares/count';
 import { delayingMiddleware } from './middlewares/delaying';
 import { swaggerRouter } from './middlewares/swagger';
 import { tenantMiddleware } from './middlewares/tenant';
@@ -24,24 +24,22 @@ import { errorMiddleware } from './middlewares/error';
 import { licenseRouter } from './resources/license';
 import { authRouter } from './resources/auth';
 import { departmentsRouter } from './resources/departments';
-import { officesRouter } from './resources/office';
+import { officesRouter } from './resources/offices';
 import { FILES } from './lib/files';
 import { HTTPCacheMiddleware } from './middlewares/http-cache';
 import { configRouter } from './resources/config';
 import { healthCheckRouter } from './resources/health-check';
 import { rewriteRouter } from './middlewares/rewrite';
-
-interface JSONServerDatabase {
-  getState: () => any;
-  setState: (state: any) => void;
-}
+import { benefitsRouter } from './resources/benefits';
+import { employeesRouter } from './resources/employees';
+import { projectsRouter } from './resources/projects';
 
 const app = jsonServer.create();
 const jsonParser = bodyParser.json();
 
-const router = jsonServer.router(FILES.JSONSERVER_DB_FILE);
-(router as any).render = countMiddleware; // TODO: json-server is still in beta, need to wait for the solution
-const db: JSONServerDatabase = router.db;
+// const router = jsonServer.router(FILES.JSONSERVER_DB_FILE);
+// (router as any).render = countMiddleware; // TODO: json-server is still in beta, need to wait for the solution
+// const db: JSONServerDatabase = router.db;
 
 app.use(cors({
   origin: true,
@@ -81,17 +79,21 @@ app.use(delayingMiddleware(cliConfig.delayRange));
 app.use(tenantMiddleware(cliConfig.tenantRequired));
 app.use(pagingMiddleware(50, { excludePatterns: ['/log'] }));
 app.use(failingMiddleware(cliConfig.fail, cliConfig.failUrls));
-app.use(employeeNameMiddleware(db));
+// app.use(employeeNameMiddleware(db));
+
+app.use('/benefits', benefitsRouter);
+app.use('/departments', departmentsRouter);
+app.use('/employees', employeesRouter);
+app.use('/offices', officesRouter);
+app.use('/projects', projectsRouter);
 
 app.use('/license', licenseRouter);
 app.use('/auth', authRouter);
-app.use('/departments', departmentsRouter);
-app.use('/offices', officesRouter);
 app.use('/images', express.static('images'))
 app.use('/health', healthCheckRouter());
 app.use('/api', swaggerRouter);
 app.use(configRouter());
-app.use(router);
+// app.use(router);
 app.use(errorMiddleware());
 
 const URL = `http://localhost:${cliConfig.port}`

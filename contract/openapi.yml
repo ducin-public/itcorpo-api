@@ -104,6 +104,11 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/BenefitsSearchCriteria/properties/serviceName'
+        - name: categories
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/categories'
         - name: employeeIds
           in: query
           required: false
@@ -902,6 +907,11 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
+        - name: mode
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/mode'
       responses:
         '200':
           description: Successful operation
@@ -1324,6 +1334,10 @@ components:
           type: string
           description: Filter benefits by service name
           example: "MultiSport"
+        categories:
+          type: string
+          description: Comma-separated list of category codes to filter by
+          example: "HEALTHCARE,SPORT_WELLNESS"
         employeeIds:
           type: string
           description: Comma-separated list of employee IDs to filter by
@@ -1467,11 +1481,11 @@ components:
         countries:
           type: string
           description: Comma-separated list of country codes to filter by
-          example: "PL,DE"
+          example: "PL,US"
         amenities:
           type: string
           description: Comma-separated list of amenity codes to filter by
-          example: "PARKING,SHOWER"
+          example: "FREE_PARKING,SHOWER"
         phrase:
           type: string
           description: Full text search across country, city, address and estate owner fields
@@ -1946,6 +1960,9 @@ components:
           type: string
           description: Maximum salary amount
           example: "10000"
+        mode:
+          type: string
+          enum: ["STANDARD", "SEARCH_FEED"]
 
     HealthStatus:
       type: object

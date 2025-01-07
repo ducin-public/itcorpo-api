@@ -58,7 +58,7 @@ router.get('/amenities/count', async (_req, res) => {
         await db.read();
         res.json(db.data.officeAmenities.length);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to count office amenities' });
+        res.status(500).json({ message: `Failed to count office amenities: ${error}` });
     }
 });
 
@@ -76,7 +76,7 @@ router.get('/amenities', async (
         await db.read();
         res.json(db.data.officeAmenities);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch office amenities' });
+        res.status(500).json({ message: `Failed to fetch office amenities: ${error}` });
     }
 });
 
@@ -87,7 +87,7 @@ router.get('/count', async (req, res) => {
         const filteredOffices = processOfficesSearchCriteria(db.data.offices, req.query);
         res.json(filteredOffices.length);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to count offices' });
+        res.status(500).json({ message: `Failed to count offices: ${error}` });
     }
 });
 
@@ -106,7 +106,7 @@ router.get('/', async (
         const filteredOffices = processOfficesSearchCriteria(db.data.offices, req.query);
         res.json(filteredOffices);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch offices' });
+        res.status(500).json({ message: `Failed to fetch offices: ${error}` });
     }
 });
 
@@ -130,7 +130,7 @@ router.get('/:officeCode', async (
         
         res.json(office);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch office' });
+        res.status(500).json({ message: `Failed to fetch office: ${error}` });
     }
 });
 
@@ -161,7 +161,7 @@ router.post('/', async (
         
         res.status(201).json(newOffice);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to create office' });
+        res.status(500).json({ message: `Failed to create office: ${error}` });
     }
 });
 
@@ -177,26 +177,27 @@ router.put('/:officeCode', async (
 ) => {
     try {
         await db.read();
-        const officeCode = req.params.officeCode;
-        const index = db.data.offices.findIndex(o => o.code === officeCode);
+        const officeToUpdate = db.data.offices.find(o => o.code === req.params.officeCode);
         
-        if (index === -1) {
+        if (!officeToUpdate) {
             return res.status(404).json({ message: 'Office not found' });
         }
 
         const updatedOffice: Office = {
-            ...db.data.offices[index],
+            ...officeToUpdate,
             ...req.body,
-            code: officeCode, // preserve original code
-            amenities: req.body.amenities?.map(a => a.code) || db.data.offices[index].amenities
+            code: req.params.officeCode,
+            amenities: req.body.amenities?.map(a => a.code) || officeToUpdate.amenities
         };
 
-        db.data.offices[index] = updatedOffice;
+        db.data.offices = db.data.offices.map(o => 
+            o.code === req.params.officeCode ? updatedOffice : o
+        );
         await db.write();
         
         res.json(updatedOffice);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to update office' });
+        res.status(500).json({ message: `Failed to update office: ${error}` });
     }
 });
 
@@ -224,7 +225,7 @@ router.delete('/:officeCode', async (
         await db.write();
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: 'Failed to delete office' });
+        res.status(500).json({ message: `Failed to delete office: ${error}` });
     }
 });
 

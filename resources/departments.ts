@@ -6,10 +6,6 @@ import { db } from '../lib/db';
 
 const router = Router();
 
-function getNextId(departments: Department[]): Department['id'] {
-    return departments.reduce((max, dept) => Math.max(max, dept.id), 0) + 1;
-}
-
 // GET /departments
 router.get('/', async (
     _req: Request<
@@ -24,7 +20,7 @@ router.get('/', async (
         await db.read();
         res.json(db.data.departments);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch departments' });
+        res.status(500).json({ message: `Failed to fetch departments: ${error}` });
     }
 });
 
@@ -34,7 +30,7 @@ router.get('/count', async (_req, res) => {
         await db.read();
         res.json(db.data.departments.length);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to count departments' });
+        res.status(500).json({ message: `Failed to count departments: ${error}` });
     }
 });
 
@@ -50,8 +46,9 @@ router.get('/:departmentId', async (
 ) => {
     try {
         await db.read();
+        const departmentId = Number(req.params.departmentId);
         const department = db.data.departments.find(
-            d => d.id === Number(req.params.departmentId)
+            d => d.id === departmentId
         );
         
         if (!department) {
@@ -60,7 +57,7 @@ router.get('/:departmentId', async (
         
         res.json(department);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch department' });
+        res.status(500).json({ message: `Failed to fetch department: ${error}` });
     }
 });
 
@@ -76,9 +73,11 @@ router.post('/', async (
 ) => {
     try {
         await db.read();
+        const departmentData = { ...req.body };
+        
         const newDepartment: Department = {
-            id: getNextId(db.data.departments),
-            ...req.body
+            ...departmentData,
+            id: db.getNextId('departments')
         };
         
         db.data.departments.push(newDepartment);
@@ -86,7 +85,7 @@ router.post('/', async (
         
         res.status(201).json(newDepartment);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to create department' });
+        res.status(500).json({ message: `Failed to create department: ${error}` });
     }
 });
 
@@ -103,21 +102,27 @@ router.put('/:departmentId', async (
     try {
         await db.read();
         const departmentId = Number(req.params.departmentId);
-        const index = db.data.departments.findIndex(d => d.id === departmentId);
+        const departmentData = { ...req.body };
+        const departmentToUpdate = db.data.departments.find(d => d.id === departmentId);
         
-        if (index === -1) {
+        if (!departmentToUpdate) {
             return res.status(404).json({ message: 'Department not found' });
         }
 
-        db.data.departments[index] = {
-            ...db.data.departments[index],
-            ...req.body
+        const updatedDepartment: Department = {
+            ...departmentToUpdate,
+            ...departmentData,
+            id: departmentId
         };
+
+        db.data.departments = db.data.departments.map(d => 
+            d.id === departmentId ? updatedDepartment : d
+        );
         await db.write();
         
-        res.json(db.data.departments[index]);
+        res.json(updatedDepartment);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to update department' });
+        res.status(500).json({ message: `Failed to update department: ${error}` });
     }
 });
 
@@ -145,7 +150,7 @@ router.delete('/:departmentId', async (
         await db.write();
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: 'Failed to delete department' });
+        res.status(500).json({ message: `Failed to delete department: ${error}` });
     }
 });
 

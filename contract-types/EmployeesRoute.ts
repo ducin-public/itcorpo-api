@@ -28,6 +28,7 @@ export namespace Employees {
       skills?: any;
       salaryFrom?: any;
       salaryTo?: any;
+      mode?: any;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};

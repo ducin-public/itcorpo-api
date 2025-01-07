@@ -62,6 +62,7 @@ export namespace Benefits {
     export type RequestParams = {};
     export type RequestQuery = {
       serviceName?: any;
+      categories?: any;
       employeeIds?: any;
       feeFrom?: any;
       feeTo?: any;

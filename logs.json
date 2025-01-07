@@ -1,0 +1,15 @@
+{
+  "logs": [
+    {
+      "level": "DEBUG",
+      "message": "Something happened",
+      "context": {
+        "additionalData": 1234567
+      }
+    },
+    {
+      "level": "WARN",
+      "message": "Unable to start user camera"
+    }
+  ]
+}

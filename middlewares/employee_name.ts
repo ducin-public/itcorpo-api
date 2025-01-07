@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { logger } from '../lib/logger';
-import { Employee } from '../typedef/data-contracts';
+import { Employee } from '../contract-types/data-contracts';
 
 interface Database {
   getState: () => { employees: Employee[] };

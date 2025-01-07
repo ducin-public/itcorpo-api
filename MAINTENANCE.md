@@ -1,3 +1,0 @@
-check fixmes
-schema/validate - untouched...
-specifying contract for /auth and /license requires attention

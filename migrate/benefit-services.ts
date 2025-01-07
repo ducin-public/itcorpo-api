@@ -1,4 +1,4 @@
-import { BenefitService, Money, Nationality } from '../typedef/data-contracts'
+import { BenefitService, Money, Nationality } from '../contract-types/data-contracts'
 
 // # Healthcare
 // - "LUXMED_GOLD_FAMILY"           # Full family coverage + dental

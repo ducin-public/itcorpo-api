@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 
-import { Department, ErrorResponse } from '../typedef/data-contracts';
-import { Departments } from '../typedef/DepartmentsRoute';
+import { Department, ErrorResponse } from '../contract-types/data-contracts';
+import { Departments } from '../contract-types/DepartmentsRoute';
 import { db } from './db';
 
 const router = Router();

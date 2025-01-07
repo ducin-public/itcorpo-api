@@ -16,4 +16,4 @@ Object.entries(FILES).forEach(([key, filepath]) => {
         process.exit(1);
     }
 });
-logger.info(`All required files found: ${Object.keys(FILES).join(', ')}`);
+logger.info(`All required files found:\n${Object.entries(FILES).map(([key, filepath]) => `- ${key}: ${filepath}`).join('\n')}`);

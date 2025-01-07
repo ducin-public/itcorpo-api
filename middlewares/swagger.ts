@@ -10,5 +10,6 @@ const swaggerFile = readFileSync(FILES.SWAGGER_FILE, 'utf8');
 const swaggerDocument = parse(swaggerFile);
 
 swaggerRouter.use('/', swaggerUi.serve);
-swaggerRouter.get('/', swaggerUi.setup(swaggerDocument));
-
+swaggerRouter.get('/', swaggerUi.setup(swaggerDocument, {
+    customSiteTitle: 'IT Corpo API',
+}));

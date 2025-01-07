@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { readFile, writeFile } from 'fs/promises';
-import { Department, Geo, Office, OfficeAmenity } from '../typedef/data-contracts';
+import { Department, Geo, Office, OfficeAmenity } from '../contract-types/data-contracts';
 import { logger } from '../lib/logger';
 
 const FILE_PATH = join(__dirname, '../departments.json');

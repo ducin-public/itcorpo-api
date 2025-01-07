@@ -6,7 +6,7 @@ const generate = async (): Promise<void> => {
   try {
     await generateApi({
       name: "api.ts",
-      output: path.resolve(process.cwd(), "./typedef"),
+      output: path.resolve(process.cwd(), "./contract-types"),
       input: path.resolve(process.cwd(), "./contract/swagger.yml"),
       generateClient: false,
       generateRouteTypes: true,

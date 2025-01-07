@@ -1,8 +1,10 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import jsonServer from 'json-server';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
+import compression from 'compression'
 import * as OpenApiValidator from 'express-openapi-validator';
 
 import { argv } from './lib/cli';
@@ -24,6 +26,7 @@ import { authRouter } from './resources/auth';
 import { departmentsRouter } from './resources/departments';
 import { officesRouter } from './resources/office';
 import { FILES } from './lib/files';
+import { HTTPCacheMiddleware } from './middlewares/http-cache';
 
 interface JSONServerDatabase {
   getState: () => any;
@@ -31,25 +34,34 @@ interface JSONServerDatabase {
 }
 
 const app = jsonServer.create();
-const jsonServerMiddlewares = jsonServer.defaults();
 const jsonParser = bodyParser.json();
 
 const router = jsonServer.router('db.json');
 (router as any).render = countMiddleware; // TODO: json-server is still in beta, need to wait for the solution
 const db: JSONServerDatabase = router.db;
 
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(jsonParser, logsMiddleware);
 app.use(cookieParser());
+app.use(morgan('dev', {
+  skip: req => process.env.NODE_ENV === 'test' || req.path === '/favicon.ico'
+}));
+app.use(compression());
+app.use(HTTPCacheMiddleware());
 app.use(
   OpenApiValidator.middleware({
     apiSpec: FILES.SWAGGER_FILE,
     validateRequests: true,
-    validateResponses: false
+    validateResponses: false,
+    ignorePaths: (path: string) => {
+      return (path === '/' || path.startsWith('/api'))
+    },
   }),
 );
 app.use(jsonServer.rewriter(require('./routes.json')));
-app.use(jsonServerMiddlewares);
 
 app.use(authMiddleware(argv.jwtAuth));
 app.use(delayingMiddleware(() => 500 + Math.random() * argv.delay));
@@ -58,15 +70,20 @@ app.use(pagingMiddleware(50, { excludePatterns: ['/log'] }));
 app.use(failingMiddleware(argv.fail, argv.failUrls));
 app.use(employeeNameMiddleware(db));
 
-app.use('/api', swaggerRouter);
 app.use('/license', licenseRouter);
 app.use('/auth', authRouter);
 app.use('/departments', departmentsRouter);
 app.use('/offices', officesRouter);
 app.use('/images', express.static('images'))
+app.use('/api', swaggerRouter);
 app.use(router);
 app.use(errorMiddleware());
 
+const URL = `http://localhost:${argv.port}`
 app.listen(argv.port, () => {
-  logger.info(`JSON Server is running on http://localhost:${argv.port}`);
+  logger.info(`JSON Server is running on ${URL}`);
 });
+
+import('open').then(({ default: open }) => {
+  open(URL);
+})

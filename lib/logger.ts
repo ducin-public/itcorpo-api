@@ -9,9 +9,9 @@ interface Logger {
 }
 
 export const logger: Logger = {
-    error: (...args) => console.log(chalk.red.bold('ERROR:', ...args)),
-    warn: (...args) => console.log(chalk.magenta.bold('WARN:', ...args)),
-    info: (...args) => console.log(chalk.green('INFO:', ...args)),
-    debug: (...args) => console.log(chalk.gray('DEBUG:', ...args)),
-    config: (...args) => console.log(chalk.yellow('CONFIG:', ...args)),
+    error: (...args) => console.log(chalk.red.bold('[ERROR]', ...args)),
+    warn: (...args) => console.log(chalk.magenta.bold('[WARN]', ...args)),
+    info: (...args) => console.log(chalk.green('[INFO]', ...args)),
+    debug: (...args) => console.log(chalk.gray('[DEBUG]', ...args)),
+    config: (...args) => console.log(chalk.yellow('[CONFIG]', ...args)),
 };

@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import { addMonths, parseISO, format, startOfMonth, endOfMonth, isSameMonth } from 'date-fns'
 
-import { BenefitService, BenefitCharge, BenefitChargeStatus, BenefitSubscription, Nationality, Employee } from '../typedef/data-contracts'
+import { BenefitService, BenefitCharge, BenefitChargeStatus, BenefitSubscription, Nationality, Employee } from '../contract-types/data-contracts'
 import { DatabaseContent } from './migration-types'
 import { logger } from '../lib/logger'
 import { benefitServices, PRICE_RANGES } from './benefit-services'

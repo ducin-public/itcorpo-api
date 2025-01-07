@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { Office, OfficeAmenity, ErrorResponse, OfficesSearchCriteria } from '../typedef/data-contracts';
-import { Offices } from '../typedef/OfficesRoute';
+import { Office, OfficeAmenity, ErrorResponse, OfficesSearchCriteria } from '../contract-types/data-contracts';
+import { Offices } from '../contract-types/OfficesRoute';
 import { db } from './db';
 
 const router = Router();

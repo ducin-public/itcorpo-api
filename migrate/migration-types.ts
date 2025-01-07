@@ -1,5 +1,5 @@
-import { Office, OfficeAmenity, Project, BenefitSubscription, Employee, Department, BenefitService, BenefitCharge } from "../typedef/data-contracts";
-export { Office, OfficeAmenity, Project, BenefitSubscription, Employee, Department, BenefitService, BenefitCharge } from "../typedef/data-contracts";
+import { Office, OfficeAmenity, Project, BenefitSubscription, Employee, Department, BenefitService, BenefitCharge } from "../contract-types/data-contracts";
+export { Office, OfficeAmenity, Project, BenefitSubscription, Employee, Department, BenefitService, BenefitCharge } from "../contract-types/data-contracts";
 
 export interface DatabaseContent {
     benefitServices: BenefitService[];

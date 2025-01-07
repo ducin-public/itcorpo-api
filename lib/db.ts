@@ -3,6 +3,7 @@ import { readFile, writeFile } from 'fs/promises';
 import { Department, Geo, Office, OfficeAmenity } from '../contract-types/data-contracts';
 import { logger } from './logger';
 import { FILES } from './files';
+import { measureTime } from './perf';
 
 export interface DbSchema {
     departments: Department[];
@@ -37,11 +38,11 @@ class FileDb<T extends object> {
 
     async read() {
         try {
-            const content = await readFile(this.config.path, 'utf-8');
+            const content = await measureTime(() => readFile(this.config.path, 'utf-8'), 'db-read');
             const parsed = JSON.parse(content);
             this.validateData(parsed);
             this.data = parsed;
-            logger.info(`Database initialized successfully: ${this.config.path}`);
+            logger.debug(`Database loaded`);
         } catch (error) {
             logger.error('Failed to initialize database:', error);
             process.exit(1);
@@ -50,11 +51,12 @@ class FileDb<T extends object> {
 
     async write() {
         try {
-            await writeFile(
+            await measureTime(() => writeFile(
                 this.config.path, 
                 JSON.stringify(this.data, null, 2), 
                 'utf-8'
-            );
+            ), 'db-write');
+            logger.debug(`Database overwritten`);
         } catch (error) {
             logger.error('Failed to write to database:', error);
             process.exit(1);

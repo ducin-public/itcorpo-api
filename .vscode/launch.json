@@ -4,31 +4,41 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
     {
       "type": "node",
       "request": "launch",
-      "name": "json-server",
-      "program": "${workspaceFolder}/server.js",
+      "name": "server.ts",
+      "program": "${workspaceFolder}/server.ts",
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "sourceMaps": true,
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register"
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      }
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "json-server --jwtAuth -f",
-      "program": "${workspaceFolder}/server.js",
+      "name": "server.ts --jwtAuth -f 0.5",
+      "program": "${workspaceFolder}/server.ts",
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "sourceMaps": true,
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register"
+      ],
       "args": [
         "--jwtAuth",
         "-f 0.5"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "json-server --tenantRequired",
-      "program": "${workspaceFolder}/server.js",
-      "args": [
-        "--tenantRequired"
-      ]
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      }
     }
   ]
 }

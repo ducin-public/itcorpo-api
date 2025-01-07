@@ -7,7 +7,7 @@ const ROOT_DIR = path.join(__dirname, '../');
 export const FILES = {
     JSONSERVER_DB_FILE: path.join(ROOT_DIR, 'jsonserver-db.json'),
     DATABASE_FILE: path.join(ROOT_DIR, 'database.json'),
-    SWAGGER_FILE: path.join(ROOT_DIR, 'contract/swagger.yml'),
+    CONTRACT_FILE: path.join(ROOT_DIR, 'contract/openapi.yml'),
     APP_CONFIG_FILE: path.join(ROOT_DIR, 'config.json'),
     ROUTES_FILE: path.join(ROOT_DIR, 'routes.json')
 } as const;

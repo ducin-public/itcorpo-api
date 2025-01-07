@@ -54,22 +54,25 @@ app.use(morgan('dev', {
 }));
 app.use(compression());
 app.use(HTTPCacheMiddleware());
-app.use(
-  OpenApiValidator.middleware({
-    apiSpec: FILES.SWAGGER_FILE,
-    validateRequests: true,
-    validateResponses: false,
-    ignorePaths: (path: string) => {
-      return [
-        path === '/favicon.ico',
-        path === '/',
-        path.startsWith('/api'),
-        path.startsWith('/__'),
-        path.startsWith('/images'),
-      ].some(p => p)
-    },
-  }),
-);
+if (cliConfig.contractValidation) {
+  logger.config('OpenAPI contract validation enabled');
+  app.use(
+    OpenApiValidator.middleware({
+      apiSpec: FILES.CONTRACT_FILE,
+      validateRequests: true,
+      validateResponses: false,
+      ignorePaths: (path: string) => {
+        return [
+          path === '/favicon.ico',
+          path === '/',
+          path.startsWith('/api'),
+          path.startsWith('/__'),
+          path.startsWith('/images'),
+        ].some(p => p)
+      },
+    }),
+  );
+};
 app.use(jsonServer.rewriter(require(FILES.ROUTES_FILE)));
 // app.use(rewriteRouter(require(FILES.ROUTES_FILE))); // FIXME
 

@@ -14,8 +14,8 @@
     "server:dev": "nodemon --ext ts,json --watch resources --watch middlewares --watch lib --watch server.ts server",
     "migrate:database": "ts-node migrate/migrate.ts",
     "contract:generate-types": "ts-node scripts/generate-api-types.ts",
-    "dev:contract:generate-types": "nodemon --watch contract/swagger.yml --ext yml,yaml -x 'npm run contract:generate-types'",
-    "dev:prism-proxy": "prism proxy ./contract/swagger.yml http://localhost:3000 --errors -p 3001"
+    "dev:contract:generate-types": "nodemon --watch contract/openapi.yml --ext yml,yaml -x 'npm run contract:generate-types'",
+    "dev:prism-proxy": "prism proxy ./contract/openapi.yml http://localhost:3000 --errors -p 3001"
   },
   "dependencies": {
     "body-parser": "^1.20.3",

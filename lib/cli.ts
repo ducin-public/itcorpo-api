@@ -24,6 +24,12 @@ export const argv = yargs(process.argv.slice(2))
     describe: 'Comma-separated list of pattern-matched urls to randomly fail',
     type: 'string'
   })
+  .option('contractValidation', {
+    alias: 'cv',
+    default: true,
+    describe: 'Requests and/or responses validation against the OpenAPI contract',
+    type: 'boolean'
+  })
   .option('jwtAuth', {
     default: false,
     describe: 'JWT Auth is required (Authorization Bearer <token>)',

@@ -1,13 +1,14 @@
 import path from 'path';
 import { generateApi } from 'swagger-typescript-api';
 import { logger } from '../lib/logger';
+import { FILES } from '../lib/files';
 
 const generate = async (): Promise<void> => {
   try {
     await generateApi({
       name: "api.ts",
       output: path.resolve(process.cwd(), "./contract-types"),
-      input: path.resolve(process.cwd(), "./contract/swagger.yml"),
+      input: FILES.CONTRACT_FILE,
       generateClient: false,
       generateRouteTypes: true,
       generateResponses: true,

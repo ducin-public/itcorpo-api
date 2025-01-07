@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------
  */
 
+import { File } from "node:buffer";
+
 export namespace Images {
   /**
    * @description Returns the image file by name

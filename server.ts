@@ -20,12 +20,12 @@ import { authMiddleware } from './middlewares/auth';
 import { failingMiddleware } from './middlewares/failing';
 import { errorMiddleware } from './middlewares/error';
 import { HTTPCacheMiddleware } from './middlewares/http-cache';
-import { healthCheckRouter } from './resources/health-check';
+import { healthCheckRouter } from './middlewares/health-check.router';
 import { swaggerRouter } from './middlewares/swagger.router';
 import { configRouter } from './middlewares/config.router';
 
-import { licenseRouter } from './resources/license';
-import { authRouter } from './resources/auth';
+import { licenseRouter } from './middlewares/license.router';
+import { authRouter } from './middlewares/auth.router';
 import { rewriteRouter } from './middlewares/rewrite';
 import { employeeNameMiddleware } from './middlewares/employee_name';
 

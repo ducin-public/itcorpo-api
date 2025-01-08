@@ -135,11 +135,11 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/BenefitsSearchCriteria/properties/categories'
-        - name: employeeIds
+        - name: employeeId
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/employeeIds'
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/employeeId'
         - name: feeFrom
           in: query
           required: false
@@ -197,11 +197,11 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/BenefitsSearchCriteria/properties/serviceName'
-        - name: employeeIds
+        - name: employeeId
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/employeeIds'
+            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/employeeId'
         - name: feeFrom
           in: query
           required: false
@@ -1401,7 +1401,7 @@ components:
 
     BenefitsSearchCriteria:
       type: object
-      description: Criteria for filtering benefits
+      description: Criteria for filtering benefit subscriptions
       properties:
         serviceName:
           type: string
@@ -1427,10 +1427,12 @@ components:
           example: "500.50"
         status:
           $ref: '#/components/schemas/BenefitSubscriptionSearchStatus'
+          example: "ACTIVE"
 
 
     BenefitChargeStatus:
       type: string
+      description: Payment status of a benefit charge
       enum:
         - "PENDING"
         - "PAID"
@@ -1472,17 +1474,24 @@ components:
 
     BenefitChargesSearchCriteria:
       type: object
+      description: Criteria for filtering benefit charges
       properties:
         subscriptionId:
           type: string
           description: Filter charges by subscription ID
-          example: "60965cfccf2844a6"
+          example: 'zc9b3b4c-1b1d-4b3e-8b3b-4c1b1d4b3e8b'
+        employeeId:
+          type: integer
+          description: Filter charges by subscription ID
+          example: 91720
         providerServiceCode:
           type: string
           description: Filter charges by provider service code
           example: "MEDICOVER_PREMIUM"
         status:
           $ref: '#/components/schemas/BenefitChargeStatus'
+          description: Filter charges by status
+          example: "PAID"
         billingPeriodFrom:
           type: string
           format: date
@@ -1618,6 +1627,7 @@ components:
 
     OfficesSearchCriteria:
       type: object
+      description: Criteria for filtering offices
       properties:
         countries:
           type: string
@@ -1640,6 +1650,7 @@ components:
 
     ProjectStatus:
       type: string
+      description: Status of the ongoing project's workflow
       enum:
         - "PLANNING"
         - "ACTIVE"
@@ -1746,6 +1757,7 @@ components:
 
     ProjectsSearchCriteria:
       type: object
+      description: Criteria for filtering projects
       properties:
         projectName:
           type: string
@@ -1776,6 +1788,9 @@ components:
 
     Nationality:
       type: string
+      description: >
+        Nationality of employee as an
+        ISO 3166-1 alpha-2 country code
       enum:
         - "US"
         - "UK"
@@ -1789,6 +1804,7 @@ components:
 
     ContractType:
       type: string
+      description: Type of employment contract
       enum:
         - "CONTRACT"
         - "PERMANENT"
@@ -1903,6 +1919,7 @@ components:
       properties:
         id:
           type: integer
+          example: 91720
         nationality:
           $ref: '#/components/schemas/Nationality'
         department:
@@ -2092,6 +2109,7 @@ components:
 
     EmployeesSearchCriteria:
       type: object
+      description: Criteria for filtering employees
       properties:
         employeeName:
           type: string

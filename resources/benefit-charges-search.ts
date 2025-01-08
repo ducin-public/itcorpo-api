@@ -10,6 +10,7 @@ import { DbSchema } from '../lib/db';
  * @param criteria - Search criteria for filtering charges
  *   @see {@link BenefitChargesSearchCriteria}
  *   - subscriptionId: Filter by specific benefit subscription ID
+ *   - providerServiceCode: Filter by specific provider service code
  *   - billingPeriodFrom: Filter by minimum billing period (YYYY-MM)
  *   - billingPeriodTo: Filter by maximum billing period (YYYY-MM)
  *   - status: Filter by charge status (PENDING, PAID, CANCELLED)
@@ -28,8 +29,12 @@ export function processBenefitChargesSearchCriteria(
         result = result.filter(charge => charge.subscriptionId === criteria.subscriptionId);
     }
 
+    // Filter by provider service code if provided
+    if (criteria.providerServiceCode) {
+        result = result.filter(charge => charge.providerServiceCode === criteria.providerServiceCode);
+    }
+
     // Filter by overlapping period ranges if provided
-    // FIXME: not tested
     if (criteria.billingPeriodFrom || criteria.billingPeriodTo) {
         result = result.filter(charge => {
             const criteriaStart = criteria.billingPeriodFrom || '0000-00';

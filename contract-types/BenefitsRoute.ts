@@ -69,7 +69,7 @@ export namespace Benefits {
     export type RequestQuery = {
       serviceName?: any;
       categories?: any;
-      employeeIds?: any;
+      employeeId?: any;
       feeFrom?: any;
       feeTo?: any;
       status?: any;
@@ -108,7 +108,7 @@ export namespace Benefits {
     export type RequestParams = {};
     export type RequestQuery = {
       serviceName?: any;
-      employeeIds?: any;
+      employeeId?: any;
       feeFrom?: any;
       feeTo?: any;
       status?: any;

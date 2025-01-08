@@ -133,7 +133,7 @@ export interface BenefitSubscriptionInput {
  */
 export type BenefitSubscriptionSearchStatus = "ALL" | "ACTIVE" | "CANCELLED";
 
-/** Criteria for filtering benefits */
+/** Criteria for filtering benefit subscriptions */
 export interface BenefitsSearchCriteria {
   /**
    * Filter benefits by service name
@@ -160,10 +160,14 @@ export interface BenefitsSearchCriteria {
    * @example "500.50"
    */
   feeTo?: string;
-  /** Status filter for benefit subscriptions */
+  /**
+   * Status filter for benefit subscriptions
+   * @example "ACTIVE"
+   */
   status?: BenefitSubscriptionSearchStatus;
 }
 
+/** Payment status of a benefit charge */
 export type BenefitChargeStatus =
   | "PENDING"
   | "PAID"
@@ -183,20 +187,31 @@ export interface BenefitCharge {
   billingPeriodEnd: string;
   /** Monetary value in EUR */
   amount: Money;
+  /** Payment status of a benefit charge */
   status: BenefitChargeStatus;
 }
 
+/** Criteria for filtering benefit charges */
 export interface BenefitChargesSearchCriteria {
   /**
    * Filter charges by subscription ID
-   * @example "60965cfccf2844a6"
+   * @example "zc9b3b4c-1b1d-4b3e-8b3b-4c1b1d4b3e8b"
    */
   subscriptionId?: string;
+  /**
+   * Filter charges by subscription ID
+   * @example 91720
+   */
+  employeeId?: number;
   /**
    * Filter charges by provider service code
    * @example "MEDICOVER_PREMIUM"
    */
   providerServiceCode?: string;
+  /**
+   * Filter charges by status
+   * @example "PAID"
+   */
   status?: BenefitChargeStatus;
   /**
    * Filter charges with billing period starting from this date
@@ -257,6 +272,7 @@ export interface OfficeInput {
   imgURL?: string;
 }
 
+/** Criteria for filtering offices */
 export interface OfficesSearchCriteria {
   /**
    * Comma-separated list of country codes to filter by
@@ -281,13 +297,17 @@ export interface OfficesSearchCriteria {
   phrase?: string;
 }
 
-/** @example "ACTIVE" */
+/**
+ * Status of the ongoing project's workflow
+ * @example "ACTIVE"
+ */
 export type ProjectStatus = "PLANNING" | "ACTIVE" | "COMPLETED" | "ON_HOLD";
 
 /** @example {"id":"579ef28f-c539-41ff-abe2-e4f6b1c1afed","name":"Licensed Cotton Pants","status":"on-hold","budget":490000,"startDate":"2013-04-16","endDate":"2019-04-27","team":[{"id":4247456,"name":"Anna Bahringer"}],"manager":67429059,"description":"Deleniti rerum impedit.\nCum sed eaque quo accusantium."} */
 export interface Project {
   id: string;
   name: string;
+  /** Status of the ongoing project's workflow */
   status: ProjectStatus;
   /** Monetary value in EUR */
   budget: Money;
@@ -305,6 +325,7 @@ export interface Project {
 
 export interface ProjectInput {
   name: string;
+  /** Status of the ongoing project's workflow */
   status: ProjectStatus;
   /** Monetary value in EUR */
   budget: Money;
@@ -320,6 +341,7 @@ export interface ProjectInput {
   description: string;
 }
 
+/** Criteria for filtering projects */
 export interface ProjectsSearchCriteria {
   /**
    * Filter projects by name
@@ -354,10 +376,16 @@ export interface ProjectsSearchCriteria {
   budgetTo?: string;
 }
 
-/** @example "US" */
+/**
+ * Nationality of employee as an ISO 3166-1 alpha-2 country code
+ * @example "US"
+ */
 export type Nationality = "US" | "UK" | "FR" | "DE" | "NL" | "PL" | "IT" | "ES";
 
-/** @example "PERMANENT" */
+/**
+ * Type of employment contract
+ * @example "PERMANENT"
+ */
 export type ContractType = "CONTRACT" | "PERMANENT";
 
 /** @example {"id":1,"name":"Management"} */
@@ -402,7 +430,9 @@ export type Skill = string;
 
 /** @example {"id":1234,"nationality":"DE","department":"Marketing","keycardId":"KC-9876","account":"DE89 3704 0044 0532 0130 00","salary":75000,"office":["Berlin","HQ"],"firstName":"Hans","lastName":"Schmidt","title":"Senior Developer","contractType":"PERMANENT","email":"hans.schmidt@itcorpo.com","hiredAt":"2020-01-15T00:00:00.000Z","expiresAt":"2025-01-14T23:59:59.999Z","personalInfo":{"age":35,"phone":"+49 123 456789","email":"hans.schmidt@gmail.com","dateOfBirth":"1988-05-20T00:00:00.000Z","address":{"street":"Alexanderplatz 1","city":"Berlin","country":"Germany"}},"skills":["JavaScript","TypeScript","React"],"bio":"Experienced developer with focus on frontend technologies","imgURL":"hans-schmidt-profile.jpg"} */
 export interface Employee {
+  /** @example 91720 */
   id: number;
+  /** Nationality of employee as an ISO 3166-1 alpha-2 country code */
   nationality: Nationality;
   department: string;
   keycardId: string;
@@ -417,6 +447,7 @@ export interface Employee {
   firstName: string;
   lastName: string;
   title: string;
+  /** Type of employment contract */
   contractType: ContractType;
   /** Email address string */
   email: Email;
@@ -445,6 +476,7 @@ export interface Employee {
 }
 
 export interface EmployeeInput {
+  /** Nationality of employee as an ISO 3166-1 alpha-2 country code */
   nationality: Nationality;
   department: string;
   keycardId: string;
@@ -459,6 +491,7 @@ export interface EmployeeInput {
   firstName: string;
   lastName: string;
   title: string;
+  /** Type of employment contract */
   contractType: ContractType;
   /** Email address string */
   email: Email;
@@ -486,6 +519,7 @@ export interface EmployeeInput {
   imgURL?: string;
 }
 
+/** Criteria for filtering employees */
 export interface EmployeesSearchCriteria {
   /**
    * Filter employees by name

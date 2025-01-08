@@ -87,28 +87,6 @@ export interface BenefitService {
   cancellationPolicy?: string;
 }
 
-export type BenefitChargeStatus =
-  | "PENDING"
-  | "PAID"
-  | "OVERDUE"
-  | "CANCELLED"
-  | "REFUNDED";
-
-export interface BenefitCharge {
-  /** @format uuid */
-  id: string;
-  employeeId: number;
-  subscriptionId: string;
-  providerServiceCode: string;
-  /** @format date */
-  billingPeriodStart: string;
-  /** @format date */
-  billingPeriodEnd: string;
-  /** Monetary value in EUR */
-  amount: Money;
-  status: BenefitChargeStatus;
-}
-
 /** @example {"id":"60965cfccf2844a6","beneficiary":{"name":"Eva Koster","email":"evko@softix.nl"},"city":"Utrecht","country":"Netherlands","service":{"name":"MultiSport Active Plus","provider":"Benefit Systems"},"monthlyFee":250,"subscribedAtDate":"2016-01-01","cancelledAtDate":"2016-05-31"} */
 export interface BenefitSubscription {
   id: string;
@@ -183,6 +161,54 @@ export interface BenefitsSearchCriteria {
   feeTo?: string;
   /** Status filter for benefit subscriptions */
   status?: BenefitSubscriptionSearchStatus;
+}
+
+export type BenefitChargeStatus =
+  | "PENDING"
+  | "PAID"
+  | "OVERDUE"
+  | "CANCELLED"
+  | "REFUNDED";
+
+export interface BenefitCharge {
+  /** @format uuid */
+  id: string;
+  employeeId: number;
+  subscriptionId: string;
+  providerServiceCode: string;
+  /** @format date */
+  billingPeriodStart: string;
+  /** @format date */
+  billingPeriodEnd: string;
+  /** Monetary value in EUR */
+  amount: Money;
+  status: BenefitChargeStatus;
+}
+
+export interface BenefitChargesSearchCriteria {
+  /**
+   * Filter charges by subscription ID
+   * @example "60965cfccf2844a6"
+   */
+  subscriptionId?: string;
+  /**
+   * Filter charges by provider service code
+   * @example "MEDICOVER_PREMIUM"
+   */
+  providerServiceCode?: string;
+  status?: BenefitChargeStatus;
+  /**
+   * Filter charges with billing period starting from this date
+   * @format date
+   * @example "2023-01-01"
+   */
+  billingPeriodFrom?: string;
+  /**
+   * Filter charges with billing period ending before this date
+   * @format date
+   * @example "2023-12-31"
+   */
+  billingPeriodTo?: string;
 }
 
 /** @example {"code":"parking","name":"PARKING"} */

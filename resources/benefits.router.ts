@@ -1,62 +1,11 @@
 import { Router, Request, Response } from 'express';
-import { BenefitSubscription, BenefitService, BenefitCharge, ErrorResponse, BenefitsSearchCriteria } from '../contract-types/data-contracts';
+import { BenefitSubscription, ErrorResponse, BenefitsSearchCriteria } from '../contract-types/data-contracts';
 import { Benefits } from '../contract-types/BenefitsRoute';
 import { db } from '../lib/db';
+import { processBenefitsSearchCriteria } from './benefit-search';
+import { processBenefitChargesSearchCriteria } from './benefit-charges-search';
 
 const router = Router();
-
-function processBenefitsSearchCriteria(benefits: BenefitSubscription[], criteria: BenefitsSearchCriteria): BenefitSubscription[] {
-    let result = [...benefits];
-
-    // Filter by service name if provided
-    if (criteria.serviceName) {
-        const searchName = criteria.serviceName.toLowerCase();
-        result = result.filter(benefit => 
-            benefit.service.name.toLowerCase().includes(searchName)
-        );
-    }
-
-    // Filter by benefit categories if provided
-    if (criteria.categories) {
-        const categories = criteria.categories.split(',');
-        result = result.filter(benefit => 
-            categories.includes(benefit.category)
-        );
-    }
-
-    // Filter by employee IDs if provided
-    const employeeIds = criteria.employeeIds?.split(',').map(Number);
-    if (employeeIds?.length) {
-        result = result.filter(benefit => 
-            employeeIds.some(id => {
-                const employee = db.data.employees.find(e => e.id === id);
-                return employee && benefit.beneficiary.email === employee.email;
-            })
-        );
-    }
-
-    // Filter by fee range if provided
-    if (criteria.feeFrom) {
-        const minFee = Number(criteria.feeFrom);
-        result = result.filter(benefit => benefit.monthlyFee >= minFee);
-    }
-    if (criteria.feeTo) {
-        const maxFee = Number(criteria.feeTo);
-        result = result.filter(benefit => benefit.monthlyFee <= maxFee);
-    }
-
-    // Filter by status if provided
-    if (criteria.status) {
-        if (criteria.status === 'ACTIVE') {
-            result = result.filter(benefit => !benefit.cancelledAtDate);
-        } else if (criteria.status === 'CANCELLED') {
-            result = result.filter(benefit => benefit.cancelledAtDate);
-        }
-        // 'ALL' status doesn't need filtering
-    }
-
-    return result;
-}
 
 // GET /benefits/services
 router.get('/services', async (
@@ -78,7 +27,7 @@ router.get('/services', async (
 
 // GET /benefits/charges
 router.get('/charges', async (
-    _req: Request<
+    req: Request<
         Benefits.GetBenefitCharges.RequestParams,
         Benefits.GetBenefitCharges.ResponseBody,
         Benefits.GetBenefitCharges.RequestBody,
@@ -88,7 +37,10 @@ router.get('/charges', async (
 ) => {
     try {
         await db.read();
-        res.json(db.data.benefitCharges);
+        const filteredCharges = processBenefitChargesSearchCriteria({
+            benefitCharges: db.data.benefitCharges
+        }, req.query);
+        res.json(filteredCharges);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch benefit charges: ${error}` });
     }
@@ -106,7 +58,10 @@ router.get('/count', async (
 ) => {
     try {
         await db.read();
-        const filteredBenefits = processBenefitsSearchCriteria(db.data.benefits, req.query);
+        const filteredBenefits = processBenefitsSearchCriteria({
+            benefits: db.data.benefits,
+            employees: db.data.employees,
+        }, req.query);
         res.json(filteredBenefits.length);
     } catch (error) {
         res.status(500).json({ message: `Failed to count benefits: ${error}` });
@@ -125,7 +80,10 @@ router.get('/', async (
 ) => {
     try {
         await db.read();
-        const filteredBenefits = processBenefitsSearchCriteria(db.data.benefits, req.query);
+        const filteredBenefits = processBenefitsSearchCriteria({
+            benefits: db.data.benefits,
+            employees: db.data.employees,
+        }, req.query);
         res.json(filteredBenefits);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch benefits: ${error}` });
@@ -155,6 +113,31 @@ router.get('/:benefitId', async (
         res.json(benefit);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch benefit: ${error}` });
+    }
+});
+
+// GET /benefits/:benefitId/charges
+router.get('/:benefitId/charges', async (
+    req: Request<
+        Benefits.GetBenefitSubscriptionCharges.RequestParams,
+        Benefits.GetBenefitSubscriptionCharges.ResponseBody,
+        Benefits.GetBenefitSubscriptionCharges.RequestBody,
+        Benefits.GetBenefitSubscriptionCharges.RequestQuery
+    >,
+    res: Response<Benefits.GetBenefitSubscriptionCharges.ResponseBody | ErrorResponse>
+) => {
+    try {
+        await db.read();
+        const searchCriteria = {
+            ...req.query,
+            subscriptionId: req.params.benefitId
+        };
+        const filteredCharges = processBenefitChargesSearchCriteria({
+            benefitCharges: db.data.benefitCharges
+        }, searchCriteria);
+        res.json(filteredCharges);
+    } catch (error) {
+        res.status(500).json({ message: `Failed to fetch benefit charges: ${error}` });
     }
 });
 

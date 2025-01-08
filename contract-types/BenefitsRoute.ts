@@ -44,7 +44,13 @@ export namespace Benefits {
    */
   export namespace GetBenefitCharges {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      subscriptionId?: any;
+      providerServiceCode?: any;
+      status?: any;
+      billingPeriodFrom?: any;
+      billingPeriodTo?: any;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = BenefitCharge[];
@@ -176,5 +182,29 @@ export namespace Benefits {
     };
     export type RequestHeaders = {};
     export type ResponseBody = BenefitSubscription;
+  }
+
+  /**
+   * No description
+   * @tags Benefits
+   * @name GetBenefitSubscriptionCharges
+   * @summary List all benefit charges for a specific subscription
+   * @request GET:/benefits/{benefitId}/charges
+   * @response `200` `(BenefitCharge)[]` Successful operation
+   * @response `404` `void` Benefit subscription not found
+   */
+  export namespace GetBenefitSubscriptionCharges {
+    export type RequestParams = {
+      benefitId: string;
+    };
+    export type RequestQuery = {
+      providerServiceCode?: any;
+      status?: any;
+      billingPeriodFrom?: any;
+      billingPeriodTo?: any;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = BenefitCharge[];
   }
 }

@@ -18,21 +18,22 @@ import { pagingMiddleware } from './middlewares/paging';
 import { logsMiddleware } from './middlewares/logs';
 import { authMiddleware } from './middlewares/auth';
 import { failingMiddleware } from './middlewares/failing';
-import { employeeNameMiddleware } from './middlewares/employee_name';
 import { errorMiddleware } from './middlewares/error';
 
 import { licenseRouter } from './resources/license';
 import { authRouter } from './resources/auth';
 import { departmentsRouter } from './resources/departments';
-import { officesRouter } from './resources/offices';
 import { FILES } from './lib/files';
 import { HTTPCacheMiddleware } from './middlewares/http-cache';
 import { configRouter } from './resources/config';
 import { healthCheckRouter } from './resources/health-check';
 import { rewriteRouter } from './middlewares/rewrite';
-import { benefitsRouter } from './resources/benefits';
-import { employeesRouter } from './resources/employees';
-import { projectsRouter } from './resources/projects';
+import { employeeNameMiddleware } from './middlewares/employee_name';
+
+import { benefitsRouter } from './resources/benefits.router';
+import { officesRouter } from './resources/offices.router';
+import { employeesRouter } from './resources/employees.router';
+import { projectsRouter } from './resources/projects.router';
 
 const app = jsonServer.create();
 const jsonParser = bodyParser.json();

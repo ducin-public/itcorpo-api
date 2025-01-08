@@ -82,6 +82,32 @@ paths:
       operationId: getBenefitCharges
       tags:
         - Benefits
+      parameters:
+        - name: subscriptionId
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/subscriptionId'
+        - name: providerServiceCode
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/providerServiceCode'
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/status'
+        - name: billingPeriodFrom
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodFrom'
+        - name: billingPeriodTo
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodTo'
       responses:
         '200':
           description: Successful operation
@@ -295,6 +321,50 @@ paths:
                   message:
                     type: string
                     example: "Cannot renew an active subscription"
+
+  /benefits/{benefitId}/charges:
+    get:
+      summary: List all benefit charges for a specific subscription
+      operationId: getBenefitSubscriptionCharges
+      tags:
+        - Benefits
+      parameters:
+        - name: benefitId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: providerServiceCode
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/providerServiceCode'
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/status'
+        - name: billingPeriodFrom
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodFrom'
+        - name: billingPeriodTo
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodTo'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenefitCharge'
+        '404':
+          description: Benefit subscription not found
 
   /offices/amenities:
     get:
@@ -1209,47 +1279,6 @@ components:
           type: string
           example: "1 month notice required"
 
-    BenefitChargeStatus:
-      type: string
-      enum:
-        - "PENDING"
-        - "PAID"
-        - "OVERDUE"
-        - "CANCELLED"
-        - "REFUNDED"
-
-    BenefitCharge:
-      type: object
-      required:
-        - id
-        - employeeId
-        - subscriptionId
-        - providerServiceCode
-        - billingPeriodStart
-        - billingPeriodEnd
-        - amount
-        - status
-      properties:
-        id:
-          type: string
-          format: uuid
-        employeeId:
-          type: integer
-        subscriptionId:
-          type: string
-        providerServiceCode:
-          type: string
-        billingPeriodStart:
-          type: string
-          format: date
-        billingPeriodEnd:
-          type: string
-          format: date
-        amount:
-          $ref: '#/components/schemas/Money'
-        status:
-          $ref: '#/components/schemas/BenefitChargeStatus'
-
     BenefitSubscription:
       type: object
       required:
@@ -1380,6 +1409,72 @@ components:
           example: "500.50"
         status:
           $ref: '#/components/schemas/BenefitSubscriptionSearchStatus'
+
+
+    BenefitChargeStatus:
+      type: string
+      enum:
+        - "PENDING"
+        - "PAID"
+        - "OVERDUE"
+        - "CANCELLED"
+        - "REFUNDED"
+
+    BenefitCharge:
+      type: object
+      required:
+        - id
+        - employeeId
+        - subscriptionId
+        - providerServiceCode
+        - billingPeriodStart
+        - billingPeriodEnd
+        - amount
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        employeeId:
+          type: integer
+        subscriptionId:
+          type: string
+        providerServiceCode:
+          type: string
+        billingPeriodStart:
+          type: string
+          format: date
+        billingPeriodEnd:
+          type: string
+          format: date
+        amount:
+          $ref: '#/components/schemas/Money'
+        status:
+          $ref: '#/components/schemas/BenefitChargeStatus'
+
+    BenefitChargesSearchCriteria:
+      type: object
+      properties:
+        subscriptionId:
+          type: string
+          description: Filter charges by subscription ID
+          example: "60965cfccf2844a6"
+        providerServiceCode:
+          type: string
+          description: Filter charges by provider service code
+          example: "MEDICOVER_PREMIUM"
+        status:
+          $ref: '#/components/schemas/BenefitChargeStatus'
+        billingPeriodFrom:
+          type: string
+          format: date
+          description: Filter charges with billing period starting from this date
+          example: "2023-01-01"
+        billingPeriodTo:
+          type: string
+          format: date
+          description: Filter charges with billing period ending before this date
+          example: "2023-12-31"
 
     OfficeAmenity:
       type: object

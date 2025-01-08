@@ -7,29 +7,29 @@ import morgan from 'morgan';
 import compression from 'compression'
 import * as OpenApiValidator from 'express-openapi-validator';
 
+import { FILES } from './lib/files';
 import { cliConfig } from './lib/config';
 import { logger } from './lib/logger';
 
 // import { countMiddleware } from './middlewares/count';
 import { delayingMiddleware } from './middlewares/delaying';
-import { swaggerRouter } from './middlewares/swagger';
 import { tenantMiddleware } from './middlewares/tenant';
 import { pagingMiddleware } from './middlewares/paging';
 import { logsMiddleware } from './middlewares/logs';
 import { authMiddleware } from './middlewares/auth';
 import { failingMiddleware } from './middlewares/failing';
 import { errorMiddleware } from './middlewares/error';
+import { HTTPCacheMiddleware } from './middlewares/http-cache';
+import { healthCheckRouter } from './resources/health-check';
+import { swaggerRouter } from './middlewares/swagger.router';
+import { configRouter } from './middlewares/config.router';
 
 import { licenseRouter } from './resources/license';
 import { authRouter } from './resources/auth';
-import { departmentsRouter } from './resources/departments';
-import { FILES } from './lib/files';
-import { HTTPCacheMiddleware } from './middlewares/http-cache';
-import { configRouter } from './resources/config';
-import { healthCheckRouter } from './resources/health-check';
 import { rewriteRouter } from './middlewares/rewrite';
 import { employeeNameMiddleware } from './middlewares/employee_name';
 
+import { departmentsRouter } from './resources/departments.router';
 import { benefitsRouter } from './resources/benefits.router';
 import { officesRouter } from './resources/offices.router';
 import { employeesRouter } from './resources/employees.router';

@@ -24,4 +24,5 @@ const createAuthHandler = () => {
 }
 
 export const authRouter = Router()
+
 authRouter.get('/', createAuthHandler())

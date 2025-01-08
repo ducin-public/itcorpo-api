@@ -1,56 +1,11 @@
 import { Router, Request, Response } from 'express';
+
 import { Office, OfficeAmenity, ErrorResponse, OfficesSearchCriteria } from '../contract-types/data-contracts';
 import { Offices } from '../contract-types/OfficesRoute';
 import { db } from '../lib/db';
+import { processOfficesSearchCriteria } from './offices-search';
 
 const router = Router();
-
-function processOfficesSearchCriteria(offices: Office[], criteria: OfficesSearchCriteria): Office[] {
-    let result = [...offices];
-
-    // Filter by countries if provided
-    const countries = criteria.countries?.split(',');
-    if (countries?.length) {
-        const codeToCountryDict = db.data.geo;
-        const countryNames = countries.map(code => codeToCountryDict[code.toUpperCase()]);
-        result = result.filter(office => 
-            countryNames.includes(office.country)
-        );
-    }
-
-    // Filter by amenities if provided
-    const amenityCodes = criteria.amenities?.split(',');
-    if (amenityCodes?.length) {
-        const codeToAmenityDict = db.data.officeAmenities.reduce((acc, amenity) => {
-            acc[amenity.code] = amenity.name;
-            return acc;
-        }, {} as Record<string, string>);
-        const amenityNames = amenityCodes.map(code => codeToAmenityDict[code]);
-
-        result = result.filter(office => 
-            amenityNames.every(amenity => 
-                office.amenities.includes(amenity)
-            )
-        );
-    }
-
-    // Full text search if phrase provided
-    if (criteria.phrase) {
-        const searchPhrase = criteria.phrase.toLowerCase();
-        result = result.filter(office => {
-            const searchableText = [
-                office.country,
-                office.city,
-                office.address,
-                office.estate.owner
-            ].join(' ').toLowerCase();
-            
-            return searchableText.includes(searchPhrase);
-        });
-    }
-
-    return result;
-}
 
 // GET /offices/amenities/count
 router.get('/amenities/count', async (_req, res) => {
@@ -84,7 +39,11 @@ router.get('/amenities', async (
 router.get('/count', async (req, res) => {
     try {
         await db.read();
-        const filteredOffices = processOfficesSearchCriteria(db.data.offices, req.query);
+        const filteredOffices = processOfficesSearchCriteria({
+            offices: db.data.offices,
+            geo: db.data.geo,
+            officeAmenities: db.data.officeAmenities
+        }, req.query);
         res.json(filteredOffices.length);
     } catch (error) {
         res.status(500).json({ message: `Failed to count offices: ${error}` });
@@ -103,7 +62,11 @@ router.get('/', async (
 ) => {
     try {
         await db.read();
-        const filteredOffices = processOfficesSearchCriteria(db.data.offices, req.query);
+        const filteredOffices = processOfficesSearchCriteria({
+            offices: db.data.offices,
+            geo: db.data.geo,
+            officeAmenities: db.data.officeAmenities
+        }, req.query);
         res.json(filteredOffices);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch offices: ${error}` });

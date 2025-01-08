@@ -2,21 +2,22 @@ import { BenefitSubscription, BenefitsSearchCriteria } from '../contract-types/d
 import { DbSchema } from '../lib/db';
 
 /**
- * Filters benefit subscriptions based on search criteria defined in the API contract.
+ * Processes benefits search criteria and filters benefits based on provided criteria
  * 
- * @param collections - Object containing benefits and employees data required for filtering
- * @param criteria - Search criteria object following BenefitsSearchCriteria schema from the API contract
- * Supported criteria:
- * - serviceName: partial match of benefit service name
- * - categories: comma-separated list of BenefitCategory values
- * - employeeIds: comma-separated list of employee IDs (matched against beneficiary email)
- * - feeFrom/feeTo: monthly fee range
- * - status: "ACTIVE" | "CANCELLED" | "ALL"
+ * @param collections - Database collections required for benefit search
+ *   @see {@link DbSchema}
  * 
- * @see {@link DbSchema}
- * @see {@link BenefitSubscription}
- * @see {@link BenefitsSearchCriteria}
- * @returns Filtered array of benefit subscriptions
+ * @param criteria - Search criteria for filtering benefits
+ *   @see {@link BenefitsSearchCriteria}
+ *   - serviceName: Filter by partial match of benefit service name
+ *   - categories: Filter by benefit categories (comma-separated)
+ *   - employeeIds: Filter by beneficiary employee IDs (comma-separated)
+ *   - feeFrom: Filter by minimum monthly fee
+ *   - feeTo: Filter by maximum monthly fee
+ *   - status: Filter by subscription status (ACTIVE, CANCELLED, ALL)
+ * 
+ * @returns Filtered array of benefit subscriptions matching the criteria
+ *   @see {@link BenefitSubscription}
  */
 export function processBenefitsSearchCriteria(
     collections: Pick<DbSchema, 'benefits' | 'employees'>,

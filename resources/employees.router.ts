@@ -1,49 +1,10 @@
 import { Router, Request, Response } from 'express';
-import { Employee, ErrorResponse, EmployeesSearchCriteria } from '../contract-types/data-contracts';
+import { Employee, ErrorResponse } from '../contract-types/data-contracts';
 import { Employees } from '../contract-types/EmployeesRoute';
 import { db } from '../lib/db';
+import { processEmployeesSearchCriteria } from './employee-search';
 
 const router = Router();
-
-function processEmployeesSearchCriteria(employees: Employee[], criteria: EmployeesSearchCriteria): Employee[] {
-    let result = [...employees];
-
-    // Filter by employee name if provided
-    if (criteria.employeeName) {
-        const searchName = criteria.employeeName.toLowerCase();
-        result = result.filter(employee => 
-            `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(searchName)
-        );
-    }
-
-    // Filter by department if provided
-    if (criteria.departmentId) {
-        const deptId = Number(criteria.departmentId);
-        result = result.filter(employee => 
-            employee.department === db.data.departments.find(d => d.id === deptId)?.name
-        );
-    }
-
-    // Filter by skills if provided
-    const skills = criteria.skills?.split(',');
-    if (skills?.length) {
-        result = result.filter(employee => 
-            skills.every(skill => employee.skills.includes(skill))
-        );
-    }
-
-    // Filter by salary range if provided
-    if (criteria.salaryFrom) {
-        const minSalary = Number(criteria.salaryFrom);
-        result = result.filter(employee => employee.salary >= minSalary);
-    }
-    if (criteria.salaryTo) {
-        const maxSalary = Number(criteria.salaryTo);
-        result = result.filter(employee => employee.salary <= maxSalary);
-    }
-
-    return result;
-}
 
 // GET /employees/count
 router.get('/count', async (
@@ -57,7 +18,10 @@ router.get('/count', async (
 ) => {
     try {
         await db.read();
-        const filteredEmployees = processEmployeesSearchCriteria(db.data.employees, req.query);
+        const filteredEmployees = processEmployeesSearchCriteria({
+            employees: db.data.employees,
+            departments: db.data.departments
+        }, req.query);
         res.json(filteredEmployees.length);
     } catch (error) {
         res.status(500).json({ message: `Failed to count employees: ${error}` });
@@ -76,7 +40,10 @@ router.get('/', async (
 ) => {
     try {
         await db.read();
-        let filteredEmployees = processEmployeesSearchCriteria(db.data.employees, req.query);
+        let filteredEmployees = processEmployeesSearchCriteria({
+            employees: db.data.employees,
+            departments: db.data.departments
+        }, req.query);
         res.json(filteredEmployees);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch employees: ${error}` });

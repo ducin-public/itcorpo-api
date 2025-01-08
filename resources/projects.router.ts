@@ -1,49 +1,11 @@
 import { Router, Request, Response } from 'express';
 
-import { Project, ErrorResponse, ProjectsSearchCriteria } from '../contract-types/data-contracts';
+import { Project, ErrorResponse } from '../contract-types/data-contracts';
 import { Projects } from '../contract-types/ProjectsRoute';
 import { db } from '../lib/db';
+import { processProjectsSearchCriteria } from './project-search';
 
 const router = Router();
-
-function processProjectsSearchCriteria(projects: Project[], criteria: ProjectsSearchCriteria): Project[] {
-    let result = [...projects];
-
-    // Filter by project name if provided
-    if (criteria.projectName) {
-        const searchName = criteria.projectName.toLowerCase();
-        result = result.filter(project => 
-            project.name.toLowerCase().includes(searchName)
-        );
-    }
-
-    // Filter by status if provided
-    if (criteria.status) {
-        result = result.filter(project => 
-            project.status === criteria.status
-        );
-    }
-
-    // Filter by team members if provided
-    const teamMembers = criteria.teamMembers?.split(',').map(Number);
-    if (teamMembers?.length) {
-        result = result.filter(project => 
-            project.team.some(member => teamMembers.includes(member.id))
-        );
-    }
-
-    // Filter by budget range if provided
-    if (criteria.budgetFrom) {
-        const minBudget = Number(criteria.budgetFrom);
-        result = result.filter(project => project.budget >= minBudget);
-    }
-    if (criteria.budgetTo) {
-        const maxBudget = Number(criteria.budgetTo);
-        result = result.filter(project => project.budget <= maxBudget);
-    }
-
-    return result;
-}
 
 // GET /projects/count
 router.get('/count', async (
@@ -57,7 +19,7 @@ router.get('/count', async (
 ) => {
     try {
         await db.read();
-        const filteredProjects = processProjectsSearchCriteria(db.data.projects, req.query);
+        const filteredProjects = processProjectsSearchCriteria(db.data, req.query);
         res.json(filteredProjects.length);
     } catch (error) {
         res.status(500).json({ message: `Failed to count projects: ${error}` });
@@ -76,7 +38,7 @@ router.get('/', async (
 ) => {
     try {
         await db.read();
-        const filteredProjects = processProjectsSearchCriteria(db.data.projects, req.query);
+        const filteredProjects = processProjectsSearchCriteria(db.data, req.query);
         res.json(filteredProjects);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch projects: ${error}` });

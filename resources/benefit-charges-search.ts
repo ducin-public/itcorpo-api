@@ -2,20 +2,20 @@ import { BenefitCharge, BenefitChargesSearchCriteria } from '../contract-types/d
 import { DbSchema } from '../lib/db';
 
 /**
- * Filters benefit charges based on search criteria defined in the API contract.
+ * Processes benefit charges search criteria and filters charges based on provided criteria
  * 
- * @param collections - Database collections required for filtering
- * @param criteria - Search parameters
- * Supported criteria:
- * - subscriptionId: filter by specific benefit subscription
- * - billingPeriodFrom: filter charges starting from specified period (YYYY-MM format)
- * - billingPeriodTo: filter charges up to specified period (YYYY-MM format)
- * - status: filter by charge status (PENDING, PAID, CANCELLED)
+ * @param collections - Database collections required for charge search
+ *   @see {@link DbSchema}
  * 
- * @see {@link DbSchema}
- * @see {@link BenefitCharge}
- * @see {@link BenefitChargesSearchCriteria}
- * @returns Filtered array of benefit charges
+ * @param criteria - Search criteria for filtering charges
+ *   @see {@link BenefitChargesSearchCriteria}
+ *   - subscriptionId: Filter by specific benefit subscription ID
+ *   - billingPeriodFrom: Filter by minimum billing period (YYYY-MM)
+ *   - billingPeriodTo: Filter by maximum billing period (YYYY-MM)
+ *   - status: Filter by charge status (PENDING, PAID, CANCELLED)
+ * 
+ * @returns Filtered array of benefit charges matching the criteria
+ *   @see {@link BenefitCharge}
  */
 export function processBenefitChargesSearchCriteria(
     collections: Pick<DbSchema, 'benefitCharges'>,

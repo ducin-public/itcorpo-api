@@ -7,6 +7,8 @@
                                  |_|          
 ```
 
+[![CI](https://github.com/ducin/itcorpo-api/actions/workflows/ci.yml/badge.svg)](https://github.com/ducin/itcorpo-api/actions)
+
 ![REST](REST.png)
 
 # mocked RESTful API used for IT Corpo Domain

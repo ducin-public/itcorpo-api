@@ -11,7 +11,8 @@ import { DbSchema } from '../lib/db';
  *   @see {@link BenefitsSearchCriteria}
  *   - serviceName: Filter by partial match of benefit service name
  *   - categories: Filter by benefit categories (comma-separated)
- *   - employeeIds: Filter by beneficiary employee IDs (comma-separated)
+ *   - categoriesFiltering: How to match categories ('ANY' or 'ALL', defaults to 'ANY')
+ *   - employeeId: Filter by beneficiary employee ID
  *   - feeFrom: Filter by minimum monthly fee
  *   - feeTo: Filter by maximum monthly fee
  *   - status: Filter by subscription status (ACTIVE, CANCELLED, ALL)
@@ -36,20 +37,22 @@ export function processBenefitsSearchCriteria(
     // Filter by benefit categories if provided
     if (criteria.categories) {
         const categories = criteria.categories.split(',');
+        const filterMode = criteria.categoriesFiltering || 'ANY';
+        
         result = result.filter(benefit => 
-            categories.includes(benefit.category)
+            filterMode === 'ANY' 
+                ? categories.includes(benefit.category)
+                : categories.every(cat => benefit.category === cat)
         );
     }
 
-    // Filter by employee IDs if provided
-    const employeeIds = criteria.employeeIds?.split(',').map(Number);
-    if (employeeIds?.length) {
-        result = result.filter(benefit => 
-            employeeIds.some(id => {
-                const employee = collections.employees.find(e => e.id === id);
-                return employee && benefit.beneficiary.email === employee.email;
-            })
-        );
+    // Filter by employee ID if provided
+    if (criteria.employeeId) {
+        const employeeId = Number(criteria.employeeId);
+        result = result.filter(benefit => {
+            const employee = collections.employees.find(e => e.id === employeeId);
+            return employee && benefit.beneficiary.email === employee.email;
+        });
     }
 
     // Filter by fee range if provided

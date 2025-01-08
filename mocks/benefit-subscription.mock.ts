@@ -1,4 +1,5 @@
 import { BenefitSubscription } from "../contract-types/data-contracts";
+import { DeepPartial } from "../lib/types";
 
 const defaultBenefitSubscription: BenefitSubscription = {
   "id": "6bf03435-53a4-4ece-b9ca-805c25da3c45",
@@ -29,7 +30,19 @@ const defaultBenefitSubscription: BenefitSubscription = {
  * @param overrides - partial benefit subscription object to override default values
  * @returns BenefitSubscription
  */
-export const mockBenefitSubscription = (overrides: Partial<BenefitSubscription>): BenefitSubscription => ({
-  ...defaultBenefitSubscription,
-  ...overrides
-})
+export const mockBenefitSubscription = (overrides: DeepPartial<BenefitSubscription>): BenefitSubscription => {
+  const { beneficiary, service, ...restBenefit } = overrides
+
+  return {
+    ...defaultBenefitSubscription,
+    service: {
+      ...defaultBenefitSubscription.service,
+      ...service
+    },
+    beneficiary: {
+      ...defaultBenefitSubscription.beneficiary,
+      ...beneficiary
+    },
+    ...restBenefit
+  }
+}

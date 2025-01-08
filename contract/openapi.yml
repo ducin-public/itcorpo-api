@@ -1401,6 +1401,7 @@ components:
 
     BenefitsSearchCriteria:
       type: object
+      description: Criteria for filtering benefits
       properties:
         serviceName:
           type: string
@@ -1408,17 +1409,13 @@ components:
           example: "MultiSport"
         categories:
           type: string
-          description: Comma-separated list of category codes to filter by according to `categoriesFiltering`
+          description: >
+            Comma-separated list of category codes to filter by.
+            The search result will return benefits that match any of the provided categories (`ANY`).
           example: "HEALTHCARE,SPORT_WELLNESS"
-        categoriesFiltering:
-          type: string
-          enum: ["ANY", "ALL"]
-          default: "ANY"
-          description: If more than one category is passed, return either benefits with any of the categories (`ANY`) or with all of them (`ALL`)
-          example: "ANY"
         employeeId:
           type: string
-          description: Employee whom this benefit is subscribed to
+          description: The employee whom this benefit is subscribed to
           example: "123"
         feeFrom:
           type: string

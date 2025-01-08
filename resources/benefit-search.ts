@@ -10,8 +10,7 @@ import { DbSchema } from '../lib/db';
  * @param criteria - Search criteria for filtering benefits
  *   @see {@link BenefitsSearchCriteria}
  *   - serviceName: Filter by partial match of benefit service name
- *   - categories: Filter by benefit categories (comma-separated)
- *   - categoriesFiltering: How to match categories ('ANY' or 'ALL', defaults to 'ANY')
+ *   - categories: Filter by benefit categories (comma-separated list)
  *   - employeeId: Filter by beneficiary employee ID
  *   - feeFrom: Filter by minimum monthly fee
  *   - feeTo: Filter by maximum monthly fee
@@ -37,12 +36,9 @@ export function processBenefitsSearchCriteria(
     // Filter by benefit categories if provided
     if (criteria.categories) {
         const categories = criteria.categories.split(',');
-        const filterMode = criteria.categoriesFiltering || 'ANY';
         
         result = result.filter(benefit => 
-            filterMode === 'ANY' 
-                ? categories.includes(benefit.category)
-                : categories.every(cat => benefit.category === cat)
+            categories.includes(benefit.category)
         );
     }
 

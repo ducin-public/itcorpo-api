@@ -133,6 +133,7 @@ export interface BenefitSubscriptionInput {
  */
 export type BenefitSubscriptionSearchStatus = "ALL" | "ACTIVE" | "CANCELLED";
 
+/** Criteria for filtering benefits */
 export interface BenefitsSearchCriteria {
   /**
    * Filter benefits by service name
@@ -140,18 +141,12 @@ export interface BenefitsSearchCriteria {
    */
   serviceName?: string;
   /**
-   * Comma-separated list of category codes to filter by according to `categoriesFiltering`
+   * Comma-separated list of category codes to filter by. The search result will return benefits that match any of the provided categories (`ANY`).
    * @example "HEALTHCARE,SPORT_WELLNESS"
    */
   categories?: string;
   /**
-   * If more than one category is passed, return either benefits with any of the categories (`ANY`) or with all of them (`ALL`)
-   * @default "ANY"
-   * @example "ANY"
-   */
-  categoriesFiltering?: "ANY" | "ALL";
-  /**
-   * Employee whom this benefit is subscribed to
+   * The employee whom this benefit is subscribed to
    * @example "123"
    */
   employeeId?: string;

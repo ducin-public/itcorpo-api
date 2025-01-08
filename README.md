@@ -7,7 +7,7 @@
                                  |_|          
 ```
 
-[![CI](https://github.com/ducin/itcorpo-api/actions/workflows/ci.yml/badge.svg)](https://github.com/ducin/itcorpo-api/actions)
+[![CI](https://github.com/ducin-public/itcorpo-api/actions/workflows/ci.yml/badge.svg)](https://github.com/ducin-public/itcorpo-api/actions)
 
 ![REST](REST.png)
 

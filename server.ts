@@ -34,6 +34,8 @@ import { benefitsRouter } from './resources/benefits.router';
 import { officesRouter } from './resources/offices.router';
 import { employeesRouter } from './resources/employees.router';
 import { projectsRouter } from './resources/projects.router';
+import { geoRouter } from './resources/geo.router';
+import { expensesRouter } from './resources/expenses.router';
 
 const app = jsonServer.create();
 const jsonParser = bodyParser.json();
@@ -85,6 +87,8 @@ app.use(failingMiddleware(cliConfig.fail, cliConfig.failUrls));
 app.use('/benefits', benefitsRouter);
 app.use('/departments', departmentsRouter);
 app.use('/employees', employeesRouter);
+app.use('/expenses', expensesRouter);
+app.use('/geo', geoRouter);
 app.use('/offices', officesRouter);
 app.use('/projects', projectsRouter);
 

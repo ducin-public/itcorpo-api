@@ -50,26 +50,21 @@ describe('processProjectsSearchCriteria', () => {
     await db.close();
   })
 
-  it('should return empty array for empty search criteria with empty database', async () => {
-    // given
-    const emptyCriteria: ProjectsSearchCriteria = {}
-
-    // when
-    const result = await processProjectsSearchCriteria({
-      projects: []
-    }, emptyCriteria)
-
-    // then
-    expect(result).toMatchSnapshot();
+  it('should return empty result for criteria with no match', async () => {
+    const results = processProjectsSearchCriteria(mockDb, { projectName: 'non-existent' });
+    expect(results).toHaveLength(0);
+    expect(results).toMatchSnapshot();
   })
     
   it('should filter projects by name (case-insensitive partial match)', () => {
     const results = processProjectsSearchCriteria(mockDb, { projectName: 'cloud' });
+    expect(results).toHaveLength(2);
     expect(results).toMatchSnapshot();
   });
 
   it('should filter projects by status', () => {
     const results = processProjectsSearchCriteria(mockDb, { status: 'ACTIVE' });
+    expect(results).toHaveLength(2);
     expect(results).toMatchSnapshot();
   });
 
@@ -77,6 +72,7 @@ describe('processProjectsSearchCriteria', () => {
     const results = processProjectsSearchCriteria(mockDb, { 
       teamMembers: '1,2'
     });
+    expect(results).toHaveLength(3);
     expect(results).toMatchSnapshot();
   });
 
@@ -85,16 +81,19 @@ describe('processProjectsSearchCriteria', () => {
       teamMembers: '1,2',
       teamMembersMode: 'ALL'
     });
+    expect(results).toHaveLength(2);
     expect(results).toMatchSnapshot();
   });
 
   it('should filter projects by minimum budget', () => {
     const results = processProjectsSearchCriteria(mockDb, { budgetFrom: '75000' });
+    expect(results).toHaveLength(2);
     expect(results).toMatchSnapshot();
   });
 
   it('should filter projects by maximum budget', () => {
     const results = processProjectsSearchCriteria(mockDb, { budgetTo: '50000' });
+    expect(results).toHaveLength(2);
     expect(results).toMatchSnapshot();
   });
 
@@ -103,6 +102,7 @@ describe('processProjectsSearchCriteria', () => {
       budgetFrom: '40000',
       budgetTo: '80000'
     });
+    expect(results).toHaveLength(3);
     expect(results).toMatchSnapshot();
   });
 
@@ -114,6 +114,7 @@ describe('processProjectsSearchCriteria', () => {
       budgetFrom: '50000',
       budgetTo: '80000'
     });
+    expect(results).toHaveLength(1);
     expect(results).toMatchSnapshot();
   });
 });

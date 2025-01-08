@@ -505,7 +505,6 @@ export interface EmployeesSearchCriteria {
    * @example "10000"
    */
   salaryTo?: string;
-  mode?: "STANDARD" | "SEARCH_FEED";
 }
 
 export interface HealthStatus {

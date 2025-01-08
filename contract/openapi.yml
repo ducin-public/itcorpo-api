@@ -2099,9 +2099,6 @@ components:
           type: string
           description: Maximum salary amount
           example: "10000"
-        mode:
-          type: string
-          enum: ["STANDARD", "SEARCH_FEED"]
 
     HealthStatus:
       type: object

@@ -402,4 +402,4 @@ Voluptas reprehenderit aut pariatur eligendi consequatur.",
 ]
 `;
 
-exports[`processProjectsSearchCriteria > should return empty array for empty search criteria with empty database 1`] = `[]`;
+exports[`processProjectsSearchCriteria > should return empty result for criteria with no match 1`] = `[]`;

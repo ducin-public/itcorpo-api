@@ -25,6 +25,18 @@ const defaultProject: Project = {
   "description": "Deleniti rerum impedit.\nCum sed eaque quo accusantium.\nVoluptas reprehenderit aut pariatur eligendi consequatur."
 };
 
+/**
+ * Creates a mock project object with provided overrides.
+ * It has all the required properties of a project object.
+ * 
+ * @example
+ * ```ts
+ * mockProject({ name: 'New Project', status: 'ACTIVE' });
+ * ```
+ * 
+ * @param overrides - partial project object to override default values
+ * @returns Project
+ */
 export const mockProject = (overrides: Partial<Project>): Project => ({
   ...defaultProject,
   ...overrides

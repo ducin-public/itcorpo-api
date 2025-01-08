@@ -26,7 +26,7 @@ export namespace Projects {
       projectName?: any;
       status?: any;
       teamMembers?: any;
-      teamMembersMode?: any;
+      teamMembersFiltering?: any;
       budgetFrom?: any;
       budgetTo?: any;
     };
@@ -66,7 +66,7 @@ export namespace Projects {
       projectName?: any;
       status?: any;
       teamMembers?: any;
-      teamMembersMode?: any;
+      teamMembersFiltering?: any;
       budgetFrom?: any;
       budgetTo?: any;
     };

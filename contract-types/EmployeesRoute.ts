@@ -26,9 +26,9 @@ export namespace Employees {
       employeeName?: any;
       departmentId?: any;
       skills?: any;
+      skillsFiltering?: any;
       salaryFrom?: any;
       salaryTo?: any;
-      mode?: any;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -66,6 +66,7 @@ export namespace Employees {
       employeeName?: any;
       departmentId?: any;
       skills?: any;
+      skillsFiltering?: any;
       salaryFrom?: any;
       salaryTo?: any;
     };

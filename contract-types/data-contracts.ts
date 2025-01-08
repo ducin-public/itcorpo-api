@@ -140,15 +140,21 @@ export interface BenefitsSearchCriteria {
    */
   serviceName?: string;
   /**
-   * Comma-separated list of category codes to filter by
+   * Comma-separated list of category codes to filter by according to `categoriesFiltering`
    * @example "HEALTHCARE,SPORT_WELLNESS"
    */
   categories?: string;
   /**
-   * Comma-separated list of employee IDs to filter by
-   * @example "123,456,789"
+   * If more than one category is passed, return either benefits with any of the categories (`ANY`) or with all of them (`ALL`)
+   * @default "ANY"
+   * @example "ANY"
    */
-  employeeIds?: string;
+  categoriesFiltering?: "ANY" | "ALL";
+  /**
+   * Employee whom this benefit is subscribed to
+   * @example "123"
+   */
+  employeeId?: string;
   /**
    * Minimum monthly fee amount
    * @example "100"
@@ -268,6 +274,12 @@ export interface OfficesSearchCriteria {
    */
   amenities?: string;
   /**
+   * If more than one amenity is passed, return either offices with any of the amenities (`ANY`) or with all of them (`ALL`)
+   * @default "ANY"
+   * @example "ANY"
+   */
+  amenitiesFiltering?: "ANY" | "ALL";
+  /**
    * Full text search across country, city, address and estate owner fields
    * @example "Amsterdam central"
    */
@@ -325,7 +337,7 @@ export interface ProjectsSearchCriteria {
    */
   status?: ProjectStatus;
   /**
-   * Filter projects by team member IDs according to `teamMembers` mode
+   * Filter projects by team member IDs according to `teamMembersFiltering`
    * @example "123,456,789"
    */
   teamMembers?: string;
@@ -334,7 +346,7 @@ export interface ProjectsSearchCriteria {
    * @default "ANY"
    * @example "ANY"
    */
-  teamMembersMode?: "ANY" | "ALL";
+  teamMembersFiltering?: "ANY" | "ALL";
   /**
    * Minimum project budget amount
    * @example "10000"
@@ -491,10 +503,16 @@ export interface EmployeesSearchCriteria {
    */
   departmentId?: string;
   /**
-   * Filter employees by skills
+   * Filter employees by skills according to `skillsFiltering`
    * @example "JavaScript,React"
    */
   skills?: string;
+  /**
+   * If more than one skill is passed, return either employees with any of the skills (`ANY`) or with all of them (`ALL`)
+   * @default "ANY"
+   * @example "ANY"
+   */
+  skillsFiltering?: "ANY" | "ALL";
   /**
    * Minimum salary amount
    * @example "5000"

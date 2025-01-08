@@ -571,11 +571,11 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembers'
-        - name: teamMembersMode
+        - name: teamMembersFiltering
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembersMode'
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembersFiltering'
         - name: budgetFrom
           in: query
           required: false
@@ -638,11 +638,11 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembers'
-        - name: teamMembersMode
+        - name: teamMembersFiltering
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembersMode'
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembersFiltering'
         - name: budgetFrom
           in: query
           required: false
@@ -1005,6 +1005,11 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
+        - name: skillsFiltering
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skillsFiltering'
         - name: salaryFrom
           in: query
           required: false
@@ -1015,11 +1020,6 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
-        - name: mode
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/mode'
       responses:
         '200':
           description: Successful operation
@@ -1072,6 +1072,11 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
+        - name: skillsFiltering
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skillsFiltering'
         - name: salaryFrom
           in: query
           required: false
@@ -1403,12 +1408,18 @@ components:
           example: "MultiSport"
         categories:
           type: string
-          description: Comma-separated list of category codes to filter by
+          description: Comma-separated list of category codes to filter by according to `categoriesFiltering`
           example: "HEALTHCARE,SPORT_WELLNESS"
-        employeeIds:
+        categoriesFiltering:
           type: string
-          description: Comma-separated list of employee IDs to filter by
-          example: "123,456,789"
+          enum: ["ANY", "ALL"]
+          default: "ANY"
+          description: If more than one category is passed, return either benefits with any of the categories (`ANY`) or with all of them (`ALL`)
+          example: "ANY"
+        employeeId:
+          type: string
+          description: Employee whom this benefit is subscribed to
+          example: "123"
         feeFrom:
           type: string
           description: Minimum monthly fee amount
@@ -1619,6 +1630,12 @@ components:
           type: string
           description: Comma-separated list of amenity codes to filter by
           example: "FREE_PARKING,SHOWER"
+        amenitiesFiltering:
+          type: string
+          enum: ["ANY", "ALL"]
+          default: "ANY"
+          description: If more than one amenity is passed, return either offices with any of the amenities (`ANY`) or with all of them (`ALL`)
+          example: "ANY"
         phrase:
           type: string
           description: Full text search across country, city, address and estate owner fields
@@ -1743,9 +1760,9 @@ components:
           example: "ACTIVE"
         teamMembers:
           type: string
-          description: Filter projects by team member IDs according to `teamMembers` mode
+          description: Filter projects by team member IDs according to `teamMembersFiltering`
           example: "123,456,789"
-        teamMembersMode:
+        teamMembersFiltering:
           type: string
           enum: ["ANY", "ALL"]
           default: "ANY"
@@ -2089,8 +2106,14 @@ components:
           example: "123"
         skills:
           type: string
-          description: Filter employees by skills
+          description: Filter employees by skills according to `skillsFiltering`
           example: "JavaScript,React"
+        skillsFiltering:
+          type: string
+          enum: ["ANY", "ALL"]
+          default: "ANY"
+          description: If more than one skill is passed, return either employees with any of the skills (`ANY`) or with all of them (`ALL`)
+          example: "ANY"
         salaryFrom:
           type: string
           description: Minimum salary amount

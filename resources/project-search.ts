@@ -12,7 +12,7 @@ import { DbSchema } from '../lib/db';
  *   - projectName: Filter by project name (case-insensitive partial match)
  *   - status: Filter by project status
  *   - teamMembers: Filter by team member IDs (comma-separated)
- *   - teamMembersMode: How to match team members ('ANY' or 'ALL', defaults to 'ANY')
+ *   - teamMembersFiltering: How to match team members ('ANY' or 'ALL', defaults to 'ANY')
  *   - budgetFrom: Filter by minimum budget amount
  *   - budgetTo: Filter by maximum budget amount
  * 
@@ -43,10 +43,10 @@ export function processProjectsSearchCriteria(
     // Filter by team members if provided
     const teamMembers = criteria.teamMembers?.split(',').map(Number);
     if (teamMembers?.length) {
-        const mode = criteria.teamMembersMode || 'ANY';
+        const filtering = criteria.teamMembersFiltering || 'ANY';
         result = result.filter(project => {
             const projectTeamIds = project.team.map(member => member.id);
-            return mode === 'ANY'
+            return filtering === 'ANY'
                 ? teamMembers.some(id => projectTeamIds.includes(id))
                 : teamMembers.every(id => projectTeamIds.includes(id));
         });

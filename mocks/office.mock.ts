@@ -1,4 +1,5 @@
 import { Office } from "../contract-types/data-contracts";
+import { DeepPartial } from "../lib/types";
 
 const defaultOffice: Office = {
   "code": "pl-warsaw",
@@ -41,7 +42,14 @@ const defaultOffice: Office = {
  * @param overrides - partial office object to override default values
  * @returns Office
  */
-export const mockOffice = (overrides: Partial<Office>): Office => ({
-  ...defaultOffice,
-  ...overrides
-})
+export const mockOffice = ({ ...overrides }: DeepPartial<Office>): Office => {
+  const { estate, ...restOffice } = overrides
+  return {
+    ...defaultOffice,
+    estate: {
+      ...defaultOffice.estate,
+      ...estate
+    },
+    ...restOffice
+  }
+}

@@ -11,6 +11,7 @@ import { DbSchema } from '../lib/db';
  *   @see {@link OfficesSearchCriteria}
  *   - countries: Filter by country codes (comma-separated)
  *   - amenities: Filter by amenity codes (comma-separated)
+ *   - amenitiesFiltering: How to match amenities ('ANY' or 'ALL', defaults to 'ANY')
  *   - phrase: Full-text search across country, city, address, and estate owner
  * 
  * @returns Filtered array of offices matching the criteria
@@ -40,11 +41,12 @@ export function processOfficesSearchCriteria(
             return acc;
         }, {} as Record<string, string>);
         const amenityNames = amenityCodes.map(code => codeToAmenityDict[code]);
+        const filtering = criteria.amenitiesFiltering || 'ANY';
 
         result = result.filter(office => 
-            amenityNames.every(amenity => 
-                office.amenities.includes(amenity)
-            )
+            filtering === 'ANY'
+                ? amenityNames.some(amenity => office.amenities.includes(amenity))
+                : amenityNames.every(amenity => office.amenities.includes(amenity))
         );
     }
 

@@ -12,6 +12,7 @@ import { DbSchema } from '../lib/db';
  *   - employeeName: Filter by employee name (case-insensitive partial match)
  *   - departmentId: Filter by department ID
  *   - skills: Filter by required skills (comma-separated)
+ *   - skillsFiltering: How to match skills ('ANY' or 'ALL', defaults to 'ANY')
  *   - salaryFrom: Filter by minimum salary
  *   - salaryTo: Filter by maximum salary
  * 
@@ -43,8 +44,11 @@ export function processEmployeesSearchCriteria(
     // Filter by skills if provided
     const skills = criteria.skills?.split(',');
     if (skills?.length) {
-        result = result.filter(employee => 
-            skills.every(skill => employee.skills.includes(skill))
+        const filtering = criteria.skillsFiltering || 'ANY';
+        result = result.filter(employee =>
+            filtering === 'ANY'
+                ? skills.some(skill => employee.skills.includes(skill))
+                : skills.every(skill => employee.skills.includes(skill))
         );
     }
 

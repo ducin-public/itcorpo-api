@@ -4,6 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - 'package.json'
       - 'contract/**'
       - '.github/workflows/docs.yml'
 

@@ -325,10 +325,16 @@ export interface ProjectsSearchCriteria {
    */
   status?: ProjectStatus;
   /**
-   * Filter projects by team member IDs
+   * Filter projects by team member IDs according to `teamMembers` mode
    * @example "123,456,789"
    */
   teamMembers?: string;
+  /**
+   * If more than one ID is passed, return either projects with any of the team members (`ANY`) or with all of them (`ALL`)
+   * @default "ANY"
+   * @example "ANY"
+   */
+  teamMembersMode?: "ANY" | "ALL";
   /**
    * Minimum project budget amount
    * @example "10000"

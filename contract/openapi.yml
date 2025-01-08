@@ -571,6 +571,11 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembers'
+        - name: teamMembersMode
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembersMode'
         - name: budgetFrom
           in: query
           required: false
@@ -633,6 +638,11 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembers'
+        - name: teamMembersMode
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembersMode'
         - name: budgetFrom
           in: query
           required: false
@@ -1733,8 +1743,14 @@ components:
           example: "ACTIVE"
         teamMembers:
           type: string
-          description: Filter projects by team member IDs
+          description: Filter projects by team member IDs according to `teamMembers` mode
           example: "123,456,789"
+        teamMembersMode:
+          type: string
+          enum: ["ANY", "ALL"]
+          default: "ANY"
+          description: If more than one ID is passed, return either projects with any of the team members (`ANY`) or with all of them (`ALL`)
+          example: "ANY"
         budgetFrom:
           type: string
           description: Minimum project budget amount

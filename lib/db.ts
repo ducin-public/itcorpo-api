@@ -31,7 +31,7 @@ type OnlyNumbers<TDatabase extends object> = {
         : never;
 }[keyof CollectionIdType<TDatabase>];
 
-class FileDb<TDatabase extends object> {
+export class FileDb<TDatabase extends object> {
     data: TDatabase;
 
     constructor(private config: {
@@ -80,6 +80,10 @@ class FileDb<TDatabase extends object> {
             logger.error('Failed to write to database:', error);
             process.exit(1);
         }
+    }
+
+    async close() {
+        await this.write();
     }
 
     getNextId<TCollection extends OnlyNumbers<TDatabase>>(collection: TCollection): number {

@@ -27,7 +27,6 @@ import { configRouter } from './middlewares/config.router';
 import { licenseRouter } from './middlewares/license.router';
 import { authRouter } from './middlewares/auth.router';
 import { rewriteRouter } from './middlewares/rewrite';
-import { employeeNameMiddleware } from './middlewares/employee_name';
 
 import { departmentsRouter } from './resources/departments.router';
 import { benefitsRouter } from './resources/benefits.router';

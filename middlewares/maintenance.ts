@@ -46,12 +46,15 @@ let currentStatus: {
 
 const updateMaintenanceStatus = async () => {
   const isMaintenance = await verifyMaintenanceStatus();
+  const changed = currentStatus.isMaintenance !== isMaintenance;
   currentStatus.isMaintenance = isMaintenance;
   currentStatus.lastUpdate = new Date();
-  if (isMaintenance) {
-    logger.warn('Maintenance status updated: ON');
-  } else {
-    logger.info('Maintenance status updated: OFF');
+  if (changed){
+    if (isMaintenance) {
+      logger.warn('Maintenance status updated: ON');
+    } else {
+      logger.info('Maintenance status updated: OFF');
+    }
   }
 }
 

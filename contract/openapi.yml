@@ -11,6 +11,24 @@ servers:
   - url: http://localhost:3000
     description: Local development server
 
+tags:
+  - name: Auth
+    description: Authentication operations
+  - name: Benefits
+    description: Benefit subscriptions, services and charges
+  - name: Departments
+    description: Departments management
+  - name: Employees
+    description: Employees management
+  - name: Expenses
+    description: Financial operations
+  - name: Geo
+    description: Geographical data
+  - name: Offices
+    description: Offices management
+  - name: Projects
+    description: Projects management
+
 paths:
   /auth:
     get:
@@ -133,60 +151,6 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
 
-  /benefits/charges:
-    get:
-      summary: List all benefit charges
-      operationId: getBenefitCharges
-      tags:
-        - Benefits
-      parameters:
-        - name: subscriptionId
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/subscriptionId'
-        - name: providerServiceCode
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/providerServiceCode'
-        - name: status
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/status'
-        - name: billingPeriodFrom
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodFrom'
-        - name: billingPeriodTo
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodTo'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BenefitCharge'
-        '400':
-          description: >
-            Invalid benefit charges search criteria
-            @see {@link BenefitChargesSearchCriteria}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '503':
-          $ref: '#/components/responses/ServiceUnavailable'
-
   /benefits:
     get:
       summary: List all benefits subscriptions
@@ -194,36 +158,12 @@ paths:
       tags:
         - Benefits
       parameters:
-        - name: serviceName
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/serviceName'
-        - name: categories
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/categories'
-        - name: employeeId
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/employeeId'
-        - name: feeFrom
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeFrom'
-        - name: feeTo
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeTo'
-        - name: status
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/status'
+        - $ref: '#/components/parameters/BenefitServiceName'
+        - $ref: '#/components/parameters/BenefitCategories'
+        - $ref: '#/components/parameters/BenefitEmployeeId'
+        - $ref: '#/components/parameters/BenefitFeeFrom'
+        - $ref: '#/components/parameters/BenefitFeeTo'
+        - $ref: '#/components/parameters/BenefitStatus'
       responses:
         '200':
           description: Successful operation
@@ -236,7 +176,6 @@ paths:
         '400':
           description: >
             Invalid benefit subscriptions search criteria
-            @see {@link BenefitsSearchCriteria}
           content:
             application/json:
               schema:
@@ -290,31 +229,12 @@ paths:
       tags:
         - Benefits
       parameters:
-        - name: serviceName
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/serviceName'
-        - name: employeeId
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/employeeId'
-        - name: feeFrom
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeFrom'
-        - name: feeTo
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeTo'
-        - name: status
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitsSearchCriteria/properties/status'
+        - $ref: '#/components/parameters/BenefitServiceName'
+        - $ref: '#/components/parameters/BenefitCategories'
+        - $ref: '#/components/parameters/BenefitEmployeeId'
+        - $ref: '#/components/parameters/BenefitFeeFrom'
+        - $ref: '#/components/parameters/BenefitFeeTo'
+        - $ref: '#/components/parameters/BenefitStatus'
       responses:
         '200':
           description: Successful operation
@@ -326,7 +246,6 @@ paths:
         '400':
           description: >
             Invalid benefit subscriptions search criteria
-            @see {@link BenefitsSearchCriteria}
           content:
             application/json:
               schema:
@@ -470,26 +389,10 @@ paths:
           required: true
           schema:
             type: string
-        - name: providerServiceCode
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/providerServiceCode'
-        - name: status
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/status'
-        - name: billingPeriodFrom
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodFrom'
-        - name: billingPeriodTo
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodTo'
+        - $ref: '#/components/parameters/BenefitProviderServiceCode'
+        - $ref: '#/components/parameters/BenefitChargeStatus'
+        - $ref: '#/components/parameters/BenefitBillingPeriodFrom'
+        - $ref: '#/components/parameters/BenefitBillingPeriodTo'
       responses:
         '200':
           description: Successful operation
@@ -502,13 +405,46 @@ paths:
         '400':
           description: 
             Invalid benefit charges search criteria
-            @see {@link BenefitChargesSearchCriteria}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Benefit subscription not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /benefits/charges:
+    get:
+      summary: List all benefit charges
+      operationId: getBenefitCharges
+      tags:
+        - Benefits
+      parameters:
+        - $ref: '#/components/parameters/BenefitSubscriptionId'
+        - $ref: '#/components/parameters/BenefitEmployeeId'
+        - $ref: '#/components/parameters/BenefitProviderServiceCode'
+        - $ref: '#/components/parameters/BenefitChargeStatus'
+        - $ref: '#/components/parameters/BenefitBillingPeriodFrom'
+        - $ref: '#/components/parameters/BenefitBillingPeriodTo'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenefitCharge'
+        '400':
+          description: >
+            Invalid benefit charges search criteria
           content:
             application/json:
               schema:
@@ -705,36 +641,12 @@ paths:
       tags:
         - Employees
       parameters:
-        - name: employeeName
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/employeeName'
-        - name: departmentId
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/departmentId'
-        - name: skills
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
-        - name: skillsFiltering
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skillsFiltering'
-        - name: salaryFrom
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryFrom'
-        - name: salaryTo
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
+        - $ref: '#/components/parameters/EmployeeName'
+        - $ref: '#/components/parameters/EmployeeDepartmentId'
+        - $ref: '#/components/parameters/EmployeeSkills'
+        - $ref: '#/components/parameters/EmployeeSkillsFiltering'
+        - $ref: '#/components/parameters/EmployeeSalaryFrom'
+        - $ref: '#/components/parameters/EmployeeSalaryTo'
       responses:
         '200':
           description: Successful operation
@@ -747,7 +659,6 @@ paths:
         '400':
           description: >
             Invalid employees search criteria
-            @see {@link EmployeesSearchCriteria}
           content:
             application/json:
               schema:
@@ -807,36 +718,12 @@ paths:
       tags:
         - Employees
       parameters:
-        - name: employeeName
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/employeeName'
-        - name: departmentId
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/departmentId'
-        - name: skills
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
-        - name: skillsFiltering
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skillsFiltering'
-        - name: salaryFrom
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryFrom'
-        - name: salaryTo
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
+        - $ref: '#/components/parameters/EmployeeName'
+        - $ref: '#/components/parameters/EmployeeDepartmentId'
+        - $ref: '#/components/parameters/EmployeeSkills'
+        - $ref: '#/components/parameters/EmployeeSkillsFiltering'
+        - $ref: '#/components/parameters/EmployeeSalaryFrom'
+        - $ref: '#/components/parameters/EmployeeSalaryTo'
       responses:
         '200':
           description: Successful operation
@@ -848,7 +735,6 @@ paths:
         '400':
           description: >
             Invalid employees search criteria
-            @see {@link EmployeesSearchCriteria}
           content:
             application/json:
               schema:
@@ -1897,36 +1783,6 @@ components:
       description: Status filter for benefit subscriptions
       example: "ACTIVE"
 
-    BenefitsSearchCriteria:
-      type: object
-      description: Criteria for filtering benefit subscriptions
-      properties:
-        serviceName:
-          type: string
-          description: Filter benefits by service name
-          example: "MultiSport"
-        categories:
-          type: string
-          description: >
-            Comma-separated list of category codes to filter by.
-            The search result will return benefits that match any of the provided categories (`ANY`).
-          example: "HEALTHCARE,SPORT_WELLNESS"
-        employeeId:
-          type: string
-          description: The employee whom this benefit is subscribed to
-          example: "123"
-        feeFrom:
-          type: string
-          description: Minimum monthly fee amount
-          example: "100"
-        feeTo:
-          type: string
-          description: Maximum monthly fee amount
-          example: "500.50"
-        status:
-          $ref: '#/components/schemas/BenefitSubscriptionSearchStatus'
-          example: "ACTIVE"
-
     BenefitChargeStatus:
       type: string
       description: Payment status of a benefit charge
@@ -1968,37 +1824,6 @@ components:
           $ref: '#/components/schemas/Money'
         status:
           $ref: '#/components/schemas/BenefitChargeStatus'
-
-    BenefitChargesSearchCriteria:
-      type: object
-      description: Criteria for filtering benefit charges
-      properties:
-        subscriptionId:
-          type: string
-          description: Filter charges by subscription ID
-          example: 'zc9b3b4c-1b1d-4b3e-8b3b-4c1b1d4b3e8b'
-        employeeId:
-          type: integer
-          description: Filter charges by subscription ID
-          example: 91720
-        providerServiceCode:
-          type: string
-          description: Filter charges by provider service code
-          example: "MEDICOVER_PREMIUM"
-        status:
-          $ref: '#/components/schemas/BenefitChargeStatus'
-          description: Filter charges by status
-          example: "PAID"
-        billingPeriodFrom:
-          type: string
-          format: date
-          description: Filter charges with billing period starting from this date
-          example: "2023-01-01"
-        billingPeriodTo:
-          type: string
-          format: date
-          description: Filter charges with billing period ending before this date
-          example: "2023-12-31"
 
     Department:
       type: object
@@ -2261,37 +2086,6 @@ components:
           type: string
         imgURL:
           type: string
-
-    EmployeesSearchCriteria:
-      type: object
-      description: Criteria for filtering employees
-      properties:
-        employeeName:
-          type: string
-          description: Filter employees by name
-          example: "John Doe"
-        departmentId:
-          type: string
-          description: Filter employees by department ID
-          example: "123"
-        skills:
-          type: string
-          description: Filter employees by skills according to `skillsFiltering`
-          example: "JavaScript,React"
-        skillsFiltering:
-          type: string
-          enum: ["ANY", "ALL"]
-          default: "ANY"
-          description: If more than one skill is passed, return either employees with any of the skills (`ANY`) or with all of them (`ALL`)
-          example: "ANY"
-        salaryFrom:
-          type: string
-          description: Minimum salary amount
-          example: "5000"
-        salaryTo:
-          type: string
-          description: Maximum salary amount
-          example: "10000"
 
     Expense:
       type: object
@@ -2592,6 +2386,231 @@ components:
 
   parameters:
 
+    # Benefit parameters
+
+    BenefitServiceName:
+      name: serviceName
+      in: query
+      required: false
+      description: Filter benefits by service name
+      schema:
+        type: string
+        description: Filter benefits by service name
+        example: "MultiSport"
+
+    BenefitCategories:
+      name: categories
+      in: query
+      required: false
+      description: Filter benefits by categories
+      schema:
+        type: string
+        description: >
+          Comma-separated list of category codes to filter by.
+          The search result will return benefits that match any of the provided categories (`ANY`).
+        example: "HEALTHCARE,SPORT_WELLNESS"
+
+    BenefitEmployeeId:
+      name: employeeId
+      in: query
+      required: false
+      description: Filter benefits by employee ID
+      schema:
+        type: string
+        description: The employee whom this benefit is subscribed to
+        example: "91720"
+
+    BenefitFeeFrom:
+      name: feeFrom
+      in: query
+      required: false
+      description: Minimum monthly fee amount
+      schema:
+        type: string
+        description: Minimum monthly fee amount
+        example: "100"
+
+    BenefitFeeTo:
+      name: feeTo
+      in: query
+      required: false
+      description: Maximum monthly fee amount
+      schema:
+        type: string
+        description: Maximum monthly fee amount
+        example: "500.50"
+
+    BenefitStatus:
+      name: status
+      in: query
+      required: false
+      description: Filter benefits by status
+      schema:
+        $ref: '#/components/schemas/BenefitSubscriptionSearchStatus'
+        example: "ACTIVE"
+
+    # Benefit Charge parameters
+
+    BenefitSubscriptionId:
+      name: subscriptionId
+      in: query
+      required: false
+      description: Filter charges by subscription ID
+      schema:
+        type: string
+        description: Filter charges by subscription ID
+        example: 'zc9b3b4c-1b1d-4b3e-8b3b-4c1b1d4b3e8b'
+
+    BenefitProviderServiceCode:
+      name: providerServiceCode
+      in: query
+      required: false
+      description: Filter charges by provider service code
+      schema:
+        type: string
+        description: Filter charges by provider service code
+        example: "MEDICOVER_PREMIUM"
+
+    BenefitChargeStatus:
+      name: status
+      in: query
+      required: false
+      description: Filter charges by status
+      schema:
+        $ref: '#/components/schemas/BenefitChargeStatus'
+        description: Filter charges by status
+        example: "PAID"
+
+    BenefitBillingPeriodFrom:
+      name: billingPeriodFrom
+      in: query
+      required: false
+      description: Filter charges with billing period starting from this date
+      schema:
+        type: string
+        format: date
+        description: Filter charges with billing period starting from this date
+        example: "2023-01-01"
+
+    BenefitBillingPeriodTo:
+      name: billingPeriodTo
+      in: query
+      required: false
+      description: Filter charges with billing period ending before this date
+      schema:
+        type: string
+        format: date
+        description: Filter charges with billing period ending before this date
+        example: "2023-12-31"
+
+    # Employee parameters
+
+    EmployeeName:
+      name: employeeName
+      in: query
+      required: false
+      description: Filter employees by name
+      schema:
+        type: string
+        description: Filter employees by name
+        example: "John Doe"
+
+    EmployeeDepartmentId:
+      name: departmentId
+      in: query
+      required: false
+      description: Filter employees by department ID
+      schema:
+        type: string
+        description: Filter employees by department ID
+        example: "123"
+
+    EmployeeSkills:
+      name: skills
+      in: query
+      required: false
+      description: Filter employees by skills
+      schema:
+        type: string
+        description: Filter employees by skills according to `skillsFiltering`
+        example: "JavaScript,React"
+
+    EmployeeSkillsFiltering:
+      name: skillsFiltering
+      in: query
+      required: false
+      description: How to match employee skills
+      schema:
+        type: string
+        enum: ["ANY", "ALL"]
+        default: "ANY"
+        description: If more than one skill is passed, return either employees with any of the skills (`ANY`) or with all of them (`ALL`)
+        example: "ALL"
+
+    EmployeeSalaryFrom:
+      name: salaryFrom
+      in: query
+      required: false
+      description: Minimum salary amount
+      schema:
+        type: string
+        description: Minimum salary amount
+        example: "5000"
+
+    EmployeeSalaryTo:
+      name: salaryTo
+      in: query
+      required: false
+      description: Maximum salary amount
+      schema:
+        type: string
+        description: Maximum salary amount
+        example: "10000"
+
+    # Office parameters
+
+    OfficePhrase:
+      name: phrase
+      in: query
+      required: false
+      description: Full text search across office fields
+      schema:
+        type: string
+        description: Full text search across country, city, address and estate owner fields
+        example: "Amsterdam"
+
+    OfficeCountries:
+      name: countries
+      in: query
+      required: false
+      description: Filter offices by country codes
+      schema:
+        type: string
+        description: Comma-separated list of country codes to filter by
+        example: "PL,US"
+
+    OfficeAmenities:
+      name: amenities
+      in: query
+      required: false
+      description: Filter offices by amenities
+      schema:
+        type: string
+        description: Comma-separated list of amenity codes to filter by
+        example: "FREE_PARKING,SHOWER"
+  
+    OfficeAmenitiesFiltering:
+      name: amenitiesFiltering
+      in: query
+      required: false
+      description: How to match office amenities ('ANY' or 'ALL')
+      schema:
+        type: string
+        enum: ["ANY", "ALL"]
+        default: "ANY"
+        description: If more than one amenity is passed, return either offices with any of the amenities (`ANY`) or with all of them (`ALL`)
+        example: "ALL"
+
     # Project parameters
 
     ProjectName:
@@ -2654,188 +2673,3 @@ components:
         type: string
         description: Maximum project budget amount
         example: "50000"
-
-    # Office parameters
-
-    OfficePhrase:
-      name: phrase
-      in: query
-      required: false
-      description: Full text search across office fields
-      schema:
-        type: string
-        description: Full text search across country, city, address and estate owner fields
-        example: "Amsterdam"
-
-    OfficeCountries:
-      name: countries
-      in: query
-      required: false
-      description: Filter offices by country codes
-      schema:
-        type: string
-        description: Comma-separated list of country codes to filter by
-        example: "PL,US"
-
-    OfficeAmenities:
-      name: amenities
-      in: query
-      required: false
-      description: Filter offices by amenities
-      schema:
-        type: string
-        description: Comma-separated list of amenity codes to filter by
-        example: "FREE_PARKING,SHOWER"
-  
-    OfficeAmenitiesFiltering:
-      name: amenitiesFiltering
-      in: query
-      required: false
-      description: How to match office amenities ('ANY' or 'ALL')
-      schema:
-        type: string
-        enum: ["ANY", "ALL"]
-        default: "ANY"
-        description: If more than one amenity is passed, return either offices with any of the amenities (`ANY`) or with all of them (`ALL`)
-        example: "ALL"
-
-    # Employee parameters
-
-    EmployeeName:
-      name: employeeName
-      in: query
-      required: false
-      description: Filter employees by name
-      schema:
-        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/employeeName'
-
-    EmployeeDepartmentId:
-      name: departmentId
-      in: query
-      required: false
-      description: Filter employees by department ID
-      schema:
-        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/departmentId'
-
-    EmployeeSkills:
-      name: skills
-      in: query
-      required: false
-      description: Filter employees by skills
-      schema:
-        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
-
-    EmployeeSkillsFiltering:
-      name: skillsFiltering
-      in: query
-      required: false
-      description: How to match employee skills
-      schema:
-        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skillsFiltering'
-
-    EmployeeSalaryFrom:
-      name: salaryFrom
-      in: query
-      required: false
-      description: Minimum salary amount
-      schema:
-        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryFrom'
-
-    EmployeeSalaryTo:
-      name: salaryTo
-      in: query
-      required: false
-      description: Maximum salary amount
-      schema:
-        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
-
-    # Benefit parameters
-
-    BenefitServiceName:
-      name: serviceName
-      in: query
-      required: false
-      description: Filter benefits by service name
-      schema:
-        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/serviceName'
-
-    BenefitCategories:
-      name: categories
-      in: query
-      required: false
-      description: Filter benefits by categories
-      schema:
-        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/categories'
-
-    BenefitEmployeeId:
-      name: employeeId
-      in: query
-      required: false
-      description: Filter benefits by employee ID
-      schema:
-        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/employeeId'
-
-    BenefitFeeFrom:
-      name: feeFrom
-      in: query
-      required: false
-      description: Minimum monthly fee amount
-      schema:
-        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeFrom'
-
-    BenefitFeeTo:
-      name: feeTo
-      in: query
-      required: false
-      description: Maximum monthly fee amount
-      schema:
-        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeTo'
-
-    BenefitStatus:
-      name: status
-      in: query
-      required: false
-      description: Filter benefits by status
-      schema:
-        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/status'
-
-    BenefitSubscriptionId:
-      name: subscriptionId
-      in: query
-      required: false
-      description: Filter charges by subscription ID
-      schema:
-        $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/subscriptionId'
-
-    BenefitProviderServiceCode:
-      name: providerServiceCode
-      in: query
-      required: false
-      description: Filter charges by provider service code
-      schema:
-        $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/providerServiceCode'
-
-    BenefitChargeStatus:
-      name: status
-      in: query
-      required: false
-      description: Filter charges by status
-      schema:
-        $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/status'
-
-    BenefitBillingPeriodFrom:
-      name: billingPeriodFrom
-      in: query
-      required: false
-      description: Filter charges with billing period starting from this date
-      schema:
-        $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodFrom'
-
-    BenefitBillingPeriodTo:
-      name: billingPeriodTo
-      in: query
-      required: false
-      description: Filter charges with billing period ending before this date
-      schema:
-        $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodTo'
-

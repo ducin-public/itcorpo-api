@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { BenefitSubscription, ErrorResponse, BenefitsSearchCriteria } from '../contract-types/data-contracts';
+import { BenefitSubscription, ErrorResponse } from '../contract-types/data-contracts';
 import { Benefits } from '../contract-types/BenefitsRoute';
 import { db } from '../lib/db';
 import { processBenefitsSearchCriteria } from './benefit-search';
@@ -130,7 +130,7 @@ router.get('/:benefitId/charges', async (
         await db.read();
         const searchCriteria = {
             ...req.query,
-            subscriptionId: req.params.benefitId
+            benefitId: req.params.benefitId
         };
         const filteredCharges = processBenefitChargesSearchCriteria({
             benefitCharges: db.data.benefitCharges

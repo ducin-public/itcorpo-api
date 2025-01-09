@@ -9,12 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import {
-  Employee,
-  EmployeeInput,
-  EmployeesSearchCriteria,
-  Money,
-} from "./data-contracts";
+import { Employee, EmployeeInput, Money } from "./data-contracts";
 
 export namespace Employees {
   /**
@@ -24,19 +19,44 @@ export namespace Employees {
    * @summary List all employees
    * @request GET:/employees
    * @response `200` `(Employee)[]` Successful operation
-   * @response `400` `ErrorResponse` Invalid employees search criteria @see {@link EmployeesSearchCriteria}
+   * @response `400` `ErrorResponse` Invalid employees search criteria
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
   export namespace GetEmployees {
     export type RequestParams = {};
     export type RequestQuery = {
-      employeeName?: any;
-      departmentId?: any;
-      skills?: any;
-      skillsFiltering?: any;
-      salaryFrom?: any;
-      salaryTo?: any;
+      /**
+       * Filter employees by name
+       * @example "John Doe"
+       */
+      employeeName?: string;
+      /**
+       * Filter employees by department ID
+       * @example "123"
+       */
+      departmentId?: string;
+      /**
+       * Filter employees by skills according to `skillsFiltering`
+       * @example "JavaScript,React"
+       */
+      skills?: string;
+      /**
+       * If more than one skill is passed, return either employees with any of the skills (`ANY`) or with all of them (`ALL`)
+       * @default "ANY"
+       * @example "ALL"
+       */
+      skillsFiltering?: "ANY" | "ALL";
+      /**
+       * Minimum salary amount
+       * @example "5000"
+       */
+      salaryFrom?: string;
+      /**
+       * Maximum salary amount
+       * @example "10000"
+       */
+      salaryTo?: string;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -71,19 +91,44 @@ export namespace Employees {
    * @summary Get total number of employees
    * @request GET:/employees/count
    * @response `200` `Money` Successful operation
-   * @response `400` `ErrorResponse` Invalid employees search criteria @see {@link EmployeesSearchCriteria}
+   * @response `400` `ErrorResponse` Invalid employees search criteria
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
   export namespace GetEmployeesCount {
     export type RequestParams = {};
     export type RequestQuery = {
-      employeeName?: any;
-      departmentId?: any;
-      skills?: any;
-      skillsFiltering?: any;
-      salaryFrom?: any;
-      salaryTo?: any;
+      /**
+       * Filter employees by name
+       * @example "John Doe"
+       */
+      employeeName?: string;
+      /**
+       * Filter employees by department ID
+       * @example "123"
+       */
+      departmentId?: string;
+      /**
+       * Filter employees by skills according to `skillsFiltering`
+       * @example "JavaScript,React"
+       */
+      skills?: string;
+      /**
+       * If more than one skill is passed, return either employees with any of the skills (`ANY`) or with all of them (`ALL`)
+       * @default "ANY"
+       * @example "ALL"
+       */
+      skillsFiltering?: "ANY" | "ALL";
+      /**
+       * Minimum salary amount
+       * @example "5000"
+       */
+      salaryFrom?: string;
+      /**
+       * Maximum salary amount
+       * @example "10000"
+       */
+      salaryTo?: string;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};

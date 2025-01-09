@@ -1,4 +1,5 @@
-import { Employee, EmployeesSearchCriteria } from '../contract-types/data-contracts';
+import { Employee } from '../contract-types/data-contracts';
+import { Employees } from '../contract-types/EmployeesRoute';
 import { DbSchema } from '../lib/db';
 
 /**
@@ -8,7 +9,7 @@ import { DbSchema } from '../lib/db';
  *   @see {@link DbSchema}
  * 
  * @param criteria - Search criteria for filtering employees
- *   @see {@link EmployeesSearchCriteria}
+ *   @see {@link Employees.GetEmployees.RequestQuery}
  *   - employeeName: Filter by employee name (case-insensitive partial match)
  *   - departmentId: Filter by department ID
  *   - skills: Filter by required skills (comma-separated)
@@ -21,7 +22,7 @@ import { DbSchema } from '../lib/db';
  */
 export function processEmployeesSearchCriteria(
     collections: Pick<DbSchema, 'employees' | 'departments'>,
-    criteria: EmployeesSearchCriteria
+    criteria: Employees.GetEmployees.RequestQuery
 ): Employee[] {
     let result = [...collections.employees];
 

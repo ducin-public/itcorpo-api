@@ -137,40 +137,6 @@ export interface BenefitSubscriptionInput {
  */
 export type BenefitSubscriptionSearchStatus = "ALL" | "ACTIVE" | "CANCELLED";
 
-/** Criteria for filtering benefit subscriptions */
-export interface BenefitsSearchCriteria {
-  /**
-   * Filter benefits by service name
-   * @example "MultiSport"
-   */
-  serviceName?: string;
-  /**
-   * Comma-separated list of category codes to filter by. The search result will return benefits that match any of the provided categories (`ANY`).
-   * @example "HEALTHCARE,SPORT_WELLNESS"
-   */
-  categories?: string;
-  /**
-   * The employee whom this benefit is subscribed to
-   * @example "123"
-   */
-  employeeId?: string;
-  /**
-   * Minimum monthly fee amount
-   * @example "100"
-   */
-  feeFrom?: string;
-  /**
-   * Maximum monthly fee amount
-   * @example "500.50"
-   */
-  feeTo?: string;
-  /**
-   * Status filter for benefit subscriptions
-   * @example "ACTIVE"
-   */
-  status?: BenefitSubscriptionSearchStatus;
-}
-
 /** Payment status of a benefit charge */
 export type BenefitChargeStatus =
   | "PENDING"
@@ -193,42 +159,6 @@ export interface BenefitCharge {
   amount: Money;
   /** Payment status of a benefit charge */
   status: BenefitChargeStatus;
-}
-
-/** Criteria for filtering benefit charges */
-export interface BenefitChargesSearchCriteria {
-  /**
-   * Filter charges by subscription ID
-   * @example "zc9b3b4c-1b1d-4b3e-8b3b-4c1b1d4b3e8b"
-   */
-  subscriptionId?: string;
-  /**
-   * Filter charges by subscription ID
-   * @example 91720
-   */
-  employeeId?: number;
-  /**
-   * Filter charges by provider service code
-   * @example "MEDICOVER_PREMIUM"
-   */
-  providerServiceCode?: string;
-  /**
-   * Filter charges by status
-   * @example "PAID"
-   */
-  status?: BenefitChargeStatus;
-  /**
-   * Filter charges with billing period starting from this date
-   * @format date
-   * @example "2023-01-01"
-   */
-  billingPeriodFrom?: string;
-  /**
-   * Filter charges with billing period ending before this date
-   * @format date
-   * @example "2023-12-31"
-   */
-  billingPeriodTo?: string;
 }
 
 /** @example {"id":1,"name":"Management"} */
@@ -348,41 +278,6 @@ export interface EmployeeInput {
   skills: Skill[];
   bio: string;
   imgURL?: string;
-}
-
-/** Criteria for filtering employees */
-export interface EmployeesSearchCriteria {
-  /**
-   * Filter employees by name
-   * @example "John Doe"
-   */
-  employeeName?: string;
-  /**
-   * Filter employees by department ID
-   * @example "123"
-   */
-  departmentId?: string;
-  /**
-   * Filter employees by skills according to `skillsFiltering`
-   * @example "JavaScript,React"
-   */
-  skills?: string;
-  /**
-   * If more than one skill is passed, return either employees with any of the skills (`ANY`) or with all of them (`ALL`)
-   * @default "ANY"
-   * @example "ANY"
-   */
-  skillsFiltering?: "ANY" | "ALL";
-  /**
-   * Minimum salary amount
-   * @example "5000"
-   */
-  salaryFrom?: string;
-  /**
-   * Maximum salary amount
-   * @example "10000"
-   */
-  salaryTo?: string;
 }
 
 /** @example {"id":"f1c436a7-d9f5-4214-9be1-79766750b53b","amount":10927,"title":"salary","payerAccount":"DE89 3704 0044 0532 0130 00","beneficiaryAccount":"PL61 1090 1014 0000 0712 1981 2874","beneficiaryAddress":"445 Mount Eden Road, Mount Eden, Auckland","scheduledAt":"2017-02-17T22:01:36.530Z"} */

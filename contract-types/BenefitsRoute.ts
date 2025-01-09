@@ -11,11 +11,11 @@
 
 import {
   BenefitCharge,
-  BenefitChargesSearchCriteria,
+  BenefitChargeStatus,
   BenefitService,
   BenefitSubscription,
   BenefitSubscriptionInput,
-  BenefitsSearchCriteria,
+  BenefitSubscriptionSearchStatus,
   Money,
 } from "./data-contracts";
 
@@ -41,48 +41,47 @@ export namespace Benefits {
   /**
    * No description
    * @tags Benefits
-   * @name GetBenefitCharges
-   * @summary List all benefit charges
-   * @request GET:/benefits/charges
-   * @response `200` `(BenefitCharge)[]` Successful operation
-   * @response `400` `ErrorResponse` Invalid benefit charges search criteria @see {@link BenefitChargesSearchCriteria}
-   * @response `500` `ErrorResponse`
-   * @response `503` `ErrorResponse`
-   */
-  export namespace GetBenefitCharges {
-    export type RequestParams = {};
-    export type RequestQuery = {
-      subscriptionId?: any;
-      providerServiceCode?: any;
-      status?: any;
-      billingPeriodFrom?: any;
-      billingPeriodTo?: any;
-    };
-    export type RequestBody = never;
-    export type RequestHeaders = {};
-    export type ResponseBody = BenefitCharge[];
-  }
-
-  /**
-   * No description
-   * @tags Benefits
    * @name GetBenefitSubscriptions
    * @summary List all benefits subscriptions
    * @request GET:/benefits
    * @response `200` `(BenefitSubscription)[]` Successful operation
-   * @response `400` `ErrorResponse` Invalid benefit subscriptions search criteria @see {@link BenefitsSearchCriteria}
+   * @response `400` `ErrorResponse` Invalid benefit subscriptions search criteria
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
   export namespace GetBenefitSubscriptions {
     export type RequestParams = {};
     export type RequestQuery = {
-      serviceName?: any;
-      categories?: any;
-      employeeId?: any;
-      feeFrom?: any;
-      feeTo?: any;
-      status?: any;
+      /**
+       * Filter benefits by service name
+       * @example "MultiSport"
+       */
+      serviceName?: string;
+      /**
+       * Comma-separated list of category codes to filter by. The search result will return benefits that match any of the provided categories (`ANY`).
+       * @example "HEALTHCARE,SPORT_WELLNESS"
+       */
+      categories?: string;
+      /**
+       * The employee whom this benefit is subscribed to
+       * @example "91720"
+       */
+      employeeId?: string;
+      /**
+       * Minimum monthly fee amount
+       * @example "100"
+       */
+      feeFrom?: string;
+      /**
+       * Maximum monthly fee amount
+       * @example "500.50"
+       */
+      feeTo?: string;
+      /**
+       * Filter benefits by status
+       * @example "ACTIVE"
+       */
+      status?: BenefitSubscriptionSearchStatus;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -116,18 +115,43 @@ export namespace Benefits {
    * @summary Get total number of benefits
    * @request GET:/benefits/count
    * @response `200` `Money` Successful operation
-   * @response `400` `ErrorResponse` Invalid benefit subscriptions search criteria @see {@link BenefitsSearchCriteria}
+   * @response `400` `ErrorResponse` Invalid benefit subscriptions search criteria
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
   export namespace GetBenefitsCount {
     export type RequestParams = {};
     export type RequestQuery = {
-      serviceName?: any;
-      employeeId?: any;
-      feeFrom?: any;
-      feeTo?: any;
-      status?: any;
+      /**
+       * Filter benefits by service name
+       * @example "MultiSport"
+       */
+      serviceName?: string;
+      /**
+       * Comma-separated list of category codes to filter by. The search result will return benefits that match any of the provided categories (`ANY`).
+       * @example "HEALTHCARE,SPORT_WELLNESS"
+       */
+      categories?: string;
+      /**
+       * The employee whom this benefit is subscribed to
+       * @example "91720"
+       */
+      employeeId?: string;
+      /**
+       * Minimum monthly fee amount
+       * @example "100"
+       */
+      feeFrom?: string;
+      /**
+       * Maximum monthly fee amount
+       * @example "500.50"
+       */
+      feeTo?: string;
+      /**
+       * Filter benefits by status
+       * @example "ACTIVE"
+       */
+      status?: BenefitSubscriptionSearchStatus;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -208,7 +232,7 @@ export namespace Benefits {
    * @summary List all benefit charges for a specific subscription
    * @request GET:/benefits/{benefitId}/charges
    * @response `200` `(BenefitCharge)[]` Successful operation
-   * @response `400` `ErrorResponse` Invalid benefit charges search criteria @see {@link BenefitChargesSearchCriteria}
+   * @response `400` `ErrorResponse` Invalid benefit charges search criteria
    * @response `404` `ErrorResponse` Benefit subscription not found
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
@@ -218,10 +242,80 @@ export namespace Benefits {
       benefitId: string;
     };
     export type RequestQuery = {
-      providerServiceCode?: any;
-      status?: any;
-      billingPeriodFrom?: any;
-      billingPeriodTo?: any;
+      /**
+       * Filter charges by provider service code
+       * @example "MEDICOVER_PREMIUM"
+       */
+      providerServiceCode?: string;
+      /**
+       * Filter charges by status
+       * @example "PAID"
+       */
+      status?: BenefitChargeStatus;
+      /**
+       * Filter charges with billing period starting from this date
+       * @format date
+       * @example "2023-01-01"
+       */
+      billingPeriodFrom?: string;
+      /**
+       * Filter charges with billing period ending before this date
+       * @format date
+       * @example "2023-12-31"
+       */
+      billingPeriodTo?: string;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = BenefitCharge[];
+  }
+
+  /**
+   * No description
+   * @tags Benefits
+   * @name GetBenefitCharges
+   * @summary List all benefit charges
+   * @request GET:/benefits/charges
+   * @response `200` `(BenefitCharge)[]` Successful operation
+   * @response `400` `ErrorResponse` Invalid benefit charges search criteria
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
+   */
+  export namespace GetBenefitCharges {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * Filter charges by subscription ID
+       * @example "zc9b3b4c-1b1d-4b3e-8b3b-4c1b1d4b3e8b"
+       */
+      subscriptionId?: string;
+      /**
+       * The employee whom this benefit is subscribed to
+       * @example "91720"
+       */
+      employeeId?: string;
+      /**
+       * Filter charges by provider service code
+       * @example "MEDICOVER_PREMIUM"
+       */
+      providerServiceCode?: string;
+      /**
+       * Filter charges by status
+       * @example "PAID"
+       */
+      status?: BenefitChargeStatus;
+      /**
+       * Filter charges with billing period starting from this date
+       * @format date
+       * @example "2023-01-01"
+       */
+      billingPeriodFrom?: string;
+      /**
+       * Filter charges with billing period ending before this date
+       * @format date
+       * @example "2023-12-31"
+       */
+      billingPeriodTo?: string;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};

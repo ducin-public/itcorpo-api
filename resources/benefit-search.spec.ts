@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
 
-import { BenefitSubscription, BenefitsSearchCriteria } from '../contract-types/data-contracts';
 import { DbSchema } from '../lib/db';
 import { mockBenefitSubscription } from '../mocks/benefit-subscription.mock';
 import { mockEmployee } from '../mocks/employee.mock';
 import { processBenefitsSearchCriteria } from './benefit-search';
+import { Benefits } from '../contract-types/BenefitsRoute';
 
 describe('processBenefitsSearchCriteria', () => {
   const mockDb: Pick<DbSchema, 'benefits' | 'employees'> = {
@@ -56,7 +56,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should filter by service name', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       serviceName: 'Card'
     };
     // when
@@ -68,7 +68,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should filter by categories', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       categories: 'SPORT_WELLNESS,HEALTHCARE'
     };
     // when
@@ -80,7 +80,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should filter by minimum fee', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       feeFrom: '200'
     };
     // when
@@ -92,7 +92,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should filter by maximum fee', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       feeTo: '100'
     };
     // when
@@ -104,7 +104,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should filter by fee range', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       feeFrom: '100',
       feeTo: '200'
     };
@@ -117,7 +117,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should filter by minimum fee equal to maximum fee', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       feeFrom: '75',
       feeTo: '75'
     };
@@ -130,7 +130,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should filter by status ACTIVE', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       status: 'ACTIVE'
     };
     // when
@@ -142,7 +142,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should filter by status CANCELLED', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       status: 'CANCELLED'
     };
     // when
@@ -154,7 +154,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should filter by employeeId', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       employeeId: '1'
     };
     // when
@@ -166,7 +166,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should filter by multiple criteria with matches', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       categories: 'SPORT_WELLNESS',
       status: 'ACTIVE',
       feeFrom: '100',
@@ -182,7 +182,7 @@ describe('processBenefitsSearchCriteria', () => {
 
   it('should return empty result for criteria with no matches', () => {
     // given
-    const criteria: BenefitsSearchCriteria = {
+    const criteria: Benefits.GetBenefitSubscriptions.RequestQuery = {
       categories: 'SPORT_WELLNESS',
       status: 'CANCELLED',
       employeeId: '1',

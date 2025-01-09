@@ -1,4 +1,5 @@
-import { BenefitCharge, BenefitChargesSearchCriteria } from '../contract-types/data-contracts';
+import { Benefits } from '../contract-types/BenefitsRoute';
+import { BenefitCharge } from '../contract-types/data-contracts';
 import { DbSchema } from '../lib/db';
 
 /**
@@ -8,7 +9,7 @@ import { DbSchema } from '../lib/db';
  *   @see {@link DbSchema}
  * 
  * @param criteria - Search criteria for filtering charges
- *   @see {@link BenefitChargesSearchCriteria}
+ *   @see {@link Benefits.GetBenefitSubscriptionCharges.RequestQuery}
  *   - subscriptionId: Filter by specific benefit subscription ID
  *   - providerServiceCode: Filter by specific provider service code
  *   - billingPeriodFrom: Filter by minimum billing period (YYYY-MM)
@@ -20,13 +21,13 @@ import { DbSchema } from '../lib/db';
  */
 export function processBenefitChargesSearchCriteria(
     collections: Pick<DbSchema, 'benefitCharges'>,
-    criteria: BenefitChargesSearchCriteria
+    criteria: Benefits.GetBenefitSubscriptionCharges.RequestQuery & Partial<Benefits.GetBenefitSubscriptionCharges.RequestParams>
 ): BenefitCharge[] {
     let result = [...collections.benefitCharges];
 
     // Filter by subscription ID if provided
-    if (criteria.subscriptionId) {
-        result = result.filter(charge => charge.subscriptionId === criteria.subscriptionId);
+    if (criteria.benefitId) {
+        result = result.filter(charge => charge.subscriptionId === criteria.benefitId);
     }
 
     // Filter by provider service code if provided

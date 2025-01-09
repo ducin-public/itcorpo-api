@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 
 import { processEmployeesSearchCriteria } from "./employee-search";
-import {  EmployeesSearchCriteria } from '../contract-types/data-contracts';
 import { mockEmployee } from '../mocks/employee.mock';
 import { DbSchema } from '../lib/db';
+import { Employees } from '../contract-types/EmployeesRoute';
 
 describe('processEmployeesSearchCriteria', () => {
     const mockDb: Pick<DbSchema, 'employees' | 'departments'> = {
@@ -22,7 +22,7 @@ describe('processEmployeesSearchCriteria', () => {
 
     it('should filter by departmentId', () => {
         // given
-        const criteria: EmployeesSearchCriteria = {
+        const criteria: Employees.GetEmployees.RequestQuery = {
             departmentId: '1'
         };
         // when
@@ -34,7 +34,7 @@ describe('processEmployeesSearchCriteria', () => {
 
     it('should filter by skills with ANY matching', () => {
         // given
-        const criteria: EmployeesSearchCriteria = {
+        const criteria: Employees.GetEmployees.RequestQuery = {
             skills: 'java,react',
             skillsFiltering: 'ANY'
         };
@@ -47,7 +47,7 @@ describe('processEmployeesSearchCriteria', () => {
 
     it('should filter by skills with ALL matching', () => {
         // given
-        const criteria: EmployeesSearchCriteria = {
+        const criteria: Employees.GetEmployees.RequestQuery = {
             skills: 'java,spring',
             skillsFiltering: 'ALL'
         };
@@ -60,7 +60,7 @@ describe('processEmployeesSearchCriteria', () => {
 
     it('should filter by salaryFrom', () => {
         // given
-        const criteria: EmployeesSearchCriteria = {
+        const criteria: Employees.GetEmployees.RequestQuery = {
             salaryFrom: '5500',
         };
         // when
@@ -72,7 +72,7 @@ describe('processEmployeesSearchCriteria', () => {
 
     it('should filter by salaryTo', () => {
         // given
-        const criteria: EmployeesSearchCriteria = {
+        const criteria: Employees.GetEmployees.RequestQuery = {
             salaryTo: '6500',
         };
         // when
@@ -84,7 +84,7 @@ describe('processEmployeesSearchCriteria', () => {
 
     it('should filter by salary range', () => {
         // given
-        const criteria: EmployeesSearchCriteria = {
+        const criteria: Employees.GetEmployees.RequestQuery = {
             salaryFrom: '5500',
             salaryTo: '6500'
         };
@@ -97,7 +97,7 @@ describe('processEmployeesSearchCriteria', () => {
 
     it('should filter by multiple criteria with matches', () => {
         // given
-        const criteria: EmployeesSearchCriteria = {
+        const criteria: Employees.GetEmployees.RequestQuery = {
             departmentId: '1',
             skills: 'java,spring',
             skillsFiltering: 'ALL',
@@ -113,7 +113,7 @@ describe('processEmployeesSearchCriteria', () => {
 
     it('should return empty array when no matches found', () => {
         // given
-        const criteria: EmployeesSearchCriteria = {
+        const criteria: Employees.GetEmployees.RequestQuery = {
             departmentId: '1',
             skills: 'python',
             salaryFrom: '8000'

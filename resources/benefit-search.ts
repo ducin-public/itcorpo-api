@@ -1,4 +1,5 @@
-import { BenefitSubscription, BenefitsSearchCriteria } from '../contract-types/data-contracts';
+import { Benefits } from '../contract-types/BenefitsRoute';
+import { BenefitSubscription } from '../contract-types/data-contracts';
 import { DbSchema } from '../lib/db';
 
 /**
@@ -8,7 +9,7 @@ import { DbSchema } from '../lib/db';
  *   @see {@link DbSchema}
  * 
  * @param criteria - Search criteria for filtering benefits
- *   @see {@link BenefitsSearchCriteria}
+ *   @see {@link Benefits.GetBenefitSubscriptions.RequestQuery}
  *   - serviceName: Filter by partial match of benefit service name
  *   - categories: Filter by benefit categories (comma-separated list)
  *   - employeeId: Filter by beneficiary employee ID
@@ -21,7 +22,7 @@ import { DbSchema } from '../lib/db';
  */
 export function processBenefitsSearchCriteria(
     collections: Pick<DbSchema, 'benefits' | 'employees'>,
-    criteria: BenefitsSearchCriteria
+    criteria: Benefits.GetBenefitSubscriptions.RequestQuery
 ): BenefitSubscription[] {
     let result = [...collections.benefits];
 

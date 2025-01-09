@@ -19,6 +19,8 @@ export namespace Projects {
    * @summary List all projects
    * @request GET:/projects
    * @response `200` `(Project)[]` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetProjects {
     export type RequestParams = {};
@@ -42,7 +44,9 @@ export namespace Projects {
    * @summary Create a new project
    * @request POST:/projects
    * @response `201` `Project` Project created successfully
-   * @response `400` `void` Invalid input
+   * @response `400` `ErrorResponse` Invalid project input request body @see {@link ProjectInput}
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace CreateProject {
     export type RequestParams = {};
@@ -59,6 +63,8 @@ export namespace Projects {
    * @summary Get total number of projects
    * @request GET:/projects/count
    * @response `200` `Money` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetProjectsCount {
     export type RequestParams = {};
@@ -82,7 +88,9 @@ export namespace Projects {
    * @summary Get project by ID
    * @request GET:/projects/{projectId}
    * @response `200` `Project` Successful operation
-   * @response `404` `void` Project not found
+   * @response `404` `ErrorResponse` Project not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetProjectById {
     export type RequestParams = {
@@ -101,8 +109,10 @@ export namespace Projects {
    * @summary Update project
    * @request PUT:/projects/{projectId}
    * @response `200` `Project` Project updated successfully
-   * @response `400` `void` Invalid input
-   * @response `404` `void` Project not found
+   * @response `400` `ErrorResponse` Invalid project input request body @see {@link ProjectInput}
+   * @response `404` `ErrorResponse` Project not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace UpdateProject {
     export type RequestParams = {
@@ -121,7 +131,9 @@ export namespace Projects {
    * @summary Delete project
    * @request DELETE:/projects/{projectId}
    * @response `204` `void` Project deleted successfully
-   * @response `404` `void` Project not found
+   * @response `404` `ErrorResponse` Project not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace DeleteProject {
     export type RequestParams = {

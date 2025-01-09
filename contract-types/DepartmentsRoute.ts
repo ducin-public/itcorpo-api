@@ -19,6 +19,8 @@ export namespace Departments {
    * @summary List all departments
    * @request GET:/departments
    * @response `200` `(Department)[]` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetDepartments {
     export type RequestParams = {};
@@ -35,7 +37,9 @@ export namespace Departments {
    * @summary Create a new department
    * @request POST:/departments
    * @response `201` `Department` Department created successfully
-   * @response `400` `void` Invalid input
+   * @response `400` `ErrorResponse` Invalid department input request body @see {@link DepartmentInput}
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace CreateDepartment {
     export type RequestParams = {};
@@ -52,6 +56,8 @@ export namespace Departments {
    * @summary Get total number of departments
    * @request GET:/departments/count
    * @response `200` `Money` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetDepartmentsCount {
     export type RequestParams = {};
@@ -68,7 +74,9 @@ export namespace Departments {
    * @summary Get department by ID
    * @request GET:/departments/{departmentId}
    * @response `200` `Department` Successful operation
-   * @response `404` `void` Department not found
+   * @response `404` `ErrorResponse` Department not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetDepartmentById {
     export type RequestParams = {
@@ -87,8 +95,10 @@ export namespace Departments {
    * @summary Update department
    * @request PUT:/departments/{departmentId}
    * @response `200` `Department` Department updated successfully
-   * @response `400` `void` Invalid input
-   * @response `404` `void` Department not found
+   * @response `400` `ErrorResponse` Invalid department input request body @see {@link DepartmentInput}
+   * @response `404` `ErrorResponse` Department not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace UpdateDepartment {
     export type RequestParams = {
@@ -107,7 +117,9 @@ export namespace Departments {
    * @summary Delete department
    * @request DELETE:/departments/{departmentId}
    * @response `204` `void` Department deleted successfully
-   * @response `404` `void` Department not found
+   * @response `404` `ErrorResponse` Department not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace DeleteDepartment {
     export type RequestParams = {

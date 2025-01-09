@@ -19,6 +19,8 @@ export namespace Expenses {
    * @summary List all expenses
    * @request GET:/expenses
    * @response `200` `(Expense)[]` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetExpenses {
     export type RequestParams = {};
@@ -35,7 +37,9 @@ export namespace Expenses {
    * @summary Create a new expense
    * @request POST:/expenses
    * @response `201` `Expense` Expense created successfully
-   * @response `400` `void` Invalid input
+   * @response `400` `ErrorResponse` Invalid expense input request body @see {@link ExpenseInput}
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace CreateExpense {
     export type RequestParams = {};
@@ -52,6 +56,8 @@ export namespace Expenses {
    * @summary Get total number of expenses
    * @request GET:/expenses/count
    * @response `200` `Money` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetExpensesCount {
     export type RequestParams = {};
@@ -68,7 +74,9 @@ export namespace Expenses {
    * @summary Get expense by ID
    * @request GET:/expenses/{expenseId}
    * @response `200` `Expense` Successful operation
-   * @response `404` `void` Expense not found
+   * @response `404` `ErrorResponse` Expense not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetExpenseById {
     export type RequestParams = {
@@ -87,8 +95,10 @@ export namespace Expenses {
    * @summary Update expense
    * @request PUT:/expenses/{expenseId}
    * @response `200` `Expense` Expense updated successfully
-   * @response `400` `void` Invalid input
-   * @response `404` `void` Expense not found
+   * @response `400` `ErrorResponse` Invalid expense input request body @see {@link ExpenseInput}
+   * @response `404` `ErrorResponse` Expense not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace UpdateExpense {
     export type RequestParams = {
@@ -108,6 +118,8 @@ export namespace Expenses {
    * @request DELETE:/expenses/{expenseId}
    * @response `204` `void` Expense deleted successfully
    * @response `404` `void` Expense not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace DeleteExpense {
     export type RequestParams = {

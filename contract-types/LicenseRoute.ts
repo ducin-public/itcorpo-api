@@ -19,8 +19,9 @@ export namespace License {
    * @summary Get license information
    * @request GET:/license
    * @response `200` `DateString` License text retrieved successfully
-   * @response `400` `void` Invalid content type requested
-   * @response `503` `void` License file not available
+   * @response `400` `ErrorResponse` Invalid Content-Type requested
+   * @response `403` `ErrorResponse` Access to license file forbidden
+   * @response `503` `ErrorResponse` License file not available
    */
   export namespace LicenseList {
     export type RequestParams = {};

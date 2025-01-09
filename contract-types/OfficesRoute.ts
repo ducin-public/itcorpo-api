@@ -19,6 +19,8 @@ export namespace Offices {
    * @summary Retrieve list of possible office amenities
    * @request GET:/offices/amenities
    * @response `200` `(OfficeAmenity)[]` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetOfficeAmenities {
     export type RequestParams = {};
@@ -35,6 +37,8 @@ export namespace Offices {
    * @summary Get total number of office amenities
    * @request GET:/offices/amenities/count
    * @response `200` `Money` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetOfficeAmenitiesCount {
     export type RequestParams = {};
@@ -51,6 +55,8 @@ export namespace Offices {
    * @summary List all offices
    * @request GET:/offices
    * @response `200` `(Office)[]` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetOffices {
     export type RequestParams = {};
@@ -71,7 +77,9 @@ export namespace Offices {
    * @summary Create a new office
    * @request POST:/offices
    * @response `201` `Office` Office created successfully
-   * @response `400` `void` Invalid input
+   * @response `400` `ErrorResponse` Invalid office input request body @see {@link OfficeInput}
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace CreateOffice {
     export type RequestParams = {};
@@ -88,6 +96,8 @@ export namespace Offices {
    * @summary Get total number of offices
    * @request GET:/offices/count
    * @response `200` `Money` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetOfficesCount {
     export type RequestParams = {};
@@ -108,7 +118,9 @@ export namespace Offices {
    * @summary Get office by office code
    * @request GET:/offices/{officeCode}
    * @response `200` `Office` Successful operation
-   * @response `404` `void` Office not found
+   * @response `404` `ErrorResponse` Office not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetOfficeByCode {
     export type RequestParams = {
@@ -128,8 +140,10 @@ export namespace Offices {
    * @summary Update office
    * @request PUT:/offices/{officeCode}
    * @response `200` `Office` Office updated successfully
-   * @response `400` `void` Invalid input
-   * @response `404` `void` Office not found
+   * @response `400` `ErrorResponse` Invalid office input request body @see {@link OfficeInput}
+   * @response `404` `ErrorResponse` Office not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace UpdateOffice {
     export type RequestParams = {
@@ -149,7 +163,9 @@ export namespace Offices {
    * @summary Delete office
    * @request DELETE:/offices/{officeCode}
    * @response `204` `void` Office deleted successfully
-   * @response `404` `void` Office not found
+   * @response `404` `ErrorResponse` Office not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace DeleteOffice {
     export type RequestParams = {

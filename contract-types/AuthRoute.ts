@@ -21,6 +21,9 @@ export namespace Auth {
     token: string,
 
 }` Successfully generated JWT token
+ * @response `401` `ErrorResponse` Authentication failed
+ * @response `500` `ErrorResponse`
+ * @response `503` `ErrorResponse`
 */
   export namespace GetAuthToken {
     export type RequestParams = {};

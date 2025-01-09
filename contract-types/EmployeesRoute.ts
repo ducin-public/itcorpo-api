@@ -9,7 +9,12 @@
  * ---------------------------------------------------------------
  */
 
-import { Employee, EmployeeInput, Money } from "./data-contracts";
+import {
+  Employee,
+  EmployeeInput,
+  EmployeesSearchCriteria,
+  Money,
+} from "./data-contracts";
 
 export namespace Employees {
   /**
@@ -19,6 +24,9 @@ export namespace Employees {
    * @summary List all employees
    * @request GET:/employees
    * @response `200` `(Employee)[]` Successful operation
+   * @response `400` `ErrorResponse` Invalid employees search criteria @see {@link EmployeesSearchCriteria}
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetEmployees {
     export type RequestParams = {};
@@ -42,7 +50,9 @@ export namespace Employees {
    * @summary Create a new employee
    * @request POST:/employees
    * @response `201` `Employee` Employee created successfully
-   * @response `400` `void` Invalid input
+   * @response `400` `ErrorResponse` Invalid employee input request body @see {@link EmployeeInput}
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace CreateEmployee {
     export type RequestParams = {};
@@ -59,6 +69,9 @@ export namespace Employees {
    * @summary Get total number of employees
    * @request GET:/employees/count
    * @response `200` `Money` Successful operation
+   * @response `400` `ErrorResponse` Invalid employees search criteria @see {@link EmployeesSearchCriteria}
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetEmployeesCount {
     export type RequestParams = {};
@@ -82,7 +95,9 @@ export namespace Employees {
    * @summary Get employee by ID
    * @request GET:/employees/{employeeId}
    * @response `200` `Employee` Successful operation
-   * @response `404` `void` Employee not found
+   * @response `404` `ErrorResponse` Employee not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetEmployeeById {
     export type RequestParams = {
@@ -101,8 +116,10 @@ export namespace Employees {
    * @summary Update employee
    * @request PUT:/employees/{employeeId}
    * @response `200` `Employee` Employee updated successfully
-   * @response `400` `void` Invalid input
-   * @response `404` `void` Employee not found
+   * @response `400` `ErrorResponse` Invalid employee input request body @see {@link EmployeeInput}
+   * @response `404` `ErrorResponse` Employee not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace UpdateEmployee {
     export type RequestParams = {
@@ -121,7 +138,9 @@ export namespace Employees {
    * @summary Delete employee
    * @request DELETE:/employees/{employeeId}
    * @response `204` `void` Employee deleted successfully
-   * @response `404` `void` Employee not found
+   * @response `404` `ErrorResponse` Employee not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace DeleteEmployee {
     export type RequestParams = {

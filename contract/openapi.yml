@@ -31,6 +31,16 @@ paths:
                   token:
                     type: string
                     description: JWT token signed with server's secret
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /health:
     get:
@@ -45,20 +55,21 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: "OK"
-                  message:
-                    type: string
-                    example: "All systems operational"
+                $ref: '#/components/schemas/HealthStatus'
         '500':
           description: API is not healthy
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthStatus'
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Server is unhealthy or temporarily unavailable.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/HealthStatus'
+                  - $ref: '#/components/schemas/ErrorResponse'
 
   /license:
     get:
@@ -82,9 +93,24 @@ paths:
               schema:
                 type: string
         '400':
-          description: Invalid content type requested
+          description: >
+            Invalid Content-Type requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access to license file forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '503':
           description: License file not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /benefits/services:
     get:
@@ -101,6 +127,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BenefitService'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /benefits/charges:
     get:
@@ -143,11 +173,23 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BenefitCharge'
+        '400':
+          description: >
+            Invalid benefit charges search criteria
+            @see {@link BenefitChargesSearchCriteria}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /benefits:
     get:
-      summary: List all benefits
-      operationId: getBenefits
+      summary: List all benefits subscriptions
+      operationId: getBenefitSubscriptions
       tags:
         - Benefits
       parameters:
@@ -190,6 +232,19 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BenefitSubscription'
+        '400':
+          description: >
+            Invalid benefit subscriptions search criteria
+            @see {@link BenefitsSearchCriteria}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
     post:
       summary: Create a new benefit
       operationId: createBenefit
@@ -209,7 +264,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/BenefitSubscription'
         '400':
-          description: Invalid input
+          description: >
+            Invalid benefit subscription input request body
+            @see {@link BenefitSubscriptionInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Benefit already exists for this employee and service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /benefits/count:
     get:
@@ -251,6 +322,18 @@ paths:
               schema:
                 type: integer
                 example: 42
+        '400':
+          description: >
+            Invalid benefit subscriptions search criteria
+            @see {@link BenefitsSearchCriteria}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /benefits/{benefitId}:
     get:
@@ -273,6 +356,14 @@ paths:
                 $ref: '#/components/schemas/BenefitSubscription'
         '404':
           description: Benefit not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
     
     put:
       summary: Update benefit
@@ -298,10 +389,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BenefitSubscription'
+        '400':
+          description: >
+            Invalid benefit subscription input request body
+            @see {@link BenefitSubscriptionInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Benefit not found
-        '400':
-          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
     patch:
       summary: Cancel or renew benefit subscription
@@ -334,19 +439,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/BenefitSubscription'
         '400':
-          description: Invalid request body format
+          description: >
+            Invalid benefit subscription status update
+            @see {@link BenefitSubscriptionInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Benefit subscription not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '422':
           description: Invalid operation for current subscription state
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Cannot renew an active subscription"
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /benefits/{benefitId}/charges:
     get:
@@ -389,8 +504,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BenefitCharge'
+        '400':
+          description: 
+            Invalid benefit charges search criteria
+            @see {@link BenefitChargesSearchCriteria}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Benefit subscription not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /departments:
     get:
@@ -407,6 +538,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Department'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
     post:
       summary: Create a new department
       operationId: createDepartment
@@ -426,7 +562,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Department'
         '400':
-          description: Invalid input
+          description: >
+            Invalid department input request body
+            @see {@link DepartmentInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /departments/count:
     get:
@@ -442,6 +588,10 @@ paths:
               schema:
                 type: integer
                 example: 8
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /departments/{departmentId}:
     get:
@@ -464,6 +614,14 @@ paths:
                 $ref: '#/components/schemas/Department'
         '404':
           description: Department not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
     
     put:
       summary: Update department
@@ -489,10 +647,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Department'
+        '400':
+          description: >
+            Invalid department input request body
+            @see {@link DepartmentInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Department not found
-        '400':
-          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
     delete:
       summary: Delete department
@@ -510,6 +682,14 @@ paths:
           description: Department deleted successfully
         '404':
           description: Department not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /employees:
     get:
@@ -557,6 +737,19 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Employee'
+        '400':
+          description: >
+            Invalid employees search criteria
+            @see {@link EmployeesSearchCriteria}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
     post:
       summary: Create a new employee
       operationId: createEmployee
@@ -576,7 +769,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Employee'
         '400':
-          description: Invalid input
+          description: >
+            Invalid employee input request body
+            @see {@link EmployeeInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /employees/count:
     get:
@@ -623,6 +826,18 @@ paths:
               schema:
                 type: integer
                 example: 1250
+        '400':
+          description: >
+            Invalid employees search criteria
+            @see {@link EmployeesSearchCriteria}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /employees/{employeeId}:
     get:
@@ -645,6 +860,14 @@ paths:
                 $ref: '#/components/schemas/Employee'
         '404':
           description: Employee not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
     
     put:
       summary: Update employee
@@ -670,10 +893,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Employee'
+        '400':
+          description: >
+            Invalid employee input request body
+            @see {@link EmployeeInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Employee not found
-        '400':
-          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
     delete:
       summary: Delete employee
@@ -691,6 +928,14 @@ paths:
           description: Employee deleted successfully
         '404':
           description: Employee not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /expenses:
     get:
@@ -707,6 +952,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Expense'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
     post:
       summary: Create a new expense
       operationId: createExpense
@@ -726,7 +976,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Expense'
         '400':
-          description: Invalid input
+          description: >
+            Invalid expense input request body
+            @see {@link ExpenseInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /expenses/count:
     get:
@@ -742,6 +1002,10 @@ paths:
               schema:
                 type: integer
                 example: 523
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /expenses/{expenseId}:
     get:
@@ -764,6 +1028,14 @@ paths:
                 $ref: '#/components/schemas/Expense'
         '404':
           description: Expense not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
     
     put:
       summary: Update expense
@@ -789,10 +1061,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Expense'
+        '400':
+          description: >
+            Invalid expense input request body
+            @see {@link ExpenseInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Expense not found
-        '400':
-          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
     delete:
       summary: Delete expense
@@ -810,6 +1096,10 @@ paths:
           description: Expense deleted successfully
         '404':
           description: Expense not found
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /geo:
     get:
@@ -826,11 +1116,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Geo'
         '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /offices/amenities:
     get:
@@ -848,6 +1136,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OfficeAmenity'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /offices/amenities/count:
     get:
@@ -863,6 +1155,10 @@ paths:
               schema:
                 type: integer
                 example: 15
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /offices:
     get:
@@ -895,6 +1191,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Office'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
     post:
       summary: Create a new office
       operationId: createOffice
@@ -914,7 +1215,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Office'
         '400':
-          description: Invalid input
+          description: >
+            Invalid office input request body
+            @see {@link OfficeInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /offices/count:
     get:
@@ -946,6 +1257,10 @@ paths:
               schema:
                 type: integer
                 example: 25
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /offices/{officeCode}:
     get:
@@ -968,6 +1283,14 @@ paths:
                 $ref: '#/components/schemas/Office'
         '404':
           description: Office not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
     
     put:
       summary: Update office
@@ -993,10 +1316,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Office'
+        '400':
+          description: >
+            Invalid office input request body
+            @see {@link OfficeInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Office not found
-        '400':
-          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
     delete:
       summary: Delete office
@@ -1014,6 +1351,14 @@ paths:
           description: Office deleted successfully
         '404':
           description: Office not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /projects:
     get:
@@ -1061,6 +1406,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Project'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
     post:
       summary: Create a new project
       operationId: createProject
@@ -1080,7 +1430,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Project'
         '400':
-          description: Invalid input
+          description: >
+            Invalid project input request body
+            @see {@link ProjectInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /projects/count:
     get:
@@ -1127,6 +1487,10 @@ paths:
               schema:
                 type: integer
                 example: 156
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
   /projects/{projectId}:
     get:
@@ -1149,6 +1513,14 @@ paths:
                 $ref: '#/components/schemas/Project'
         '404':
           description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
     
     put:
       summary: Update project
@@ -1174,10 +1546,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
+        '400':
+          description: >
+            Invalid project input request body
+            @see {@link ProjectInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Project not found
-        '400':
-          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
     delete:
       summary: Delete project
@@ -1195,8 +1581,44 @@ paths:
           description: Project deleted successfully
         '404':
           description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
 
 components:
+  links:
+    HealthCheck:
+      operationId: healthCheck
+      parameters:
+        status:
+          $ref: '#/components/schemas/HealthStatus'
+      requestBody:
+        required: false
+  responses:
+    NotAuthorized:
+      description: The requester is unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: An internal server error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ServiceUnavailable:
+      description: The service is temporarily unavailable. Maybe there is maintenance?
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
   schemas:
     Money:
       type: number
@@ -1214,7 +1636,6 @@ components:
     
     Phone:
       type: string
-      pattern: "^[+]?[(]?[0-9]{1,4}[)]?[-\\s\\./0-9]*$"
       description: Phone number string
 
     ErrorResponse:
@@ -1222,9 +1643,12 @@ components:
       properties:
         code:
           type: string
+          description: An application-level error code (**not** HTTP status code)
         message:
           type: string
+          description: Text description of the error that has occurred
       required:
+        - code
         - message
 
     HealthStatus:
@@ -1232,10 +1656,11 @@ components:
       properties:
         status:
           type: string
-          example: "ERROR"
+          enum: ["HEALTHY", "DEGRADED", "UNHEALTHY"]
+          example: "HEALTHY"
         message:
           type: string
-          example: "Database connection failed"
+          example: "All systems operational"
       additionalProperties:
         type: string
 

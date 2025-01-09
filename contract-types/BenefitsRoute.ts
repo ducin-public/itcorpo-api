@@ -11,9 +11,11 @@
 
 import {
   BenefitCharge,
+  BenefitChargesSearchCriteria,
   BenefitService,
   BenefitSubscription,
   BenefitSubscriptionInput,
+  BenefitsSearchCriteria,
   Money,
 } from "./data-contracts";
 
@@ -25,6 +27,8 @@ export namespace Benefits {
    * @summary List all available benefit services
    * @request GET:/benefits/services
    * @response `200` `(BenefitService)[]` Successful operation
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetBenefitServices {
     export type RequestParams = {};
@@ -41,6 +45,9 @@ export namespace Benefits {
    * @summary List all benefit charges
    * @request GET:/benefits/charges
    * @response `200` `(BenefitCharge)[]` Successful operation
+   * @response `400` `ErrorResponse` Invalid benefit charges search criteria @see {@link BenefitChargesSearchCriteria}
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetBenefitCharges {
     export type RequestParams = {};
@@ -59,12 +66,15 @@ export namespace Benefits {
   /**
    * No description
    * @tags Benefits
-   * @name GetBenefits
-   * @summary List all benefits
+   * @name GetBenefitSubscriptions
+   * @summary List all benefits subscriptions
    * @request GET:/benefits
    * @response `200` `(BenefitSubscription)[]` Successful operation
+   * @response `400` `ErrorResponse` Invalid benefit subscriptions search criteria @see {@link BenefitsSearchCriteria}
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
-  export namespace GetBenefits {
+  export namespace GetBenefitSubscriptions {
     export type RequestParams = {};
     export type RequestQuery = {
       serviceName?: any;
@@ -86,7 +96,10 @@ export namespace Benefits {
    * @summary Create a new benefit
    * @request POST:/benefits
    * @response `201` `BenefitSubscription` Benefit created successfully
-   * @response `400` `void` Invalid input
+   * @response `400` `ErrorResponse` Invalid benefit subscription input request body @see {@link BenefitSubscriptionInput}
+   * @response `409` `ErrorResponse` Benefit already exists for this employee and service
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace CreateBenefit {
     export type RequestParams = {};
@@ -103,6 +116,9 @@ export namespace Benefits {
    * @summary Get total number of benefits
    * @request GET:/benefits/count
    * @response `200` `Money` Successful operation
+   * @response `400` `ErrorResponse` Invalid benefit subscriptions search criteria @see {@link BenefitsSearchCriteria}
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetBenefitsCount {
     export type RequestParams = {};
@@ -125,7 +141,9 @@ export namespace Benefits {
    * @summary Get benefit by ID
    * @request GET:/benefits/{benefitId}
    * @response `200` `BenefitSubscription` Successful operation
-   * @response `404` `void` Benefit not found
+   * @response `404` `ErrorResponse` Benefit not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetBenefitById {
     export type RequestParams = {
@@ -144,8 +162,10 @@ export namespace Benefits {
    * @summary Update benefit
    * @request PUT:/benefits/{benefitId}
    * @response `200` `BenefitSubscription` Benefit updated successfully
-   * @response `400` `void` Invalid input
-   * @response `404` `void` Benefit not found
+   * @response `400` `ErrorResponse` Invalid benefit subscription input request body @see {@link BenefitSubscriptionInput}
+   * @response `404` `ErrorResponse` Benefit not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace UpdateBenefit {
     export type RequestParams = {
@@ -158,20 +178,18 @@ export namespace Benefits {
   }
 
   /**
- * No description
- * @tags Benefits
- * @name UpdateBenefitSubscriptionStatus
- * @summary Cancel or renew benefit subscription
- * @request PATCH:/benefits/{benefitId}
- * @response `200` `BenefitSubscription` Benefit subscription status updated successfully
- * @response `400` `void` Invalid request body format
- * @response `404` `void` Benefit subscription not found
- * @response `422` `{
-  \** @example "Cannot renew an active subscription" *\
-    message?: string,
-
-}` Invalid operation for current subscription state
-*/
+   * No description
+   * @tags Benefits
+   * @name UpdateBenefitSubscriptionStatus
+   * @summary Cancel or renew benefit subscription
+   * @request PATCH:/benefits/{benefitId}
+   * @response `200` `BenefitSubscription` Benefit subscription status updated successfully
+   * @response `400` `ErrorResponse` Invalid benefit subscription status update @see {@link BenefitSubscriptionInput}
+   * @response `404` `ErrorResponse` Benefit subscription not found
+   * @response `422` `ErrorResponse` Invalid operation for current subscription state
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
+   */
   export namespace UpdateBenefitSubscriptionStatus {
     export type RequestParams = {
       benefitId: string;
@@ -191,7 +209,10 @@ export namespace Benefits {
    * @summary List all benefit charges for a specific subscription
    * @request GET:/benefits/{benefitId}/charges
    * @response `200` `(BenefitCharge)[]` Successful operation
-   * @response `404` `void` Benefit subscription not found
+   * @response `400` `ErrorResponse` Invalid benefit charges search criteria @see {@link BenefitChargesSearchCriteria}
+   * @response `404` `ErrorResponse` Benefit subscription not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
    */
   export namespace GetBenefitSubscriptionCharges {
     export type RequestParams = {

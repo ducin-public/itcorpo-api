@@ -24,21 +24,20 @@ export type DateString = string;
  */
 export type Email = string;
 
-/**
- * Phone number string
- * @pattern ^[+]?[(]?[0-9]{1,4}[)]?[-\s\./0-9]*$
- */
+/** Phone number string */
 export type Phone = string;
 
 export interface ErrorResponse {
-  code?: string;
+  /** An application-level error code (**not** HTTP status code) */
+  code: string;
+  /** Text description of the error that has occurred */
   message: string;
 }
 
 export interface HealthStatus {
-  /** @example "ERROR" */
-  status?: string;
-  /** @example "Database connection failed" */
+  /** @example "HEALTHY" */
+  status?: "HEALTHY" | "DEGRADED" | "UNHEALTHY";
+  /** @example "All systems operational" */
   message?: string;
   [key: string]: any;
 }

@@ -1,4 +1,5 @@
-import { Project, ProjectsSearchCriteria } from '../contract-types/data-contracts';
+import { Project } from '../contract-types/data-contracts';
+import { Projects } from '../contract-types/ProjectsRoute';
 import { DbSchema } from '../lib/db';
 
 /**
@@ -8,7 +9,7 @@ import { DbSchema } from '../lib/db';
  *   @see {@link DbSchema}
  * 
  * @param criteria - Search criteria for filtering projects
- *   @see {@link ProjectsSearchCriteria}
+ *   @see {@link Projects.GetProjects.RequestQuery}
  *   - projectName: Filter by project name (case-insensitive partial match)
  *   - status: Filter by project status
  *   - teamMembers: Filter by team member IDs (comma-separated)
@@ -21,7 +22,7 @@ import { DbSchema } from '../lib/db';
  */
 export function processProjectsSearchCriteria(
     collections: Pick<DbSchema, 'projects'>,
-    criteria: ProjectsSearchCriteria
+    criteria: Projects.GetProjects.RequestQuery
 ): Project[] {
     let result = [...collections.projects];
 

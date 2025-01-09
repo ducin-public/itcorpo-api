@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { Money, Project, ProjectInput } from "./data-contracts";
+import { Money, Project, ProjectInput, ProjectStatus } from "./data-contracts";
 
 export namespace Projects {
   /**
@@ -19,18 +19,44 @@ export namespace Projects {
    * @summary List all projects
    * @request GET:/projects
    * @response `200` `(Project)[]` Successful operation
+   * @response `400` `ErrorResponse` Invalid projects search criteria
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
   export namespace GetProjects {
     export type RequestParams = {};
     export type RequestQuery = {
-      projectName?: any;
-      status?: any;
-      teamMembers?: any;
-      teamMembersFiltering?: any;
-      budgetFrom?: any;
-      budgetTo?: any;
+      /**
+       * Filter projects by name
+       * @example "Cloud migration"
+       */
+      projectName?: string;
+      /**
+       * Filter projects by status
+       * @example "ACTIVE"
+       */
+      status?: ProjectStatus;
+      /**
+       * Filter projects by team member IDs according to `teamMembersFiltering`
+       * @example "123,456,789"
+       */
+      teamMembers?: string;
+      /**
+       * If more than one ID is passed, return either projects with any of the team members (`ANY`) or with all of them (`ALL`)
+       * @default "ANY"
+       * @example "ALL"
+       */
+      teamMembersFiltering?: "ANY" | "ALL";
+      /**
+       * Minimum project budget amount
+       * @example "10000"
+       */
+      budgetFrom?: string;
+      /**
+       * Maximum project budget amount
+       * @example "50000"
+       */
+      budgetTo?: string;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -45,6 +71,8 @@ export namespace Projects {
    * @request POST:/projects
    * @response `201` `Project` Project created successfully
    * @response `400` `ErrorResponse` Invalid project input request body @see {@link ProjectInput}
+   * @response `409` `ErrorResponse` Project with this name already exists in given time period
+   * @response `422` `ErrorResponse` Invalid data state (e.g. manager not found, team members don't exist, invalid date range)
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
@@ -69,12 +97,37 @@ export namespace Projects {
   export namespace GetProjectsCount {
     export type RequestParams = {};
     export type RequestQuery = {
-      projectName?: any;
-      status?: any;
-      teamMembers?: any;
-      teamMembersFiltering?: any;
-      budgetFrom?: any;
-      budgetTo?: any;
+      /**
+       * Filter projects by name
+       * @example "Cloud migration"
+       */
+      projectName?: string;
+      /**
+       * Filter projects by status
+       * @example "ACTIVE"
+       */
+      status?: ProjectStatus;
+      /**
+       * Filter projects by team member IDs according to `teamMembersFiltering`
+       * @example "123,456,789"
+       */
+      teamMembers?: string;
+      /**
+       * If more than one ID is passed, return either projects with any of the team members (`ANY`) or with all of them (`ALL`)
+       * @default "ANY"
+       * @example "ALL"
+       */
+      teamMembersFiltering?: "ANY" | "ALL";
+      /**
+       * Minimum project budget amount
+       * @example "10000"
+       */
+      budgetFrom?: string;
+      /**
+       * Maximum project budget amount
+       * @example "50000"
+       */
+      budgetTo?: string;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -111,6 +164,8 @@ export namespace Projects {
    * @response `200` `Project` Project updated successfully
    * @response `400` `ErrorResponse` Invalid project input request body @see {@link ProjectInput}
    * @response `404` `ErrorResponse` Project not found
+   * @response `409` `ErrorResponse` Project name already taken by another project in given time period
+   * @response `422` `ErrorResponse` Invalid data state (e.g. manager not found, team members don't exist, invalid date range)
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
@@ -132,6 +187,7 @@ export namespace Projects {
    * @request DELETE:/projects/{projectId}
    * @response `204` `void` Project deleted successfully
    * @response `404` `ErrorResponse` Project not found
+   * @response `409` `ErrorResponse` Cannot delete project that is in ACTIVE status
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */

@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 
+import { Offices } from '../contract-types/OfficesRoute';
 import { processOfficesSearchCriteria } from './offices-search'
 import { DbSchema } from '../lib/db'
 import { mockOffice } from '../mocks/office.mock';
-import { OfficesSearchCriteria } from '../contract-types/data-contracts';
 
 describe('processOfficesSearchCriteria', () => {
   const mockDb: Pick<DbSchema, 'offices' | 'geo' | 'officeAmenities'> = {
@@ -75,7 +75,7 @@ describe('processOfficesSearchCriteria', () => {
 
   it('should filter offices by single country', () => {
     // given
-    const criteria: OfficesSearchCriteria = {
+    const criteria: Offices.GetOffices.RequestQuery = {
       countries: 'PL'
     };
     // when
@@ -87,7 +87,7 @@ describe('processOfficesSearchCriteria', () => {
 
   it('should filter offices by multiple countries', () => {
     // given
-    const criteria: OfficesSearchCriteria = {
+    const criteria: Offices.GetOffices.RequestQuery = {
       countries: 'ES,DE'
     };
     // when
@@ -99,7 +99,7 @@ describe('processOfficesSearchCriteria', () => {
 
   it('should filter offices by amenities with ANY mode', () => {
     // given
-    const criteria: OfficesSearchCriteria = {
+    const criteria: Offices.GetOffices.RequestQuery = {
       amenities: 'BIKE,GYM'
     };
     // when
@@ -111,7 +111,7 @@ describe('processOfficesSearchCriteria', () => {
 
   it('should filter offices by amenities with ALL mode', () => {
     // given
-    const criteria: OfficesSearchCriteria = {
+    const criteria: Offices.GetOffices.RequestQuery = {
       amenities: 'GYM,CAFE',
       amenitiesFiltering: 'ALL'
     };
@@ -124,7 +124,7 @@ describe('processOfficesSearchCriteria', () => {
 
   it('should return no results when multiple criteria dont match any office', () => {
     // given
-    const criteria: OfficesSearchCriteria = {
+    const criteria: Offices.GetOffices.RequestQuery = {
       countries: 'ES',
       amenities: 'GYM,CONF',
       amenitiesFiltering: 'ALL',
@@ -139,7 +139,7 @@ describe('processOfficesSearchCriteria', () => {
 
   it('should filter offices by multiple criteria', () => {
     // given
-    const criteria: OfficesSearchCriteria = {
+    const criteria: Offices.GetOffices.RequestQuery = {
       countries: 'PL',
       amenities: 'GYM,PARK',
       amenitiesFiltering: 'ALL',

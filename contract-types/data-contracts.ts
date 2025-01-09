@@ -29,7 +29,7 @@ export type Phone = string;
 
 export interface ErrorResponse {
   /** An application-level error code (**not** HTTP status code) */
-  code: string;
+  code?: string;
   /** Text description of the error that has occurred */
   message: string;
 }
@@ -457,31 +457,6 @@ export interface OfficeInput {
   imgURL?: string;
 }
 
-/** Criteria for filtering offices */
-export interface OfficesSearchCriteria {
-  /**
-   * Comma-separated list of country codes to filter by
-   * @example "PL,US"
-   */
-  countries?: string;
-  /**
-   * Comma-separated list of amenity codes to filter by
-   * @example "FREE_PARKING,SHOWER"
-   */
-  amenities?: string;
-  /**
-   * If more than one amenity is passed, return either offices with any of the amenities (`ANY`) or with all of them (`ALL`)
-   * @default "ANY"
-   * @example "ANY"
-   */
-  amenitiesFiltering?: "ANY" | "ALL";
-  /**
-   * Full text search across country, city, address and estate owner fields
-   * @example "Amsterdam central"
-   */
-  phrase?: string;
-}
-
 /**
  * Status of the ongoing project's workflow
  * @example "ACTIVE"
@@ -524,39 +499,4 @@ export interface ProjectInput {
   }[];
   manager: number;
   description: string;
-}
-
-/** Criteria for filtering projects */
-export interface ProjectsSearchCriteria {
-  /**
-   * Filter projects by name
-   * @example "Cloud migration"
-   */
-  projectName?: string;
-  /**
-   * Filter projects by status
-   * @example "ACTIVE"
-   */
-  status?: ProjectStatus;
-  /**
-   * Filter projects by team member IDs according to `teamMembersFiltering`
-   * @example "123,456,789"
-   */
-  teamMembers?: string;
-  /**
-   * If more than one ID is passed, return either projects with any of the team members (`ANY`) or with all of them (`ALL`)
-   * @default "ANY"
-   * @example "ANY"
-   */
-  teamMembersFiltering?: "ANY" | "ALL";
-  /**
-   * Minimum project budget amount
-   * @example "10000"
-   */
-  budgetFrom?: string;
-  /**
-   * Maximum project budget amount
-   * @example "50000"
-   */
-  budgetTo?: string;
 }

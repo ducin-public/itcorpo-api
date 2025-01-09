@@ -38,6 +38,8 @@ export namespace Expenses {
    * @request POST:/expenses
    * @response `201` `Expense` Expense created successfully
    * @response `400` `ErrorResponse` Invalid expense input request body @see {@link ExpenseInput}
+   * @response `409` `ErrorResponse` Expense with this ID already exists
+   * @response `422` `ErrorResponse` Invalid account numbers or scheduling date in the past
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
@@ -97,6 +99,8 @@ export namespace Expenses {
    * @response `200` `Expense` Expense updated successfully
    * @response `400` `ErrorResponse` Invalid expense input request body @see {@link ExpenseInput}
    * @response `404` `ErrorResponse` Expense not found
+   * @response `409` `ErrorResponse` Cannot modify expense that has been processed
+   * @response `422` `ErrorResponse` Invalid account numbers or scheduling date in the past
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
@@ -118,6 +122,7 @@ export namespace Expenses {
    * @request DELETE:/expenses/{expenseId}
    * @response `204` `void` Expense deleted successfully
    * @response `404` `void` Expense not found
+   * @response `409` `ErrorResponse` Cannot delete expense that has been processed
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */

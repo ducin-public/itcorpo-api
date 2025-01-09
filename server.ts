@@ -35,6 +35,7 @@ import { employeesRouter } from './resources/employees.router';
 import { projectsRouter } from './resources/projects.router';
 import { geoRouter } from './resources/geo.router';
 import { expensesRouter } from './resources/expenses.router';
+import { maintenanceMiddleware } from './middlewares/maintenance';
 
 const app = jsonServer.create();
 const jsonParser = bodyParser.json();
@@ -81,7 +82,7 @@ app.use(delayingMiddleware(cliConfig.delayRange));
 app.use(tenantMiddleware(cliConfig.tenantRequired));
 app.use(pagingMiddleware(50, { excludePatterns: ['/log'] }));
 app.use(failingMiddleware(cliConfig.fail, cliConfig.failUrls));
-// app.use(employeeNameMiddleware(db));
+app.use(maintenanceMiddleware());
 
 app.use('/benefits', benefitsRouter);
 app.use('/departments', departmentsRouter);

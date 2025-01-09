@@ -61,9 +61,27 @@ export namespace Offices {
   export namespace GetOffices {
     export type RequestParams = {};
     export type RequestQuery = {
-      countries?: any;
-      amenities?: any;
-      phrase?: any;
+      /**
+       * Full text search across country, city, address and estate owner fields
+       * @example "Amsterdam"
+       */
+      phrase?: string;
+      /**
+       * Comma-separated list of country codes to filter by
+       * @example "PL,US"
+       */
+      countries?: string;
+      /**
+       * Comma-separated list of amenity codes to filter by
+       * @example "FREE_PARKING,SHOWER"
+       */
+      amenities?: string;
+      /**
+       * If more than one amenity is passed, return either offices with any of the amenities (`ANY`) or with all of them (`ALL`)
+       * @default "ANY"
+       * @example "ALL"
+       */
+      amenitiesFiltering?: "ANY" | "ALL";
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -78,6 +96,8 @@ export namespace Offices {
    * @request POST:/offices
    * @response `201` `Office` Office created successfully
    * @response `400` `ErrorResponse` Invalid office input request body @see {@link OfficeInput}
+   * @response `409` `ErrorResponse` Office with this code already exists
+   * @response `422` `ErrorResponse` Invalid office configuration (e.g. invalid country code, unknown amenity)
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
@@ -102,9 +122,27 @@ export namespace Offices {
   export namespace GetOfficesCount {
     export type RequestParams = {};
     export type RequestQuery = {
-      countries?: any;
-      amenities?: any;
-      phrase?: any;
+      /**
+       * Full text search across country, city, address and estate owner fields
+       * @example "Amsterdam"
+       */
+      phrase?: string;
+      /**
+       * Comma-separated list of country codes to filter by
+       * @example "PL,US"
+       */
+      countries?: string;
+      /**
+       * Comma-separated list of amenity codes to filter by
+       * @example "FREE_PARKING,SHOWER"
+       */
+      amenities?: string;
+      /**
+       * If more than one amenity is passed, return either offices with any of the amenities (`ANY`) or with all of them (`ALL`)
+       * @default "ANY"
+       * @example "ALL"
+       */
+      amenitiesFiltering?: "ANY" | "ALL";
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -124,7 +162,6 @@ export namespace Offices {
    */
   export namespace GetOfficeByCode {
     export type RequestParams = {
-      officeId: string;
       officeCode: string;
     };
     export type RequestQuery = {};
@@ -142,12 +179,13 @@ export namespace Offices {
    * @response `200` `Office` Office updated successfully
    * @response `400` `ErrorResponse` Invalid office input request body @see {@link OfficeInput}
    * @response `404` `ErrorResponse` Office not found
+   * @response `409` `ErrorResponse` Office code already taken by another office
+   * @response `422` `ErrorResponse` Invalid office configuration (e.g. invalid country code, unknown amenity)
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
   export namespace UpdateOffice {
     export type RequestParams = {
-      officeId: string;
       officeCode: string;
     };
     export type RequestQuery = {};
@@ -164,12 +202,12 @@ export namespace Offices {
    * @request DELETE:/offices/{officeCode}
    * @response `204` `void` Office deleted successfully
    * @response `404` `ErrorResponse` Office not found
+   * @response `409` `ErrorResponse` Cannot delete office that has assigned employees
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
   export namespace DeleteOffice {
     export type RequestParams = {
-      officeId: string;
       officeCode: string;
     };
     export type RequestQuery = {};

@@ -43,7 +43,7 @@ export const healthCheckRouter = () => {
       const uptime = process.uptime();
 
       res.status(200).json({
-        status: 'OK',
+        status: 'HEALTHY',
         message: 'All systems operational',
         memoryUsage,
         uptime,
@@ -53,7 +53,7 @@ export const healthCheckRouter = () => {
     } catch (error) {
       const message = error instanceof Error ? error.message : JSON.stringify(error);
       res.status(500).json({
-        status: 'ERROR',
+        status: 'UNHEALTHY',
         message: message,
       });
     }

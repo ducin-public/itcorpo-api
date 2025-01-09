@@ -186,7 +186,6 @@ export namespace Benefits {
    * @response `200` `BenefitSubscription` Benefit subscription status updated successfully
    * @response `400` `ErrorResponse` Invalid benefit subscription status update @see {@link BenefitSubscriptionInput}
    * @response `404` `ErrorResponse` Benefit subscription not found
-   * @response `422` `ErrorResponse` Invalid operation for current subscription state
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */

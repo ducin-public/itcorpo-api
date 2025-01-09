@@ -71,12 +71,12 @@ router.get('/count', async (
 // GET /benefits
 router.get('/', async (
     req: Request<
-        Benefits.GetBenefits.RequestParams,
-        Benefits.GetBenefits.ResponseBody,
-        Benefits.GetBenefits.RequestBody,
-        Benefits.GetBenefits.RequestQuery
+        Benefits.GetBenefitSubscriptions.RequestParams,
+        Benefits.GetBenefitSubscriptions.ResponseBody,
+        Benefits.GetBenefitSubscriptions.RequestBody,
+        Benefits.GetBenefitSubscriptions.RequestQuery
     >,
-    res: Response<Benefits.GetBenefits.ResponseBody | ErrorResponse>
+    res: Response<Benefits.GetBenefitSubscriptions.ResponseBody | ErrorResponse>
 ) => {
     try {
         await db.read();

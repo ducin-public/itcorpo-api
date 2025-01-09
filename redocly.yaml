@@ -1,0 +1,17 @@
+extends:
+  - recommended
+
+rules:
+  operation-4xx-response: off
+  info-license: off
+  security-defined: warn
+  no-server-example.com: off
+
+apis:
+  core:
+    root: ./contract/openapi.yml
+    rules:
+      no-ambiguous-paths: error
+    theme:
+      openapi:
+        hideLogo: true

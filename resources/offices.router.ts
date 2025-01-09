@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 
-import { Office, OfficeAmenity, ErrorResponse, OfficesSearchCriteria } from '../contract-types/data-contracts';
+import { Office, ErrorResponse } from '../contract-types/data-contracts';
 import { Offices } from '../contract-types/OfficesRoute';
 import { db } from '../lib/db';
 import { processOfficesSearchCriteria } from './offices-search';

@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: IT Corpo API
-  version: 1.0.0
+  version: 2.0.0
   description: >
     API for managing IT corporation resources.
 
@@ -74,6 +74,7 @@ paths:
   /license:
     get:
       summary: Get license information
+      operationId: getLicense
       description: Returns the license text for the API
       tags:
         - System
@@ -452,12 +453,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        '422':
-          description: Invalid operation for current subscription state
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -565,6 +560,12 @@ paths:
           description: >
             Invalid department input request body
             @see {@link DepartmentInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Department with this name already exists
           content:
             application/json:
               schema:
@@ -686,6 +687,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Cannot delete department that has employees
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -772,6 +779,18 @@ paths:
           description: >
             Invalid employee input request body
             @see {@link EmployeeInput}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Employee with this email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid data state (e.g. department doesn't exist, office not found)
           content:
             application/json:
               schema:
@@ -907,6 +926,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Email already taken by another employee
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid data state (e.g. department doesn't exist, office not found)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -928,6 +959,12 @@ paths:
           description: Employee deleted successfully
         '404':
           description: Employee not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Cannot delete employee that is assigned to active projects
           content:
             application/json:
               schema:
@@ -983,10 +1020,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Expense with this ID already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid account numbers or scheduling date in the past
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
+
+
 
   /expenses/count:
     get:
@@ -1075,6 +1126,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Cannot modify expense that has been processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid account numbers or scheduling date in the past
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -1096,6 +1159,12 @@ paths:
           description: Expense deleted successfully
         '404':
           description: Expense not found
+        '409':
+          description: Cannot delete expense that has been processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -1167,21 +1236,10 @@ paths:
       tags:
         - Offices
       parameters:
-        - name: countries
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/OfficesSearchCriteria/properties/countries'
-        - name: amenities
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/OfficesSearchCriteria/properties/amenities'
-        - name: phrase
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/OfficesSearchCriteria/properties/phrase'
+        - $ref: '#/components/parameters/OfficePhrase'
+        - $ref: '#/components/parameters/OfficeCountries'
+        - $ref: '#/components/parameters/OfficeAmenities'
+        - $ref: '#/components/parameters/OfficeAmenitiesFiltering'
       responses:
         '200':
           description: Successful operation
@@ -1222,6 +1280,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Office with this code already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid office configuration (e.g. invalid country code, unknown amenity)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -1234,21 +1304,10 @@ paths:
       tags:
         - Offices
       parameters:
-        - name: countries
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/OfficesSearchCriteria/properties/countries'
-        - name: amenities
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/OfficesSearchCriteria/properties/amenities'
-        - name: phrase
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/OfficesSearchCriteria/properties/phrase'
+        - $ref: '#/components/parameters/OfficePhrase'
+        - $ref: '#/components/parameters/OfficeCountries'
+        - $ref: '#/components/parameters/OfficeAmenities'
+        - $ref: '#/components/parameters/OfficeAmenitiesFiltering'
       responses:
         '200':
           description: Successful operation
@@ -1269,7 +1328,7 @@ paths:
       tags:
         - Offices
       parameters:
-        - name: officeId
+        - name: officeCode
           in: path
           required: true
           schema:
@@ -1298,7 +1357,7 @@ paths:
       tags:
         - Offices
       parameters:
-        - name: officeId
+        - name: officeCode
           in: path
           required: true
           schema:
@@ -1330,6 +1389,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Office code already taken by another office
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid office configuration (e.g. invalid country code, unknown amenity)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -1341,7 +1412,7 @@ paths:
       tags:
         - Offices
       parameters:
-        - name: officeId
+        - name: officeCode
           in: path
           required: true
           schema:
@@ -1351,6 +1422,12 @@ paths:
           description: Office deleted successfully
         '404':
           description: Office not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Cannot delete office that has assigned employees
           content:
             application/json:
               schema:
@@ -1367,36 +1444,12 @@ paths:
       tags:
         - Projects
       parameters:
-        - name: projectName
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/projectName'
-        - name: status
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/status'
-        - name: teamMembers
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembers'
-        - name: teamMembersFiltering
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembersFiltering'
-        - name: budgetFrom
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/budgetFrom'
-        - name: budgetTo
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/budgetTo'
+        - $ref: '#/components/parameters/ProjectName'
+        - $ref: '#/components/parameters/ProjectStatus'
+        - $ref: '#/components/parameters/ProjectTeamMembers'
+        - $ref: '#/components/parameters/ProjectTeamMembersFiltering'
+        - $ref: '#/components/parameters/ProjectBudgetFrom'
+        - $ref: '#/components/parameters/ProjectBudgetTo'
       responses:
         '200':
           description: Successful operation
@@ -1406,6 +1459,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Project'
+        '400':
+          description: Invalid projects search criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -1437,6 +1496,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Project with this name already exists in given time period
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid data state (e.g. manager not found, team members don't exist, invalid date range)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -1449,36 +1520,12 @@ paths:
       tags:
         - Projects
       parameters:
-        - name: projectName
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/projectName'
-        - name: status
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/status'
-        - name: teamMembers
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembers'
-        - name: teamMembersFiltering
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/teamMembersFiltering'
-        - name: budgetFrom
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/budgetFrom'
-        - name: budgetTo
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ProjectsSearchCriteria/properties/budgetTo'
+        - $ref: '#/components/parameters/ProjectName'
+        - $ref: '#/components/parameters/ProjectStatus'
+        - $ref: '#/components/parameters/ProjectTeamMembers'
+        - $ref: '#/components/parameters/ProjectTeamMembersFiltering'
+        - $ref: '#/components/parameters/ProjectBudgetFrom'
+        - $ref: '#/components/parameters/ProjectBudgetTo'
       responses:
         '200':
           description: Successful operation
@@ -1560,6 +1607,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Project name already taken by another project in given time period
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid data state (e.g. manager not found, team members don't exist, invalid date range)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
         '503':
@@ -1581,6 +1640,12 @@ paths:
           description: Project deleted successfully
         '404':
           description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Cannot delete project that is in ACTIVE status
           content:
             application/json:
               schema:
@@ -1648,7 +1713,6 @@ components:
           type: string
           description: Text description of the error that has occurred
       required:
-        - code
         - message
 
     HealthStatus:
@@ -2419,29 +2483,6 @@ components:
         imgURL:
           type: string
 
-    OfficesSearchCriteria:
-      type: object
-      description: Criteria for filtering offices
-      properties:
-        countries:
-          type: string
-          description: Comma-separated list of country codes to filter by
-          example: "PL,US"
-        amenities:
-          type: string
-          description: Comma-separated list of amenity codes to filter by
-          example: "FREE_PARKING,SHOWER"
-        amenitiesFiltering:
-          type: string
-          enum: ["ANY", "ALL"]
-          default: "ANY"
-          description: If more than one amenity is passed, return either offices with any of the amenities (`ANY`) or with all of them (`ALL`)
-          example: "ANY"
-        phrase:
-          type: string
-          description: Full text search across country, city, address and estate owner fields
-          example: "Amsterdam central"
-
     ProjectStatus:
       type: string
       description: Status of the ongoing project's workflow
@@ -2549,33 +2590,252 @@ components:
         description:
           type: string
 
-    ProjectsSearchCriteria:
-      type: object
-      description: Criteria for filtering projects
-      properties:
-        projectName:
-          type: string
-          description: Filter projects by name
-          example: "Cloud migration"
-        status:
-          $ref: '#/components/schemas/ProjectStatus'
-          description: Filter projects by status
-          example: "ACTIVE"
-        teamMembers:
-          type: string
-          description: Filter projects by team member IDs according to `teamMembersFiltering`
-          example: "123,456,789"
-        teamMembersFiltering:
-          type: string
-          enum: ["ANY", "ALL"]
-          default: "ANY"
-          description: If more than one ID is passed, return either projects with any of the team members (`ANY`) or with all of them (`ALL`)
-          example: "ANY"
-        budgetFrom:
-          type: string
-          description: Minimum project budget amount
-          example: "10000"
-        budgetTo:
-          type: string
-          description: Maximum project budget amount
-          example: "50000"
+  parameters:
+
+    # Project parameters
+
+    ProjectName:
+      name: projectName
+      in: query
+      required: false
+      description: Filter projects by name
+      schema:
+        type: string
+        description: Filter projects by name
+        example: "Cloud migration"
+
+    ProjectStatus:
+      name: status
+      in: query
+      required: false
+      description: Filter projects by status
+      schema:
+        $ref: '#/components/schemas/ProjectStatus'
+        example: "ACTIVE"
+
+    ProjectTeamMembers:
+      name: teamMembers
+      in: query
+      required: false
+      description: Filter projects by team member IDs
+      schema:
+        type: string
+        description: Filter projects by team member IDs according to `teamMembersFiltering`
+        example: "123,456,789"
+
+    ProjectTeamMembersFiltering:
+      name: teamMembersFiltering
+      in: query
+      required: false
+      description: How to match team members 
+      schema:
+        type: string
+        enum: ["ANY", "ALL"]
+        default: "ANY"
+        description: If more than one ID is passed, return either projects with any of the team members (`ANY`) or with all of them (`ALL`)
+        example: "ALL"
+
+    ProjectBudgetFrom:
+      name: budgetFrom
+      in: query
+      required: false
+      description: Minimum project budget
+      schema:
+        type: string
+        description: Minimum project budget amount
+        example: "10000"
+
+    ProjectBudgetTo:
+      name: budgetTo
+      in: query
+      required: false
+      description: Maximum project budget
+      schema:
+        type: string
+        description: Maximum project budget amount
+        example: "50000"
+
+    # Office parameters
+
+    OfficePhrase:
+      name: phrase
+      in: query
+      required: false
+      description: Full text search across office fields
+      schema:
+        type: string
+        description: Full text search across country, city, address and estate owner fields
+        example: "Amsterdam"
+
+    OfficeCountries:
+      name: countries
+      in: query
+      required: false
+      description: Filter offices by country codes
+      schema:
+        type: string
+        description: Comma-separated list of country codes to filter by
+        example: "PL,US"
+
+    OfficeAmenities:
+      name: amenities
+      in: query
+      required: false
+      description: Filter offices by amenities
+      schema:
+        type: string
+        description: Comma-separated list of amenity codes to filter by
+        example: "FREE_PARKING,SHOWER"
+  
+    OfficeAmenitiesFiltering:
+      name: amenitiesFiltering
+      in: query
+      required: false
+      description: How to match office amenities ('ANY' or 'ALL')
+      schema:
+        type: string
+        enum: ["ANY", "ALL"]
+        default: "ANY"
+        description: If more than one amenity is passed, return either offices with any of the amenities (`ANY`) or with all of them (`ALL`)
+        example: "ALL"
+
+    # Employee parameters
+
+    EmployeeName:
+      name: employeeName
+      in: query
+      required: false
+      description: Filter employees by name
+      schema:
+        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/employeeName'
+
+    EmployeeDepartmentId:
+      name: departmentId
+      in: query
+      required: false
+      description: Filter employees by department ID
+      schema:
+        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/departmentId'
+
+    EmployeeSkills:
+      name: skills
+      in: query
+      required: false
+      description: Filter employees by skills
+      schema:
+        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
+
+    EmployeeSkillsFiltering:
+      name: skillsFiltering
+      in: query
+      required: false
+      description: How to match employee skills
+      schema:
+        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skillsFiltering'
+
+    EmployeeSalaryFrom:
+      name: salaryFrom
+      in: query
+      required: false
+      description: Minimum salary amount
+      schema:
+        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryFrom'
+
+    EmployeeSalaryTo:
+      name: salaryTo
+      in: query
+      required: false
+      description: Maximum salary amount
+      schema:
+        $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
+
+    # Benefit parameters
+
+    BenefitServiceName:
+      name: serviceName
+      in: query
+      required: false
+      description: Filter benefits by service name
+      schema:
+        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/serviceName'
+
+    BenefitCategories:
+      name: categories
+      in: query
+      required: false
+      description: Filter benefits by categories
+      schema:
+        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/categories'
+
+    BenefitEmployeeId:
+      name: employeeId
+      in: query
+      required: false
+      description: Filter benefits by employee ID
+      schema:
+        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/employeeId'
+
+    BenefitFeeFrom:
+      name: feeFrom
+      in: query
+      required: false
+      description: Minimum monthly fee amount
+      schema:
+        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeFrom'
+
+    BenefitFeeTo:
+      name: feeTo
+      in: query
+      required: false
+      description: Maximum monthly fee amount
+      schema:
+        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/feeTo'
+
+    BenefitStatus:
+      name: status
+      in: query
+      required: false
+      description: Filter benefits by status
+      schema:
+        $ref: '#/components/schemas/BenefitsSearchCriteria/properties/status'
+
+    BenefitSubscriptionId:
+      name: subscriptionId
+      in: query
+      required: false
+      description: Filter charges by subscription ID
+      schema:
+        $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/subscriptionId'
+
+    BenefitProviderServiceCode:
+      name: providerServiceCode
+      in: query
+      required: false
+      description: Filter charges by provider service code
+      schema:
+        $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/providerServiceCode'
+
+    BenefitChargeStatus:
+      name: status
+      in: query
+      required: false
+      description: Filter charges by status
+      schema:
+        $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/status'
+
+    BenefitBillingPeriodFrom:
+      name: billingPeriodFrom
+      in: query
+      required: false
+      description: Filter charges with billing period starting from this date
+      schema:
+        $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodFrom'
+
+    BenefitBillingPeriodTo:
+      name: billingPeriodTo
+      in: query
+      required: false
+      description: Filter charges with billing period ending before this date
+      schema:
+        $ref: '#/components/schemas/BenefitChargesSearchCriteria/properties/billingPeriodTo'
+

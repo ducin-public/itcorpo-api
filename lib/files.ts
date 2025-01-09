@@ -8,7 +8,8 @@ export const FILES = {
     DATABASE_FILE: path.join(ROOT_DIR, 'database.json'),
     CONTRACT_FILE: path.join(ROOT_DIR, 'contract/openapi.yml'),
     APP_CONFIG_FILE: path.join(ROOT_DIR, 'config.json'),
-    ROUTES_FILE: path.join(ROOT_DIR, 'routes.json')
+    ROUTES_FILE: path.join(ROOT_DIR, 'routes.json'),
+    MAINTENANCE_FILE: path.join(ROOT_DIR, '.MAINTENANCE')
 } as const;
 
 Object.entries(FILES).forEach(([key, filepath]) => {

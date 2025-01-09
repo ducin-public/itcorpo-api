@@ -51,6 +51,8 @@ export namespace Employees {
    * @request POST:/employees
    * @response `201` `Employee` Employee created successfully
    * @response `400` `ErrorResponse` Invalid employee input request body @see {@link EmployeeInput}
+   * @response `409` `ErrorResponse` Employee with this email already exists
+   * @response `422` `ErrorResponse` Invalid data state (e.g. department doesn't exist, office not found)
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
@@ -118,6 +120,8 @@ export namespace Employees {
    * @response `200` `Employee` Employee updated successfully
    * @response `400` `ErrorResponse` Invalid employee input request body @see {@link EmployeeInput}
    * @response `404` `ErrorResponse` Employee not found
+   * @response `409` `ErrorResponse` Email already taken by another employee
+   * @response `422` `ErrorResponse` Invalid data state (e.g. department doesn't exist, office not found)
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
@@ -139,6 +143,7 @@ export namespace Employees {
    * @request DELETE:/employees/{employeeId}
    * @response `204` `void` Employee deleted successfully
    * @response `404` `ErrorResponse` Employee not found
+   * @response `409` `ErrorResponse` Cannot delete employee that is assigned to active projects
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */

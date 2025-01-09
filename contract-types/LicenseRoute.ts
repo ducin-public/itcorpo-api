@@ -15,7 +15,7 @@ export namespace License {
   /**
    * @description Returns the license text for the API
    * @tags System
-   * @name LicenseList
+   * @name GetLicense
    * @summary Get license information
    * @request GET:/license
    * @response `200` `DateString` License text retrieved successfully
@@ -23,7 +23,7 @@ export namespace License {
    * @response `403` `ErrorResponse` Access to license file forbidden
    * @response `503` `ErrorResponse` License file not available
    */
-  export namespace LicenseList {
+  export namespace GetLicense {
     export type RequestParams = {};
     export type RequestQuery = {};
     export type RequestBody = never;

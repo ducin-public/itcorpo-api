@@ -1,4 +1,5 @@
-import { Office, OfficesSearchCriteria } from '../contract-types/data-contracts';
+import { Office } from '../contract-types/data-contracts';
+import { Offices } from '../contract-types/OfficesRoute';
 import { DbSchema } from '../lib/db';
 
 /**
@@ -8,7 +9,7 @@ import { DbSchema } from '../lib/db';
  *   @see {@link DbSchema}
  * 
  * @param criteria - Search criteria for filtering offices
- *   @see {@link OfficesSearchCriteria}
+ *   @see {@link Offices.GetOffices.RequestQuery}
  *   - countries: Filter by country codes (comma-separated)
  *   - amenities: Filter by amenity codes (comma-separated)
  *   - amenitiesFiltering: How to match amenities ('ANY' or 'ALL', defaults to 'ANY')
@@ -19,7 +20,7 @@ import { DbSchema } from '../lib/db';
  */
 export function processOfficesSearchCriteria(
     collections: Pick<DbSchema, 'offices' | 'geo' | 'officeAmenities'>,
-    criteria: OfficesSearchCriteria
+    criteria: Offices.GetOffices.RequestQuery
 ): Office[] {
     let result = [...collections.offices];
 

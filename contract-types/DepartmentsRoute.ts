@@ -38,6 +38,7 @@ export namespace Departments {
    * @request POST:/departments
    * @response `201` `Department` Department created successfully
    * @response `400` `ErrorResponse` Invalid department input request body @see {@link DepartmentInput}
+   * @response `409` `ErrorResponse` Department with this name already exists
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
@@ -118,6 +119,7 @@ export namespace Departments {
    * @request DELETE:/departments/{departmentId}
    * @response `204` `void` Department deleted successfully
    * @response `404` `ErrorResponse` Department not found
+   * @response `409` `ErrorResponse` Cannot delete department that has employees
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */

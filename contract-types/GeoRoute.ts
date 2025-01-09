@@ -19,6 +19,7 @@ export namespace Geo {
    * @summary Get geographical data
    * @request GET:/geo
    * @response `200` `Geo` Successful operation
+   * @response `500` `ErrorResponse` Internal server error
    */
   export namespace GetGeo {
     export type RequestParams = {};

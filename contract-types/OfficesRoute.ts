@@ -105,7 +105,7 @@ export namespace Offices {
    * No description
    * @tags Offices
    * @name GetOfficeByCode
-   * @summary Get office by ID
+   * @summary Get office by office code
    * @request GET:/offices/{officeCode}
    * @response `200` `Office` Successful operation
    * @response `404` `void` Office not found

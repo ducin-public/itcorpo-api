@@ -12,6 +12,26 @@ servers:
     description: Local development server
 
 paths:
+  /auth:
+    get:
+      summary: Get JWT authentication token
+      operationId: getAuthToken
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: Successfully generated JWT token
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                properties:
+                  token:
+                    type: string
+                    description: JWT token signed with server's secret
+
   /health:
     get:
       summary: Health Check
@@ -40,25 +60,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/HealthStatus'
 
-  /auth:
+  /license:
     get:
-      summary: Get JWT authentication token
-      operationId: getAuthToken
+      summary: Get license information
+      description: Returns the license text for the API
       tags:
-        - Auth
+        - System
+      parameters:
+        - in: header
+          name: Content-Type
+          required: true
+          schema:
+            type: string
+            enum: ["text/plain"]
+          description: Must be text/plain
       responses:
         '200':
-          description: Successfully generated JWT token
+          description: License text retrieved successfully
           content:
-            application/json:
+            text/plain:
               schema:
-                type: object
-                required:
-                  - token
-                properties:
-                  token:
-                    type: string
-                    description: JWT token signed with server's secret
+                type: string
+        '400':
+          description: Invalid content type requested
+        '503':
+          description: License file not available
 
   /benefits/services:
     get:
@@ -366,6 +392,446 @@ paths:
         '404':
           description: Benefit subscription not found
 
+  /departments:
+    get:
+      summary: List all departments
+      operationId: getDepartments
+      tags:
+        - Departments
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+    post:
+      summary: Create a new department
+      operationId: createDepartment
+      tags:
+        - Departments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentInput'
+      responses:
+        '201':
+          description: Department created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+        '400':
+          description: Invalid input
+
+  /departments/count:
+    get:
+      summary: Get total number of departments
+      operationId: getDepartmentsCount
+      tags:
+        - Departments
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 8
+
+  /departments/{departmentId}:
+    get:
+      summary: Get department by ID
+      operationId: getDepartmentById
+      tags:
+        - Departments
+      parameters:
+        - name: departmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+        '404':
+          description: Department not found
+    
+    put:
+      summary: Update department
+      operationId: updateDepartment
+      tags:
+        - Departments
+      parameters:
+        - name: departmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentInput'
+      responses:
+        '200':
+          description: Department updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+        '404':
+          description: Department not found
+        '400':
+          description: Invalid input
+
+    delete:
+      summary: Delete department
+      operationId: deleteDepartment
+      tags:
+        - Departments
+      parameters:
+        - name: departmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Department deleted successfully
+        '404':
+          description: Department not found
+
+  /employees:
+    get:
+      summary: List all employees
+      operationId: getEmployees
+      tags:
+        - Employees
+      parameters:
+        - name: employeeName
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/employeeName'
+        - name: departmentId
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/departmentId'
+        - name: skills
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
+        - name: skillsFiltering
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skillsFiltering'
+        - name: salaryFrom
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryFrom'
+        - name: salaryTo
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+    post:
+      summary: Create a new employee
+      operationId: createEmployee
+      tags:
+        - Employees
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeInput'
+      responses:
+        '201':
+          description: Employee created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '400':
+          description: Invalid input
+
+  /employees/count:
+    get:
+      summary: Get total number of employees
+      operationId: getEmployeesCount
+      tags:
+        - Employees
+      parameters:
+        - name: employeeName
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/employeeName'
+        - name: departmentId
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/departmentId'
+        - name: skills
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
+        - name: skillsFiltering
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skillsFiltering'
+        - name: salaryFrom
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryFrom'
+        - name: salaryTo
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 1250
+
+  /employees/{employeeId}:
+    get:
+      summary: Get employee by ID
+      operationId: getEmployeeById
+      tags:
+        - Employees
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '404':
+          description: Employee not found
+    
+    put:
+      summary: Update employee
+      operationId: updateEmployee
+      tags:
+        - Employees
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeInput'
+      responses:
+        '200':
+          description: Employee updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '404':
+          description: Employee not found
+        '400':
+          description: Invalid input
+
+    delete:
+      summary: Delete employee
+      operationId: deleteEmployee
+      tags:
+        - Employees
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Employee deleted successfully
+        '404':
+          description: Employee not found
+
+  /expenses:
+    get:
+      summary: List all expenses
+      operationId: getExpenses
+      tags:
+        - Expenses
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Expense'
+    post:
+      summary: Create a new expense
+      operationId: createExpense
+      tags:
+        - Expenses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpenseInput'
+      responses:
+        '201':
+          description: Expense created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+        '400':
+          description: Invalid input
+
+  /expenses/count:
+    get:
+      summary: Get total number of expenses
+      operationId: getExpensesCount
+      tags:
+        - Expenses
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 523
+
+  /expenses/{expenseId}:
+    get:
+      summary: Get expense by ID
+      operationId: getExpenseById
+      tags:
+        - Expenses
+      parameters:
+        - name: expenseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+        '404':
+          description: Expense not found
+    
+    put:
+      summary: Update expense
+      operationId: updateExpense
+      tags:
+        - Expenses
+      parameters:
+        - name: expenseId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpenseInput'
+      responses:
+        '200':
+          description: Expense updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+        '404':
+          description: Expense not found
+        '400':
+          description: Invalid input
+
+    delete:
+      summary: Delete expense
+      operationId: deleteExpense
+      tags:
+        - Expenses
+      parameters:
+        - name: expenseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Expense deleted successfully
+        '404':
+          description: Expense not found
+
+  /geo:
+    get:
+      summary: Get geographical data
+      description: Returns a dictionary of country codes and country names
+      tags:
+        - Geo
+      operationId: getGeo
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Geo'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /offices/amenities:
     get:
       summary: Retrieve list of possible office amenities
@@ -483,7 +949,7 @@ paths:
 
   /offices/{officeCode}:
     get:
-      summary: Get office by ID
+      summary: Get office by office code
       operationId: getOfficeByCode
       tags:
         - Offices
@@ -730,487 +1196,8 @@ paths:
         '404':
           description: Project not found
 
-  /departments:
-    get:
-      summary: List all departments
-      operationId: getDepartments
-      tags:
-        - Departments
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Department'
-    post:
-      summary: Create a new department
-      operationId: createDepartment
-      tags:
-        - Departments
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DepartmentInput'
-      responses:
-        '201':
-          description: Department created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Department'
-        '400':
-          description: Invalid input
-
-  /departments/count:
-    get:
-      summary: Get total number of departments
-      operationId: getDepartmentsCount
-      tags:
-        - Departments
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: integer
-                example: 8
-
-  /departments/{departmentId}:
-    get:
-      summary: Get department by ID
-      operationId: getDepartmentById
-      tags:
-        - Departments
-      parameters:
-        - name: departmentId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Department'
-        '404':
-          description: Department not found
-    
-    put:
-      summary: Update department
-      operationId: updateDepartment
-      tags:
-        - Departments
-      parameters:
-        - name: departmentId
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DepartmentInput'
-      responses:
-        '200':
-          description: Department updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Department'
-        '404':
-          description: Department not found
-        '400':
-          description: Invalid input
-
-    delete:
-      summary: Delete department
-      operationId: deleteDepartment
-      tags:
-        - Departments
-      parameters:
-        - name: departmentId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: Department deleted successfully
-        '404':
-          description: Department not found
-
-  /expenses:
-    get:
-      summary: List all expenses
-      operationId: getExpenses
-      tags:
-        - Expenses
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Expense'
-    post:
-      summary: Create a new expense
-      operationId: createExpense
-      tags:
-        - Expenses
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExpenseInput'
-      responses:
-        '201':
-          description: Expense created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Expense'
-        '400':
-          description: Invalid input
-
-  /expenses/count:
-    get:
-      summary: Get total number of expenses
-      operationId: getExpensesCount
-      tags:
-        - Expenses
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: integer
-                example: 523
-
-  /expenses/{expenseId}:
-    get:
-      summary: Get expense by ID
-      operationId: getExpenseById
-      tags:
-        - Expenses
-      parameters:
-        - name: expenseId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Expense'
-        '404':
-          description: Expense not found
-    
-    put:
-      summary: Update expense
-      operationId: updateExpense
-      tags:
-        - Expenses
-      parameters:
-        - name: expenseId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExpenseInput'
-      responses:
-        '200':
-          description: Expense updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Expense'
-        '404':
-          description: Expense not found
-        '400':
-          description: Invalid input
-
-    delete:
-      summary: Delete expense
-      operationId: deleteExpense
-      tags:
-        - Expenses
-      parameters:
-        - name: expenseId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Expense deleted successfully
-        '404':
-          description: Expense not found
-
-  /geo:
-    get:
-      summary: Get geographical data
-      description: Returns a dictionary of country codes and country names
-      tags:
-        - Geo
-      operationId: getGeo
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Geo'
-
-  /employees:
-    get:
-      summary: List all employees
-      operationId: getEmployees
-      tags:
-        - Employees
-      parameters:
-        - name: employeeName
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/employeeName'
-        - name: departmentId
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/departmentId'
-        - name: skills
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
-        - name: skillsFiltering
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skillsFiltering'
-        - name: salaryFrom
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryFrom'
-        - name: salaryTo
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Employee'
-    post:
-      summary: Create a new employee
-      operationId: createEmployee
-      tags:
-        - Employees
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EmployeeInput'
-      responses:
-        '201':
-          description: Employee created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Employee'
-        '400':
-          description: Invalid input
-
-  /employees/count:
-    get:
-      summary: Get total number of employees
-      operationId: getEmployeesCount
-      tags:
-        - Employees
-      parameters:
-        - name: employeeName
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/employeeName'
-        - name: departmentId
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/departmentId'
-        - name: skills
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skills'
-        - name: skillsFiltering
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/skillsFiltering'
-        - name: salaryFrom
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryFrom'
-        - name: salaryTo
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/EmployeesSearchCriteria/properties/salaryTo'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: integer
-                example: 1250
-
-  /employees/{employeeId}:
-    get:
-      summary: Get employee by ID
-      operationId: getEmployeeById
-      tags:
-        - Employees
-      parameters:
-        - name: employeeId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Employee'
-        '404':
-          description: Employee not found
-    
-    put:
-      summary: Update employee
-      operationId: updateEmployee
-      tags:
-        - Employees
-      parameters:
-        - name: employeeId
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EmployeeInput'
-      responses:
-        '200':
-          description: Employee updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Employee'
-        '404':
-          description: Employee not found
-        '400':
-          description: Invalid input
-
-    delete:
-      summary: Delete employee
-      operationId: deleteEmployee
-      tags:
-        - Employees
-      parameters:
-        - name: employeeId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: Employee deleted successfully
-        '404':
-          description: Employee not found
-
-  /license:
-    get:
-      summary: Get license information
-      description: Returns the license text for the API
-      tags:
-        - System
-      parameters:
-        - in: header
-          name: Content-Type
-          required: true
-          schema:
-            type: string
-            enum: ["text/plain"]
-          description: Must be text/plain
-      responses:
-        '200':
-          description: License text retrieved successfully
-          content:
-            text/plain:
-              schema:
-                type: string
-        '400':
-          description: Invalid content type requested
-        '503':
-          description: License file not available
-
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      required:
-        - message
-
-    Geo:
-      type: object
-      additionalProperties:
-        type: string
-      example:
-        "US": "United States"
-        "UK": "United Kingdom"
-        "DE": "Germany"
-
     Money:
       type: number
       description: Monetary value in EUR
@@ -1229,6 +1216,28 @@ components:
       type: string
       pattern: "^[+]?[(]?[0-9]{1,4}[)]?[-\\s\\./0-9]*$"
       description: Phone number string
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - message
+
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "ERROR"
+        message:
+          type: string
+          example: "Database connection failed"
+      additionalProperties:
+        type: string
 
     BenefitCategory:
       type: string
@@ -1429,7 +1438,6 @@ components:
           $ref: '#/components/schemas/BenefitSubscriptionSearchStatus'
           example: "ACTIVE"
 
-
     BenefitChargeStatus:
       type: string
       description: Payment status of a benefit charge
@@ -1502,6 +1510,367 @@ components:
           format: date
           description: Filter charges with billing period ending before this date
           example: "2023-12-31"
+
+    Department:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      example:
+        id: 1
+        name: "Management"
+
+    DepartmentInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+
+    Nationality:
+      type: string
+      description: >
+        Nationality of employee as an
+        ISO 3166-1 alpha-2 country code
+      enum:
+        - "US"
+        - "UK"
+        - "FR"
+        - "DE"
+        - "NL"
+        - "PL"
+        - "IT"
+        - "ES"
+      example: "US"
+
+    ContractType:
+      type: string
+      description: Type of employment contract
+      enum:
+        - "CONTRACT"
+        - "PERMANENT"
+      example: "PERMANENT"
+
+    Skill:
+      type: string
+      description: Employee skill name
+      example: "JavaScript"
+
+    Employee:
+      type: object
+      required:
+        - id
+        - nationality
+        - department
+        - keycardId
+        - account
+        - salary
+        - office
+        - firstName
+        - lastName
+        - title
+        - contractType
+        - email
+        - hiredAt
+        - expiresAt
+        - personalInfo
+        - skills
+        - bio
+      properties:
+        id:
+          type: integer
+          example: 91720
+        nationality:
+          $ref: '#/components/schemas/Nationality'
+        department:
+          type: string
+        keycardId:
+          type: string
+        account:
+          type: string
+        salary:
+          $ref: '#/components/schemas/Money'
+        office:
+          type: array
+          minItems: 2
+          maxItems: 2
+          items:
+            type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        title:
+          type: string
+        contractType:
+          $ref: '#/components/schemas/ContractType'
+        email:
+          $ref: '#/components/schemas/Email'
+        hiredAt:
+          $ref: '#/components/schemas/DateString'
+        expiresAt:
+          $ref: '#/components/schemas/DateString'
+        personalInfo:
+          type: object
+          required:
+            - age
+            - phone
+            - email
+            - dateOfBirth
+            - address
+          properties:
+            age:
+              type: integer
+              minimum: 0
+            phone:
+              $ref: '#/components/schemas/Phone'
+            email:
+              $ref: '#/components/schemas/Email'
+            dateOfBirth:
+              $ref: '#/components/schemas/DateString'
+            address:
+              type: object
+              required:
+                - street
+                - city
+                - country
+              properties:
+                street:
+                  type: string
+                city:
+                  type: string
+                country:
+                  type: string
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        bio:
+          type: string
+        imgURL:
+          type: string
+      example:
+        id: 1234
+        nationality: "DE"
+        department: Marketing
+        keycardId: "KC-9876"
+        account: "DE89 3704 0044 0532 0130 00"
+        salary: 75000
+        office: ["Berlin", "HQ"]
+        firstName: "Hans"
+        lastName: "Schmidt"
+        title: "Senior Developer"
+        contractType: "PERMANENT"
+        email: "hans.schmidt@itcorpo.com"
+        hiredAt: "2020-01-15T00:00:00.000Z"
+        expiresAt: "2025-01-14T23:59:59.999Z"
+        personalInfo:
+          age: 35
+          phone: "+49 123 456789"
+          email: "hans.schmidt@gmail.com"
+          dateOfBirth: "1988-05-20T00:00:00.000Z"
+          address:
+            street: "Alexanderplatz 1"
+            city: "Berlin"
+            country: "Germany"
+        skills: ["JavaScript", "TypeScript", "React"]
+        bio: "Experienced developer with focus on frontend technologies"
+        imgURL: "hans-schmidt-profile.jpg"
+
+    EmployeeInput:
+      type: object
+      required:
+        - nationality
+        - department
+        - keycardId
+        - account
+        - salary
+        - office
+        - firstName
+        - lastName
+        - title
+        - contractType
+        - email
+        - hiredAt
+        - expiresAt
+        - personalInfo
+        - skills
+        - bio
+      properties:
+        nationality:
+          $ref: '#/components/schemas/Nationality'
+        department:
+          type: string
+        keycardId:
+          type: string
+        account:
+          type: string
+        salary:
+          $ref: '#/components/schemas/Money'
+        office:
+          type: array
+          minItems: 2
+          maxItems: 2
+          items:
+            type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        title:
+          type: string
+        contractType:
+          $ref: '#/components/schemas/ContractType'
+        email:
+          $ref: '#/components/schemas/Email'
+        hiredAt:
+          $ref: '#/components/schemas/DateString'
+        expiresAt:
+          $ref: '#/components/schemas/DateString'
+        personalInfo:
+          type: object
+          required:
+            - age
+            - phone
+            - email
+            - dateOfBirth
+            - address
+          properties:
+            age:
+              type: integer
+              minimum: 0
+            phone:
+              $ref: '#/components/schemas/Phone'
+            email:
+              $ref: '#/components/schemas/Email'
+            dateOfBirth:
+              $ref: '#/components/schemas/DateString'
+            address:
+              type: object
+              required:
+                - street
+                - city
+                - country
+              properties:
+                street:
+                  type: string
+                city:
+                  type: string
+                country:
+                  type: string
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        bio:
+          type: string
+        imgURL:
+          type: string
+
+    EmployeesSearchCriteria:
+      type: object
+      description: Criteria for filtering employees
+      properties:
+        employeeName:
+          type: string
+          description: Filter employees by name
+          example: "John Doe"
+        departmentId:
+          type: string
+          description: Filter employees by department ID
+          example: "123"
+        skills:
+          type: string
+          description: Filter employees by skills according to `skillsFiltering`
+          example: "JavaScript,React"
+        skillsFiltering:
+          type: string
+          enum: ["ANY", "ALL"]
+          default: "ANY"
+          description: If more than one skill is passed, return either employees with any of the skills (`ANY`) or with all of them (`ALL`)
+          example: "ANY"
+        salaryFrom:
+          type: string
+          description: Minimum salary amount
+          example: "5000"
+        salaryTo:
+          type: string
+          description: Maximum salary amount
+          example: "10000"
+
+    Expense:
+      type: object
+      required:
+        - id
+        - amount
+        - title
+        - payerAccount
+        - beneficiaryAccount
+        - beneficiaryAddress
+        - scheduledAt
+      properties:
+        id:
+          type: string
+        amount:
+          $ref: '#/components/schemas/Money'
+        title:
+          type: string
+        payerAccount:
+          type: string
+        beneficiaryAccount:
+          type: string
+        beneficiaryAddress:
+          type: string
+        scheduledAt:
+          type: string
+          format: date-time
+      example:
+        id: "f1c436a7-d9f5-4214-9be1-79766750b53b"
+        amount: 10927
+        title: "salary"
+        payerAccount: "DE89 3704 0044 0532 0130 00"
+        beneficiaryAccount: "PL61 1090 1014 0000 0712 1981 2874"
+        beneficiaryAddress: "445 Mount Eden Road, Mount Eden, Auckland"
+        scheduledAt: "2017-02-17T22:01:36.530Z"
+
+    ExpenseInput:
+      type: object
+      required:
+        - amount
+        - title
+        - payerAccount
+        - beneficiaryAccount
+        - beneficiaryAddress
+        - scheduledAt
+      properties:
+        amount:
+          $ref: '#/components/schemas/Money'
+        title:
+          type: string
+        payerAccount:
+          type: string
+        beneficiaryAccount:
+          type: string
+        beneficiaryAddress:
+          type: string
+        scheduledAt:
+          type: string
+          format: date-time
+
+    Geo:
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        "US": "United States"
+        "UK": "United Kingdom"
+        "DE": "Germany"
 
     OfficeAmenity:
       type: object
@@ -1785,367 +2154,3 @@ components:
           type: string
           description: Maximum project budget amount
           example: "50000"
-
-    Nationality:
-      type: string
-      description: >
-        Nationality of employee as an
-        ISO 3166-1 alpha-2 country code
-      enum:
-        - "US"
-        - "UK"
-        - "FR"
-        - "DE"
-        - "NL"
-        - "PL"
-        - "IT"
-        - "ES"
-      example: "US"
-
-    ContractType:
-      type: string
-      description: Type of employment contract
-      enum:
-        - "CONTRACT"
-        - "PERMANENT"
-      example: "PERMANENT"
-
-    Department:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-      example:
-        id: 1
-        name: "Management"
-
-    DepartmentInput:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-
-    Expense:
-      type: object
-      required:
-        - id
-        - amount
-        - title
-        - payerAccount
-        - beneficiaryAccount
-        - beneficiaryAddress
-        - scheduledAt
-      properties:
-        id:
-          type: string
-        amount:
-          $ref: '#/components/schemas/Money'
-        title:
-          type: string
-        payerAccount:
-          type: string
-        beneficiaryAccount:
-          type: string
-        beneficiaryAddress:
-          type: string
-        scheduledAt:
-          type: string
-          format: date-time
-      example:
-        id: "f1c436a7-d9f5-4214-9be1-79766750b53b"
-        amount: 10927
-        title: "salary"
-        payerAccount: "DE89 3704 0044 0532 0130 00"
-        beneficiaryAccount: "PL61 1090 1014 0000 0712 1981 2874"
-        beneficiaryAddress: "445 Mount Eden Road, Mount Eden, Auckland"
-        scheduledAt: "2017-02-17T22:01:36.530Z"
-
-    ExpenseInput:
-      type: object
-      required:
-        - amount
-        - title
-        - payerAccount
-        - beneficiaryAccount
-        - beneficiaryAddress
-        - scheduledAt
-      properties:
-        amount:
-          $ref: '#/components/schemas/Money'
-        title:
-          type: string
-        payerAccount:
-          type: string
-        beneficiaryAccount:
-          type: string
-        beneficiaryAddress:
-          type: string
-        scheduledAt:
-          type: string
-          format: date-time
-
-    Skill:
-      type: string
-      description: Employee skill name
-      example: "JavaScript"
-
-    Employee:
-      type: object
-      required:
-        - id
-        - nationality
-        - department
-        - keycardId
-        - account
-        - salary
-        - office
-        - firstName
-        - lastName
-        - title
-        - contractType
-        - email
-        - hiredAt
-        - expiresAt
-        - personalInfo
-        - skills
-        - bio
-      properties:
-        id:
-          type: integer
-          example: 91720
-        nationality:
-          $ref: '#/components/schemas/Nationality'
-        department:
-          type: string
-        keycardId:
-          type: string
-        account:
-          type: string
-        salary:
-          $ref: '#/components/schemas/Money'
-        office:
-          type: array
-          minItems: 2
-          maxItems: 2
-          items:
-            type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        title:
-          type: string
-        contractType:
-          $ref: '#/components/schemas/ContractType'
-        email:
-          $ref: '#/components/schemas/Email'
-        hiredAt:
-          $ref: '#/components/schemas/DateString'
-        expiresAt:
-          $ref: '#/components/schemas/DateString'
-        personalInfo:
-          type: object
-          required:
-            - age
-            - phone
-            - email
-            - dateOfBirth
-            - address
-          properties:
-            age:
-              type: integer
-              minimum: 0
-            phone:
-              $ref: '#/components/schemas/Phone'
-            email:
-              $ref: '#/components/schemas/Email'
-            dateOfBirth:
-              $ref: '#/components/schemas/DateString'
-            address:
-              type: object
-              required:
-                - street
-                - city
-                - country
-              properties:
-                street:
-                  type: string
-                city:
-                  type: string
-                country:
-                  type: string
-        skills:
-          type: array
-          items:
-            $ref: '#/components/schemas/Skill'
-        bio:
-          type: string
-        imgURL:
-          type: string
-      example:
-        id: 1234
-        nationality: "DE"
-        department: Marketing
-        keycardId: "KC-9876"
-        account: "DE89 3704 0044 0532 0130 00"
-        salary: 75000
-        office: ["Berlin", "HQ"]
-        firstName: "Hans"
-        lastName: "Schmidt"
-        title: "Senior Developer"
-        contractType: "PERMANENT"
-        email: "hans.schmidt@itcorpo.com"
-        hiredAt: "2020-01-15T00:00:00.000Z"
-        expiresAt: "2025-01-14T23:59:59.999Z"
-        personalInfo:
-          age: 35
-          phone: "+49 123 456789"
-          email: "hans.schmidt@gmail.com"
-          dateOfBirth: "1988-05-20T00:00:00.000Z"
-          address:
-            street: "Alexanderplatz 1"
-            city: "Berlin"
-            country: "Germany"
-        skills: ["JavaScript", "TypeScript", "React"]
-        bio: "Experienced developer with focus on frontend technologies"
-        imgURL: "hans-schmidt-profile.jpg"
-
-    EmployeeInput:
-      type: object
-      required:
-        - nationality
-        - department
-        - keycardId
-        - account
-        - salary
-        - office
-        - firstName
-        - lastName
-        - title
-        - contractType
-        - email
-        - hiredAt
-        - expiresAt
-        - personalInfo
-        - skills
-        - bio
-      properties:
-        nationality:
-          $ref: '#/components/schemas/Nationality'
-        department:
-          type: string
-        keycardId:
-          type: string
-        account:
-          type: string
-        salary:
-          $ref: '#/components/schemas/Money'
-        office:
-          type: array
-          minItems: 2
-          maxItems: 2
-          items:
-            type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        title:
-          type: string
-        contractType:
-          $ref: '#/components/schemas/ContractType'
-        email:
-          $ref: '#/components/schemas/Email'
-        hiredAt:
-          $ref: '#/components/schemas/DateString'
-        expiresAt:
-          $ref: '#/components/schemas/DateString'
-        personalInfo:
-          type: object
-          required:
-            - age
-            - phone
-            - email
-            - dateOfBirth
-            - address
-          properties:
-            age:
-              type: integer
-              minimum: 0
-            phone:
-              $ref: '#/components/schemas/Phone'
-            email:
-              $ref: '#/components/schemas/Email'
-            dateOfBirth:
-              $ref: '#/components/schemas/DateString'
-            address:
-              type: object
-              required:
-                - street
-                - city
-                - country
-              properties:
-                street:
-                  type: string
-                city:
-                  type: string
-                country:
-                  type: string
-        skills:
-          type: array
-          items:
-            $ref: '#/components/schemas/Skill'
-        bio:
-          type: string
-        imgURL:
-          type: string
-
-    EmployeesSearchCriteria:
-      type: object
-      description: Criteria for filtering employees
-      properties:
-        employeeName:
-          type: string
-          description: Filter employees by name
-          example: "John Doe"
-        departmentId:
-          type: string
-          description: Filter employees by department ID
-          example: "123"
-        skills:
-          type: string
-          description: Filter employees by skills according to `skillsFiltering`
-          example: "JavaScript,React"
-        skillsFiltering:
-          type: string
-          enum: ["ANY", "ALL"]
-          default: "ANY"
-          description: If more than one skill is passed, return either employees with any of the skills (`ANY`) or with all of them (`ALL`)
-          example: "ANY"
-        salaryFrom:
-          type: string
-          description: Minimum salary amount
-          example: "5000"
-        salaryTo:
-          type: string
-          description: Maximum salary amount
-          example: "10000"
-
-    HealthStatus:
-      type: object
-      properties:
-        status:
-          type: string
-          example: "ERROR"
-        message:
-          type: string
-          example: "Database connection failed"
-      additionalProperties:
-        type: string

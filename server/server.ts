@@ -1,15 +1,13 @@
 import express from 'express';
-import jsonServer from 'json-server';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import compression from 'compression'
-import * as OpenApiValidator from 'express-openapi-validator';
 
-import { FILES } from '../lib/files';
-import { cliConfig } from '../lib/config';
-import { logger } from '../lib/logger';
+import jsonServer from 'json-server';
+// import { FILES } from '../lib/files';
+// import { cliConfig } from '../lib/config';
 
 import { delayingMiddleware } from '../middlewares/delaying';
 import { tenantMiddleware } from '../middlewares/tenant';
@@ -35,15 +33,21 @@ import { projectsRouter } from '../resources/projects.router';
 import { geoRouter } from '../resources/geo.router';
 import { expensesRouter } from '../resources/expenses.router';
 import { maintenanceMiddleware } from '../middlewares/maintenance';
+import { openapiValidator } from '../middlewares/openapi-validator';
 
-export const createServer = () => {
-  // const app = jsonServer.create();
+export type ServerConfig = {
+  fail: number;
+  failUrls: string | null;
+  jwtAuth: boolean;
+  tenantRequired: boolean;
+  delayRange: [number, number];
+  middlewares: Record<'CONTRACT_VALIDATION' | 'LOGGER' | 'DELAY', boolean>
+  routesRewrite: Record<string, string>;
+}
+
+export const createServer = (serverConfig: ServerConfig) => {
   const app = express();
   const jsonParser = bodyParser.json();
-
-  // const router = jsonServer.router(FILES.JSONSERVER_DB_FILE);
-  // (router as any).render = countMiddleware; // TODO: json-server is still in beta, need to wait for the solution
-  // const db: JSONServerDatabase = router.db;
 
   app.use(cors({
     origin: true,
@@ -56,33 +60,19 @@ export const createServer = () => {
   }));
   app.use(compression());
   app.use(HTTPCacheMiddleware());
-  if (cliConfig.contractValidation) {
-    logger.config('OpenAPI contract validation enabled');
-    app.use(
-      OpenApiValidator.middleware({
-        apiSpec: FILES.CONTRACT_FILE,
-        validateRequests: true,
-        validateResponses: false,
-        ignorePaths: (path: string) => {
-          return [
-            path === '/favicon.ico',
-            path === '/',
-            path.startsWith('/api'),
-            path.startsWith('/__'),
-            path.startsWith('/images'),
-          ].some(p => p)
-        },
-      }),
-    );
+  
+  if (serverConfig.middlewares.CONTRACT_VALIDATION) {
+    app.use(openapiValidator());
   };
-  app.use(jsonServer.rewriter(require(FILES.ROUTES_FILE)));
+
+  app.use(jsonServer.rewriter(serverConfig.routesRewrite));
   // app.use(rewriteRouter(require(FILES.ROUTES_FILE))); // FIXME
 
-  app.use(authMiddleware(cliConfig.jwtAuth));
-  app.use(delayingMiddleware(cliConfig.delayRange));
-  app.use(tenantMiddleware(cliConfig.tenantRequired));
+  app.use(authMiddleware(serverConfig.jwtAuth));
+  app.use(delayingMiddleware(serverConfig.delayRange));
+  app.use(tenantMiddleware(serverConfig.tenantRequired));
   app.use(pagingMiddleware(50, { excludePatterns: ['/log'] }));
-  app.use(failingMiddleware(cliConfig.fail, cliConfig.failUrls));
+  app.use(failingMiddleware(serverConfig.fail, serverConfig.failUrls));
   app.use(maintenanceMiddleware());
 
   app.use('/benefits', benefitsRouter);
@@ -99,7 +89,6 @@ export const createServer = () => {
   app.use('/health', healthCheckRouter());
   app.use('/api', swaggerRouter);
   app.use(configRouter());
-  // app.use(router);
   app.use(errorMiddleware());
 
   return app;

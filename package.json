@@ -8,10 +8,10 @@
     "url": "https://ducin.dev"
   },
   "scripts": {
-    "start": "concurrently \"ts-node server\" \"npm run open\"",
+    "start": "concurrently \"ts-node scripts/run-server\" \"npm run open\"",
     "dev": "concurrently \"npm run server:dev\" \"npm run dev:prism-proxy\" \"npm run dev:contract:generate-types\" \"npm run open\"",
     "open": "ts-node scripts/open-index",
-    "server:dev": "nodemon --ext ts,json --watch resources --watch middlewares --watch lib --watch server.ts server",
+    "server:dev": "nodemon --ext ts,json --watch resources --watch middlewares --watch lib --watch server scripts/run-server",
     "migrate:database": "ts-node migrate/migrate.ts",
     "contract:validate": "redocly lint contract/openapi.yml --format stylish",
     "contract:generate-docs": "redocly build-docs contract/openapi.yml && mkdir -p docs && mv redoc-static.html docs/index.html && touch docs/.nojekyll",

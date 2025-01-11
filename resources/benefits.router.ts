@@ -128,13 +128,11 @@ router.get('/:benefitId/charges', async (
 ) => {
     try {
         await db.read();
-        const searchCriteria = {
-            ...req.query,
-            benefitId: req.params.benefitId
-        };
+        const searchCriteria = { ...req.query };
+
         const filteredCharges = processBenefitChargesSearchCriteria({
             benefitCharges: db.data.benefitCharges
-        }, searchCriteria);
+        }, { ...searchCriteria, subscriptionId: req.params.benefitId });
         res.json(filteredCharges);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch benefit charges: ${error}` });

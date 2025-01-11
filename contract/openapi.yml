@@ -754,6 +754,7 @@ paths:
         - name: employeeId
           in: path
           required: true
+          example: 91720
           schema:
             type: integer
       responses:

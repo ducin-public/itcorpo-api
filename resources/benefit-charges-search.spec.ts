@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest'
 
-import { BenefitCharge, BenefitChargesSearchCriteria } from '../contract-types/data-contracts';
+import { BenefitCharge } from '../contract-types/data-contracts';
 import { DbSchema } from '../lib/db';
 import { mockBenefitCharge } from '../mocks/benefit-charge.mock';
 import { mockBenefitSubscription } from '../mocks/benefit-subscription.mock';
 import { processBenefitChargesSearchCriteria } from './benefit-charges-search';
+import { Benefits } from '../contract-types/BenefitsRoute';
 
 describe('processBenefitChargesSearchCriteria', () => {
   const mockSubscription1 = mockBenefitSubscription({ id: '1' });
@@ -52,7 +53,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
   it('should filter by subscription ID', () => {
     // given
-    const criteria: BenefitChargesSearchCriteria = {
+    const criteria: Benefits.GetBenefitCharges.RequestQuery = {
       subscriptionId: mockSubscription1.id
     };
     // when
@@ -64,7 +65,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
   it('should filter by providerServiceCode', () => {
     // given
-    const criteria: BenefitChargesSearchCriteria = {
+    const criteria: Benefits.GetBenefitCharges.RequestQuery = {
       providerServiceCode: 'MS-CARD-01'
     };
     // when
@@ -76,7 +77,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
   it('should filter by billingPeriodFrom only', () => {
     // given
-    const criteria: BenefitChargesSearchCriteria = {
+    const criteria: Benefits.GetBenefitCharges.RequestQuery = {
       billingPeriodFrom: '2023-03-19'
     };
     // when
@@ -88,7 +89,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
   it('should filter by billingPeriodTo only', () => {
     // given
-    const criteria: BenefitChargesSearchCriteria = {
+    const criteria: Benefits.GetBenefitCharges.RequestQuery = {
       billingPeriodTo: '2023-02-11'
     };
     // when
@@ -100,7 +101,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
   it('should filter by both billing period bounds', () => {
     // given
-    const criteria: BenefitChargesSearchCriteria = {
+    const criteria: Benefits.GetBenefitCharges.RequestQuery = {
       billingPeriodFrom: '2023-02-01',
       billingPeriodTo: '2023-03-31'
     };
@@ -114,7 +115,7 @@ describe('processBenefitChargesSearchCriteria', () => {
   describe('billing period edge cases', () => {
     it('should match charge when period exactly matches charge period', () => {
       // given
-      const criteria: BenefitChargesSearchCriteria = {
+      const criteria: Benefits.GetBenefitCharges.RequestQuery = {
         billingPeriodFrom: '2023-01-10',
         billingPeriodTo: '2023-01-20'
       };
@@ -128,7 +129,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
     it('should match charge when period ends exactly at charge start', () => {
       // given
-      const criteria: BenefitChargesSearchCriteria = {
+      const criteria: Benefits.GetBenefitCharges.RequestQuery = {
         billingPeriodTo: '2023-01-10'
       };
       // when
@@ -141,7 +142,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
     it('should match charge when period starts exactly at charge end', () => {
       // given
-      const criteria: BenefitChargesSearchCriteria = {
+      const criteria: Benefits.GetBenefitCharges.RequestQuery = {
         billingPeriodFrom: '2023-01-20'
       };
       // when
@@ -160,7 +161,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
     it('should not match charge when period ends just before charge start', () => {
       // given
-      const criteria: BenefitChargesSearchCriteria = {
+      const criteria: Benefits.GetBenefitCharges.RequestQuery = {
         billingPeriodFrom: '2023-01-01',
         billingPeriodTo: '2023-01-09'
       };
@@ -174,7 +175,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
     it('should not match charge when period starts just after charge end', () => {
       // given
-      const criteria: BenefitChargesSearchCriteria = {
+      const criteria: Benefits.GetBenefitCharges.RequestQuery = {
         billingPeriodFrom: '2023-01-21',
         billingPeriodTo: '2023-01-31'
       };
@@ -189,7 +190,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
   it('should filter by multiple criteria with matches', () => {
     // given
-    const criteria: BenefitChargesSearchCriteria = {
+    const criteria: Benefits.GetBenefitCharges.RequestQuery = {
       subscriptionId: mockSubscription2.id,
       status: 'PENDING',
       billingPeriodFrom: '2023-03-01',
@@ -205,7 +206,7 @@ describe('processBenefitChargesSearchCriteria', () => {
 
   it('should return empty result for criteria with no matches', () => {
     // given
-    const criteria: BenefitChargesSearchCriteria = {
+    const criteria: Benefits.GetBenefitCharges.RequestQuery = {
       subscriptionId: mockSubscription1.id,
       status: 'CANCELLED',
       billingPeriodFrom: '2023-03-01',

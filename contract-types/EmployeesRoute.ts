@@ -148,6 +148,7 @@ export namespace Employees {
    */
   export namespace GetEmployeeById {
     export type RequestParams = {
+      /** @example 91720 */
       employeeId: number;
     };
     export type RequestQuery = {};

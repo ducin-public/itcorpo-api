@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import { Office, ErrorResponse } from '../contract-types/data-contracts';
 import { Offices } from '../contract-types/OfficesRoute';
-import { db } from '../lib/db';
+import { db } from '../lib/db/db-connection';
 import { processOfficesSearchCriteria } from './offices-search';
 
 const router = Router();

@@ -1,5 +1,5 @@
 import { Project } from "../contract-types/data-contracts";
-import { DBProject } from "../lib/db-schema";
+import { DBProject } from "../lib/db/db-schema";
 import { migrationBuffer } from "./migration-buffer";
 
 // IMPORTANT: This function mutates migrationBuffer

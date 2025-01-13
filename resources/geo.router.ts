@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import { ErrorResponse } from '../contract-types/data-contracts';
 import { Geo } from '../contract-types/GeoRoute';
-import { db } from '../lib/db';
+import { db } from '../lib/db/db-connection';
 
 const router = Router();
 

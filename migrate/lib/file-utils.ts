@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { DbSchema } from '../../lib/db-schema';
+import { DbSchema } from '../../lib/db/db-schema';
 import { logger } from '../../lib/logger';
 
 export function readDatabaseFile(filePath: string): DbSchema {

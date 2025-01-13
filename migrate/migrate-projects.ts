@@ -1,4 +1,4 @@
-import { DBProject, DbSchema } from '../lib/db-schema';
+import { DBProject, DbSchema } from '../lib/db/db-schema';
 import { migrationBuffer } from './migration-buffer';
 import { logger } from '../lib/logger';
 

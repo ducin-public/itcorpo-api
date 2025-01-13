@@ -1,4 +1,4 @@
-import { DBOffice, DBOfficeAmenity, DbSchema } from '../lib/db-schema';
+import { DBOffice, DBOfficeAmenity, DbSchema } from '../lib/db/db-schema';
 import { logger } from '../lib/logger';
 
 function getRandomInt(min: number, max: number): number {

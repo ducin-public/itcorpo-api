@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { DbSchema } from '../lib/db-schema';
+import { DbSchema } from '../lib/db/db-schema';
 import { mockBenefitSubscription } from '../mocks/benefit-subscription.mock';
 import { mockEmployee } from '../mocks/employee.mock';
 import { processBenefitsSearchCriteria } from './benefit-search';

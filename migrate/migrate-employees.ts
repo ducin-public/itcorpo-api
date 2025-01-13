@@ -1,5 +1,5 @@
 import { logger } from '../lib/logger'
-import { DbSchema } from '../lib/db-schema';
+import { DbSchema } from '../lib/db/db-schema';
 
 export const migrateEmployees = (db: DbSchema) => {
     logger.debug(`Found ${db.employees.length} employees to process`);

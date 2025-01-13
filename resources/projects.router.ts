@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import { Project, ErrorResponse, ProjectEmployeeInvolvement } from '../contract-types/data-contracts';
 import { Projects } from '../contract-types/ProjectsRoute';
-import { db } from '../lib/db';
+import { db } from '../lib/db/db-connection';
 import { Employees } from '../contract-types/EmployeesRoute';
 import { processProjectsSearchCriteria } from './project-search';
 import { attachTeamToProject, attachTeamToAllProjects } from './project-data-operations';

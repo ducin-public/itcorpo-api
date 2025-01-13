@@ -5,7 +5,7 @@ import { migrateEmployees } from './migrate-employees';
 import { readDatabaseFile, writeDatabaseFile } from './lib/file-utils';
 import { generateBenefits } from './generate-benefits';
 import { FILES } from '../lib/files';
-import { DbSchema } from '../lib/db-schema';
+import { DbSchema } from '../lib/db/db-schema';
 import { checkIntegrity } from './check-integrity';
 import { validateDatabase } from './validate-database';
 import { migrateProjectTeams } from './migrate-project-teams';

@@ -1,6 +1,6 @@
 import { Project } from '../contract-types/data-contracts';
 import { Projects } from '../contract-types/ProjectsRoute';
-import { DBProject, DbSchema } from '../lib/db-schema';
+import { DBProject, DbSchema } from '../lib/db/db-schema';
 
 /**
  * Processes projects search criteria and filters projects based on provided criteria

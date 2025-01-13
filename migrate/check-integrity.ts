@@ -1,4 +1,4 @@
-import { DbSchema } from "../lib/db-schema";
+import { DbSchema } from "../lib/db/db-schema";
 import { logger } from "../lib/logger";
 
 export const checkProjectTeamIntegrity = (dbContent: DbSchema) => {

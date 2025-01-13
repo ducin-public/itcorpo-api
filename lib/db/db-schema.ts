@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { BenefitCharge, BenefitService, BenefitSubscription, Department, Employee, EngagementLevel, Expense, Geo, Office, OfficeAmenity, Project } from '../contract-types/data-contracts';
+import { BenefitCharge, BenefitService, BenefitSubscription, Department, Employee, EngagementLevel, Expense, Geo, Office, OfficeAmenity, Project } from '../../contract-types/data-contracts';
 
 const ENGAGEMENT_LEVELS = ['FULL_TIME', 'PARTIAL_PLUS', 'HALF_TIME', 'ON_DEMAND'] as const;
 

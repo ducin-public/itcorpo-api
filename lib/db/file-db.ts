@@ -1,9 +1,8 @@
 import { readFile, writeFile } from 'fs/promises';
 
-import { DbSchema } from './db-schema';
-import { FILES } from './files';
-import { logger } from './logger';
-import { measureTime } from './perf';
+import { logger } from '../logger';
+import { measureTime } from '../perf';
+import { ZodType } from 'zod';
 
 // an object type which accepts `TDatabase extends object` where keys are keys of TDatabase, but filtered: only the ones which values are an array, (2) the array item has an id property; the value of the result type is the type of an id (e.g. { employee: number, project: string, ... })
 type CollectionIdType<TDatabase extends object> = {
@@ -18,35 +17,30 @@ type OnlyNumbers<TDatabase extends object> = {
         : never;
 }[keyof CollectionIdType<TDatabase>];
 
+type FileDbConfig = {
+    path: string;
+    accessMode: "R" | "RW";
+};
+
 export class FileDb<TDatabase extends object> {
     data: TDatabase;
 
-    constructor(private config: {
-        path: string;
-        requiredCollections: readonly (keyof TDatabase)[];
-    }) {
+    constructor(private config: FileDbConfig) {
         this.data = {} as TDatabase;
     }
 
-    private validateData(data: unknown): asserts data is TDatabase {
-        if (!data || typeof data !== 'object') {
-            throw new Error('Database content must be an object');
-        }
+    // private validateData(zodSchema: ZodType): asserts data is TDatabase {
+        // TODO: implement this
+    // }
 
-        for (const collection of this.config.requiredCollections) {
-            if (!Array.isArray((data as any)[collection])) {
-                throw new Error(
-                    `Database must contain collection "${String(collection)}" as an array`
-                );
-            }
-        }
+    canWrite() {
+        return this.config.accessMode === 'RW';
     }
 
     async read() {
         try {
             const content = await measureTime(() => readFile(this.config.path, 'utf-8'), 'db-read');
             const parsed = JSON.parse(content);
-            this.validateData(parsed);
             this.data = parsed;
             logger.debug(`Database loaded`);
         } catch (error) {
@@ -56,6 +50,12 @@ export class FileDb<TDatabase extends object> {
     }
 
     async write() {
+        if (!this.canWrite()) {
+            const message = 'Cannot write to database in read-only mode';
+            logger.error(message);
+            throw new Error(message);
+        }
+
         try {
             await measureTime(() => writeFile(
                 this.config.path, 
@@ -81,14 +81,4 @@ export class FileDb<TDatabase extends object> {
         const items = this.data[collection] as unknown as Array<{ id: number }>;
         return Math.max(...items.map(item => item.id), 0) + 1;
     }
-}
-
-export const db = new FileDb<DbSchema>({
-    path: FILES.DATABASE_FILE,
-    requiredCollections: ['departments', 'offices', 'officeAmenities'] as const
-});
-
-export async function initDb() {
-    await db.read();
-    return db
 }

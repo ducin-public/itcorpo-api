@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { Employee, ErrorResponse, ProjectEmployeeInvolvement } from '../contract-types/data-contracts';
 import { Employees } from '../contract-types/EmployeesRoute';
-import { db } from '../lib/db';
+import { db } from '../lib/db/db-connection';
 import { processEmployeesSearchCriteria } from './employee-search';
 
 const router = Router();

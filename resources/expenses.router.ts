@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import { Expense, ErrorResponse } from '../contract-types/data-contracts';
 import { Expenses } from '../contract-types/ExpensesRoute';
-import { db } from '../lib/db';
+import { db } from '../lib/db/db-connection';
 
 const router = Router();
 

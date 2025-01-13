@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import { Department, ErrorResponse } from '../contract-types/data-contracts';
 import { Departments } from '../contract-types/DepartmentsRoute';
-import { db } from '../lib/db';
+import { db } from '../lib/db/db-connection';
 
 const router = Router();
 

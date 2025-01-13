@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { BenefitSubscription, ErrorResponse } from '../contract-types/data-contracts';
 import { Benefits } from '../contract-types/BenefitsRoute';
-import { db } from '../lib/db';
+import { db } from '../lib/db/db-connection';
 import { processBenefitsSearchCriteria } from './benefit-search';
 import { processBenefitChargesSearchCriteria } from './benefit-charges-search';
 

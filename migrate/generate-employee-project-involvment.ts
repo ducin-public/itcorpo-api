@@ -1,4 +1,4 @@
-import { DbSchema } from '../lib/db-schema';
+import { DbSchema } from '../lib/db/db-schema';
 import { EngagementLevel } from '../contract-types/data-contracts';
 
 // export enum EngagementLevel {

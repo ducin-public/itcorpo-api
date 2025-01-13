@@ -1,6 +1,6 @@
-import { DbSchema, zodDatabaseSchemas } from "../lib/db-schema";
+import { DbSchema, zodDatabaseSchemas } from "../lib/db/db-schema";
 
-// use zod schemas (from lib/db-schema.ts) to validate the projects and projectTeams collections
+// use zod schemas (from lib/db/db-schema.ts) to validate the projects and projectTeams collections
 export const validateDatabase = (dbContent: DbSchema): void => {
     for (const project of dbContent.projects) {
         const result = zodDatabaseSchemas.project.safeParse(project);

@@ -1,11 +1,14 @@
 // todos
 
 - break database.json into multiple files
+- in-memory DB run for tests
 - pagination
 - openapi validation: http://localhost:3000/employees/91720
+- .hbs files
 - rewrite router
 - https://www.npmjs.com/package/helmet
 - license content-type: https://swagger.io/docs/specification/v3_0/describing-parameters/#header-parameters
+
 - search feed for employees autocompleter:
 export interface EmployeesSearchCriteria {
   mode?: "STANDARD" | "SEARCH_FEED";

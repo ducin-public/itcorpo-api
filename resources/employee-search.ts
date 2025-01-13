@@ -1,6 +1,6 @@
 import { Employee } from '../contract-types/data-contracts';
 import { Employees } from '../contract-types/EmployeesRoute';
-import { DbSchema } from '../lib/db-schema';
+import { DbSchema } from '../lib/db/db-schema';
 
 /**
  * Processes employees search criteria and filters employees based on provided criteria

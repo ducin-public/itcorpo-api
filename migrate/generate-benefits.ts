@@ -5,7 +5,7 @@ import { BenefitService, BenefitCharge, BenefitChargeStatus, BenefitSubscription
 import { logger } from '../lib/logger'
 import { benefitServices, PRICE_RANGES } from './benefit-services'
 import { randomInt } from './lib/random'
-import { DbSchema } from '../lib/db-schema'
+import { DbSchema } from '../lib/db/db-schema'
 
 const PROBABILITIES = {
   EMPLOYEE: {

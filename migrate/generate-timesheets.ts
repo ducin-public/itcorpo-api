@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { ACTIVITY_TYPES, DbSchema, DBTimeEntry, DBTimesheetPeriod } from '../lib/db-schema';
+import { ACTIVITY_TYPES, DbSchema, DBTimeEntry, DBTimesheetPeriod } from '../lib/db/db-schema';
 
 const generateTimeEntry = (
     employeeId: number,

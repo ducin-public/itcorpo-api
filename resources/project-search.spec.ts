@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { processProjectsSearchCriteria } from './project-search'
-import { DbSchema } from '../lib/db-schema'
+import { DbSchema } from '../lib/db/db-schema'
 import { mockProject } from '../mocks/projects.mock';
 import { Projects } from '../contract-types/ProjectsRoute';
 

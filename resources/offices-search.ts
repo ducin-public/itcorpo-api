@@ -1,6 +1,6 @@
 import { Office } from '../contract-types/data-contracts';
 import { Offices } from '../contract-types/OfficesRoute';
-import { DbSchema } from '../lib/db-schema';
+import { DbSchema } from '../lib/db/db-schema';
 
 /**
  * Processes offices search criteria and filters offices based on provided criteria

@@ -1,6 +1,6 @@
 import { Benefits } from '../contract-types/BenefitsRoute';
 import { BenefitCharge } from '../contract-types/data-contracts';
-import { DbSchema } from '../lib/db-schema';
+import { DbSchema } from '../lib/db/db-schema';
 
 /**
  * Processes benefit charges search criteria and filters charges based on provided criteria

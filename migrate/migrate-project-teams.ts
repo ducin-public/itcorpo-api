@@ -1,4 +1,4 @@
-import { DBProjectTeam, DbSchema } from "../lib/db-schema";
+import { DBProjectTeam, DbSchema } from "../lib/db/db-schema";
 import { logger } from "../lib/logger";
 import { randomDate, randomFromArray } from "./lib/random";
 

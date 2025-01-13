@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 
 import { processEmployeesSearchCriteria } from "./employee-search";
 import { mockEmployee } from '../mocks/employee.mock';
-import { DbSchema } from '../lib/db';
+import { DbSchema } from '../lib/db-schema';
 import { Employees } from '../contract-types/EmployeesRoute';
 
 describe('processEmployeesSearchCriteria', () => {

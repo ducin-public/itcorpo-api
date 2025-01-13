@@ -1,14 +1,14 @@
 import { describe, it, expect } from 'vitest'
 
-import { DbSchema } from '../lib/db';
+import { DbSchema } from '../lib/db-schema';
 import { mockBenefitSubscription } from '../mocks/benefit-subscription.mock';
 import { mockEmployee } from '../mocks/employee.mock';
 import { processBenefitsSearchCriteria } from './benefit-search';
 import { Benefits } from '../contract-types/BenefitsRoute';
 
 describe('processBenefitsSearchCriteria', () => {
-  const mockDb: Pick<DbSchema, 'benefits' | 'employees'> = {
-    benefits: [
+  const mockDb: Pick<DbSchema, 'benefitSubscriptions' | 'employees'> = {
+    benefitSubscriptions: [
       mockBenefitSubscription({ 
         service: { name: 'MultiSport Card' },
         category: 'SPORT_WELLNESS',

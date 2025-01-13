@@ -358,6 +358,16 @@ export interface OfficeInput {
  */
 export type ProjectStatus = "PLANNING" | "ACTIVE" | "COMPLETED" | "ON_HOLD";
 
+/**
+ * Level of employee engagement in the project
+ * @example "FULL_TIME"
+ */
+export type EngagementLevel =
+  | "FULL_TIME"
+  | "PARTIAL_PLUS"
+  | "HALF_TIME"
+  | "ON_DEMAND";
+
 /** @example {"id":"579ef28f-c539-41ff-abe2-e4f6b1c1afed","name":"Licensed Cotton Pants","status":"on-hold","budget":490000,"startDate":"2013-04-16","endDate":"2019-04-27","team":[{"id":4247456,"name":"Anna Bahringer"}],"manager":67429059,"description":"Deleniti rerum impedit.\nCum sed eaque quo accusantium."} */
 export interface Project {
   id: string;
@@ -394,4 +404,18 @@ export interface ProjectInput {
   }[];
   manager: number;
   description: string;
+}
+
+/** Employee's involvement in a project */
+export interface ProjectEmployeeInvolvement {
+  employeeId: number;
+  projectId: string;
+  employeeName: string;
+  projectName: string;
+  /** Status of the ongoing project's workflow */
+  projectStatus: ProjectStatus;
+  /** Level of employee engagement in the project */
+  engagementLevel: EngagementLevel;
+  /** @format date */
+  since: string;
 }

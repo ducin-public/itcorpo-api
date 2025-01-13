@@ -2,23 +2,27 @@ import { logger } from '../lib/logger';
 import { migrateOffices } from './migrate-offices';
 import { migrateProjects } from './migrate-projects';
 import { migrateEmployees } from './migrate-employees';
-import { readDatabaseFile, writeDatabaseFile } from './file-utils';
-import { DatabaseContent } from './migration-types';
+import { readDatabaseFile, writeDatabaseFile } from './lib/file-utils';
 import { generateBenefits } from './generate-benefits';
 import { FILES } from '../lib/files';
+import { DbSchema } from '../lib/db-schema';
+import { checkIntegrity } from './check-integrity';
+import { validateDatabase } from './validate-database';
+import { migrateProjectTeams } from './migrate-project-teams';
+import { generateTimesheets } from './generate-timesheets';
+
+process.env.TZ = 'UTC';
 
 logger.info('Starting database migration...');
-const dbContent: DatabaseContent = readDatabaseFile(FILES.DATABASE_FILE);
-const updatedOffices = migrateOffices(dbContent);
-const updatedProjects = migrateProjects(dbContent);
-const updatedEmployees = migrateEmployees(dbContent);
-const { benefitServices, benefitSubscriptions, benefitCharges } = generateBenefits(dbContent);
+const dbContent: DbSchema = readDatabaseFile(FILES.DATABASE_FILE);
 
 const migrateToggles = {
+    employees: false,
+    benefits: false,
     offices: false,
     projects: false,
-    employees: false,
-    benefits: true,
+    projectTeams: false,
+    timesheets: false,
 }
 
 const migrationTargets = Object.entries(migrateToggles).filter(([_, value]) => value).map(([key]) => key)
@@ -29,25 +33,30 @@ if (migrationTargets.length === 0) {
     logger.info(`Migrating: ${migrationTargets.join(', ')}.`);
 }
 
-function reorderDatabaseContentKeys(content: DatabaseContent): DatabaseContent {
-    const { logs, benefitServices, benefits, benefitCharges, ...rest } = content;
+function reorderDatabaseContentKeys(content: DbSchema): DbSchema {
+    const { logs, benefitServices, benefitSubscriptions, benefitCharges, ...rest } = content;
     return {
         logs,
         benefitServices,
-        benefits,
+        benefitSubscriptions,
         benefitCharges,
         ...rest,
     };
 }
 
-const updatedContent: DatabaseContent = {
+const updatedContent: DbSchema = {
     ...dbContent,
-    ...(migrateToggles.offices && { offices: updatedOffices }),
-    ...(migrateToggles.projects && { projects: updatedProjects }),
-    ...(migrateToggles.employees && { employees: updatedEmployees }),
-    benefits: benefitSubscriptions,
-    benefitServices,
-    benefitCharges,
+    ...(migrateToggles.offices && { offices: migrateOffices(dbContent) }),
+    ...(migrateToggles.projects && { projects: migrateProjects(dbContent) }),
+    ...(migrateToggles.employees && { employees: migrateEmployees(dbContent) }),
+    ...(migrateToggles.benefits && generateBenefits(dbContent)),
+    ...(migrateToggles.projectTeams && { projectTeams: migrateProjectTeams(dbContent) }),
+    ...(migrateToggles.timesheets && generateTimesheets(dbContent)),
 };
+
+// check integrity before writing the database file
+checkIntegrity(updatedContent);
+// validate schemas before writing the database file
+validateDatabase(updatedContent);
 
 writeDatabaseFile(FILES.DATABASE_FILE, reorderDatabaseContentKeys(updatedContent));

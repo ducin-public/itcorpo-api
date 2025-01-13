@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { Employee, ErrorResponse } from '../contract-types/data-contracts';
+import { Employee, ErrorResponse, ProjectEmployeeInvolvement } from '../contract-types/data-contracts';
 import { Employees } from '../contract-types/EmployeesRoute';
 import { db } from '../lib/db';
 import { processEmployeesSearchCriteria } from './employee-search';
@@ -73,6 +73,46 @@ router.get('/:employeeId', async (
         res.json(employee);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch employee: ${error}` });
+    }
+});
+
+// GET /employees/:employeeId/projects
+router.get('/:employeeId/projects', async (
+    req: Request<
+        Employees.GetEmployeeProjects.RequestParams,
+        Employees.GetEmployeeProjects.ResponseBody,
+        Employees.GetEmployeeProjects.RequestBody,
+        Employees.GetEmployeeProjects.RequestQuery
+    >,
+    res: Response<Employees.GetEmployeeProjects.ResponseBody | ErrorResponse>
+) => {
+    try {
+        await db.read();
+        const employeeId = Number(req.params.employeeId);
+        
+        const employee = db.data.employees.find(e => e.id === employeeId);
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+
+        const projectInvolvements: ProjectEmployeeInvolvement[] = db.data.projectTeams
+            .filter(assignment => assignment.employeeId === employeeId)
+            .map(assignment => {
+                const project = db.data.projects.find(p => p.id === assignment.projectId)!;
+                return {
+                    employeeId: employee.id,
+                    projectId: project.id,
+                    employeeName: `${employee.firstName} ${employee.lastName}`,
+                    projectName: project.name,
+                    projectStatus: project.status,
+                    engagementLevel: assignment.engagementLevel,
+                    since: assignment.since
+                };
+            });
+
+        res.json(projectInvolvements);
+    } catch (error) {
+        res.status(500).json({ message: `Failed to fetch employee projects: ${error}` });
     }
 });
 

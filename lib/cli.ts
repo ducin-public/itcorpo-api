@@ -21,8 +21,8 @@ export const argv = yargs(process.argv.slice(2))
     type: 'number'
   })
   .option('failUrls', {
-    default: null,
-    describe: 'Comma-separated list of pattern-matched urls to randomly fail',
+    default: "ALL",
+    describe: '"ALL" or a comma-separated list of pattern-matched urls to randomly fail',
     type: 'string'
   })
   .option('contractValidation', {

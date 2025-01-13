@@ -14,7 +14,7 @@ import { Expense, ExpenseInput, Money } from "./data-contracts";
 export namespace Expenses {
   /**
    * No description
-   * @tags Expenses
+   * @tags Expenses, Pagination, Search
    * @name GetExpenses
    * @summary List all expenses
    * @request GET:/expenses
@@ -24,7 +24,13 @@ export namespace Expenses {
    */
   export namespace GetExpenses {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      /**
+       * Page number to retrieve
+       * @example 1
+       */
+      _page?: number;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = Expense[];
@@ -53,7 +59,7 @@ export namespace Expenses {
 
   /**
    * No description
-   * @tags Expenses
+   * @tags Expenses, Search
    * @name GetExpensesCount
    * @summary Get total number of expenses
    * @request GET:/expenses/count

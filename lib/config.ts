@@ -6,8 +6,12 @@ import { argv } from './cli';
 
 const { port, delayRange, fail, failUrls, jwtAuth, tenantRequired, contractValidation } = argv;
 export const cliConfig = {
-  port, fail, failUrls, jwtAuth, tenantRequired, contractValidation,
-  delayRange: delayRange.split('-').map(n => parseInt(n)) as [number, number]
+  port, jwtAuth, tenantRequired, contractValidation,
+  chaos: fail ? {
+    probability: fail,
+    urls: failUrls == "ALL" ? "ALL" as const : failUrls!.split(',')
+  } : false as const,
+  delay: !delayRange? false as const : delayRange.split('-').map(n => parseInt(n)) as [number, number]
 };
 
 const AppConfigSchema = z.object({

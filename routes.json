@@ -1,6 +1,4 @@
 {
   "/finances/expenses*": "/expenses$1",
-  "/benefits/services*": "/benefitServices$1",
-  "/benefits/charges*": "/benefitCharges$1",
   "/": "/api"
 }

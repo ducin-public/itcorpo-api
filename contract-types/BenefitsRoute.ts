@@ -40,7 +40,7 @@ export namespace Benefits {
 
   /**
    * No description
-   * @tags Benefits
+   * @tags Benefits, Pagination, Search
    * @name GetBenefitSubscriptions
    * @summary List all benefits subscriptions
    * @request GET:/benefits
@@ -82,6 +82,11 @@ export namespace Benefits {
        * @example "ACTIVE"
        */
       status?: BenefitSubscriptionSearchStatus;
+      /**
+       * Page number to retrieve
+       * @example 1
+       */
+      _page?: number;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -110,7 +115,7 @@ export namespace Benefits {
 
   /**
    * No description
-   * @tags Benefits
+   * @tags Benefits, Search
    * @name GetBenefitsCount
    * @summary Get total number of benefits
    * @request GET:/benefits/count
@@ -161,7 +166,7 @@ export namespace Benefits {
   /**
    * No description
    * @tags Benefits
-   * @name GetBenefitById
+   * @name GetBenefitSubscriptionById
    * @summary Get benefit by ID
    * @request GET:/benefits/{benefitId}
    * @response `200` `BenefitSubscription` Successful operation
@@ -169,7 +174,7 @@ export namespace Benefits {
    * @response `500` `ErrorResponse`
    * @response `503` `ErrorResponse`
    */
-  export namespace GetBenefitById {
+  export namespace GetBenefitSubscriptionById {
     export type RequestParams = {
       benefitId: string;
     };
@@ -227,7 +232,7 @@ export namespace Benefits {
 
   /**
    * No description
-   * @tags Benefits
+   * @tags Benefits, Pagination
    * @name GetBenefitSubscriptionCharges
    * @summary List all benefit charges for a specific subscription
    * @request GET:/benefits/{benefitId}/charges
@@ -264,6 +269,11 @@ export namespace Benefits {
        * @example "2023-12-31"
        */
       billingPeriodTo?: string;
+      /**
+       * Page number to retrieve
+       * @example 1
+       */
+      _page?: number;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -272,7 +282,7 @@ export namespace Benefits {
 
   /**
    * No description
-   * @tags Benefits
+   * @tags Benefits, Pagination, Search
    * @name GetBenefitCharges
    * @summary List all benefit charges
    * @request GET:/benefits/charges
@@ -316,6 +326,11 @@ export namespace Benefits {
        * @example "2023-12-31"
        */
       billingPeriodTo?: string;
+      /**
+       * Page number to retrieve
+       * @example 1
+       */
+      _page?: number;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};

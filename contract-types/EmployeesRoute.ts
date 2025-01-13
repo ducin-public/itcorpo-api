@@ -9,12 +9,17 @@
  * ---------------------------------------------------------------
  */
 
-import { Employee, EmployeeInput, Money } from "./data-contracts";
+import {
+  Employee,
+  EmployeeInput,
+  Money,
+  ProjectEmployeeInvolvement,
+} from "./data-contracts";
 
 export namespace Employees {
   /**
    * No description
-   * @tags Employees
+   * @tags Employees, Pagination, Search
    * @name GetEmployees
    * @summary List all employees
    * @request GET:/employees
@@ -57,6 +62,11 @@ export namespace Employees {
        * @example "10000"
        */
       salaryTo?: string;
+      /**
+       * Page number to retrieve
+       * @example 1
+       */
+      _page?: number;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -86,7 +96,7 @@ export namespace Employees {
 
   /**
    * No description
-   * @tags Employees
+   * @tags Employees, Search
    * @name GetEmployeesCount
    * @summary Get total number of employees
    * @request GET:/employees/count
@@ -201,5 +211,27 @@ export namespace Employees {
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = void;
+  }
+
+  /**
+   * @description Returns a list of projects that the employee is assigned to.
+   * @tags Employees
+   * @name GetEmployeeProjects
+   * @summary Get projects which employee is assigned to
+   * @request GET:/employees/{employeeId}/projects
+   * @response `200` `(ProjectEmployeeInvolvement)[]` Successful operation
+   * @response `404` `ErrorResponse` Employee not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
+   */
+  export namespace GetEmployeeProjects {
+    export type RequestParams = {
+      /** @example 91720 */
+      employeeId: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProjectEmployeeInvolvement[];
   }
 }

@@ -1,6 +1,6 @@
 import { Benefits } from '../contract-types/BenefitsRoute';
 import { BenefitSubscription } from '../contract-types/data-contracts';
-import { DbSchema } from '../lib/db';
+import { DbSchema } from '../lib/db-schema';
 
 /**
  * Processes benefits search criteria and filters benefits based on provided criteria
@@ -21,10 +21,10 @@ import { DbSchema } from '../lib/db';
  *   @see {@link BenefitSubscription}
  */
 export function processBenefitsSearchCriteria(
-    collections: Pick<DbSchema, 'benefits' | 'employees'>,
+    collections: Pick<DbSchema, 'benefitSubscriptions' | 'employees'>,
     criteria: Benefits.GetBenefitSubscriptions.RequestQuery
 ): BenefitSubscription[] {
-    let result = [...collections.benefits];
+    let result = [...collections.benefitSubscriptions];
 
     // Filter by service name if provided
     if (criteria.serviceName) {

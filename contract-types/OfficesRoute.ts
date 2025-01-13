@@ -50,7 +50,7 @@ export namespace Offices {
 
   /**
    * No description
-   * @tags Offices
+   * @tags Offices, Search
    * @name GetOffices
    * @summary List all offices
    * @request GET:/offices
@@ -111,7 +111,7 @@ export namespace Offices {
 
   /**
    * No description
-   * @tags Offices
+   * @tags Offices, Search
    * @name GetOfficesCount
    * @summary Get total number of offices
    * @request GET:/offices/count

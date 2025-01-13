@@ -59,7 +59,7 @@ router.get('/count', async (
     try {
         await db.read();
         const filteredBenefits = processBenefitsSearchCriteria({
-            benefits: db.data.benefits,
+            benefitSubscriptions: db.data.benefitSubscriptions,
             employees: db.data.employees,
         }, req.query);
         res.json(filteredBenefits.length);
@@ -81,7 +81,7 @@ router.get('/', async (
     try {
         await db.read();
         const filteredBenefits = processBenefitsSearchCriteria({
-            benefits: db.data.benefits,
+            benefitSubscriptions: db.data.benefitSubscriptions,
             employees: db.data.employees,
         }, req.query);
         res.json(filteredBenefits);
@@ -93,18 +93,18 @@ router.get('/', async (
 // GET /benefits/:benefitId
 router.get('/:benefitId', async (
     req: Request<
-        Benefits.GetBenefitById.RequestParams,
-        Benefits.GetBenefitById.ResponseBody,
-        Benefits.GetBenefitById.RequestBody,
-        Benefits.GetBenefitById.RequestQuery
+        Benefits.GetBenefitSubscriptionById.RequestParams,
+        Benefits.GetBenefitSubscriptionById.ResponseBody,
+        Benefits.GetBenefitSubscriptionById.RequestBody,
+        Benefits.GetBenefitSubscriptionById.RequestQuery
     >,
-    res: Response<Benefits.GetBenefitById.ResponseBody | ErrorResponse>
+    res: Response<Benefits.GetBenefitSubscriptionById.ResponseBody | ErrorResponse>
 ) => {
     try {
         await db.read();
         const benefitId = req.params.benefitId;
         
-        const benefit = db.data.benefits.find(b => b.id === benefitId);
+        const benefit = db.data.benefitSubscriptions.find(b => b.id === benefitId);
         
         if (!benefit) {
             return res.status(404).json({ message: 'Benefit not found' });
@@ -169,7 +169,7 @@ router.post('/', async (
             category: service.category
         };
         
-        db.data.benefits.push(newBenefit);
+        db.data.benefitSubscriptions.push(newBenefit);
         await db.write();
         
         res.status(201).json(newBenefit);
@@ -192,7 +192,7 @@ router.put('/:benefitId', async (
         await db.read();
         const benefitId = req.params.benefitId;
         const benefitData = { ...req.body };
-        const benefitToUpdate = db.data.benefits.find(b => b.id === benefitId);
+        const benefitToUpdate = db.data.benefitSubscriptions.find(b => b.id === benefitId);
         
         if (!benefitToUpdate) {
             return res.status(404).json({ message: 'Benefit not found' });
@@ -221,7 +221,7 @@ router.put('/:benefitId', async (
             category
         };
 
-        db.data.benefits = db.data.benefits.map(b => 
+        db.data.benefitSubscriptions = db.data.benefitSubscriptions.map(b => 
             b.id === req.params.benefitId ? updatedBenefit : b
         );
         await db.write();
@@ -247,7 +247,7 @@ router.patch('/:benefitId', async (
         const benefitId = req.params.benefitId;
         const { operation } = req.body;
         
-        const existingBenefit = db.data.benefits.find(b => b.id === benefitId);
+        const existingBenefit = db.data.benefitSubscriptions.find(b => b.id === benefitId);
         
         if (!existingBenefit) {
             return res.status(404).json({ message: 'Benefit not found' });
@@ -267,7 +267,7 @@ router.patch('/:benefitId', async (
                 cancelledAtDate: new Date().toISOString().split('T')[0] // YYYY-MM-DD format
             };
 
-            db.data.benefits = db.data.benefits.map(b => 
+            db.data.benefitSubscriptions = db.data.benefitSubscriptions.map(b => 
                 b.id === benefitId ? updatedBenefit : b
             );
 
@@ -291,7 +291,7 @@ router.patch('/:benefitId', async (
             };
             delete newBenefit.cancelledAtDate; // Remove cancellation date
 
-            db.data.benefits.push(newBenefit);
+            db.data.benefitSubscriptions.push(newBenefit);
             await db.write();
             return res.json(newBenefit);
 

@@ -28,6 +28,10 @@ tags:
     description: Offices management
   - name: Projects
     description: Projects management
+  - name: Pagination
+    description: Fetched collection results are paginated
+  - name: Search
+    description: Fetched collection results allow specifying detailed search criteria
 
 paths:
   /auth:
@@ -157,6 +161,8 @@ paths:
       operationId: getBenefitSubscriptions
       tags:
         - Benefits
+        - Pagination
+        - Search
       parameters:
         - $ref: '#/components/parameters/BenefitServiceName'
         - $ref: '#/components/parameters/BenefitCategories'
@@ -164,6 +170,7 @@ paths:
         - $ref: '#/components/parameters/BenefitFeeFrom'
         - $ref: '#/components/parameters/BenefitFeeTo'
         - $ref: '#/components/parameters/BenefitStatus'
+        - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
           description: Successful operation
@@ -228,6 +235,7 @@ paths:
       operationId: getBenefitsCount
       tags:
         - Benefits
+        - Search
       parameters:
         - $ref: '#/components/parameters/BenefitServiceName'
         - $ref: '#/components/parameters/BenefitCategories'
@@ -258,7 +266,7 @@ paths:
   /benefits/{benefitId}:
     get:
       summary: Get benefit by ID
-      operationId: getBenefitById
+      operationId: getBenefitSubscriptionById
       tags:
         - Benefits
       parameters:
@@ -383,6 +391,7 @@ paths:
       operationId: getBenefitSubscriptionCharges
       tags:
         - Benefits
+        - Pagination
       parameters:
         - name: benefitId
           in: path
@@ -393,6 +402,7 @@ paths:
         - $ref: '#/components/parameters/BenefitChargeStatus'
         - $ref: '#/components/parameters/BenefitBillingPeriodFrom'
         - $ref: '#/components/parameters/BenefitBillingPeriodTo'
+        - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
           description: Successful operation
@@ -426,6 +436,8 @@ paths:
       operationId: getBenefitCharges
       tags:
         - Benefits
+        - Pagination
+        - Search
       parameters:
         - $ref: '#/components/parameters/BenefitSubscriptionId'
         - $ref: '#/components/parameters/BenefitEmployeeId'
@@ -433,6 +445,7 @@ paths:
         - $ref: '#/components/parameters/BenefitChargeStatus'
         - $ref: '#/components/parameters/BenefitBillingPeriodFrom'
         - $ref: '#/components/parameters/BenefitBillingPeriodTo'
+        - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
           description: Successful operation
@@ -640,6 +653,8 @@ paths:
       operationId: getEmployees
       tags:
         - Employees
+        - Pagination
+        - Search
       parameters:
         - $ref: '#/components/parameters/EmployeeName'
         - $ref: '#/components/parameters/EmployeeDepartmentId'
@@ -647,6 +662,7 @@ paths:
         - $ref: '#/components/parameters/EmployeeSkillsFiltering'
         - $ref: '#/components/parameters/EmployeeSalaryFrom'
         - $ref: '#/components/parameters/EmployeeSalaryTo'
+        - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
           description: Successful operation
@@ -717,6 +733,7 @@ paths:
       operationId: getEmployeesCount
       tags:
         - Employees
+        - Search
       parameters:
         - $ref: '#/components/parameters/EmployeeName'
         - $ref: '#/components/parameters/EmployeeDepartmentId'
@@ -861,12 +878,51 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
 
+  /employees/{employeeId}/projects:
+    get:
+      summary: Get projects which employee is assigned to
+      operationId: getEmployeeProjects
+      description: >
+        Returns a list of projects that the employee is assigned to.
+      tags:
+        - Employees
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          example: 91720
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectEmployeeInvolvement'
+        '404':
+          description: Employee not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
   /expenses:
     get:
       summary: List all expenses
       operationId: getExpenses
       tags:
         - Expenses
+        - Pagination
+        - Search
+      parameters:
+        - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
           description: Successful operation
@@ -924,14 +980,13 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
 
-
-
   /expenses/count:
     get:
       summary: Get total number of expenses
       operationId: getExpensesCount
       tags:
         - Expenses
+        - Search
       responses:
         '200':
           description: Successful operation
@@ -1122,6 +1177,7 @@ paths:
       operationId: getOffices
       tags:
         - Offices
+        - Search
       parameters:
         - $ref: '#/components/parameters/OfficePhrase'
         - $ref: '#/components/parameters/OfficeCountries'
@@ -1190,6 +1246,7 @@ paths:
       operationId: getOfficesCount
       tags:
         - Offices
+        - Search
       parameters:
         - $ref: '#/components/parameters/OfficePhrase'
         - $ref: '#/components/parameters/OfficeCountries'
@@ -1330,6 +1387,8 @@ paths:
       operationId: getProjects
       tags:
         - Projects
+        - Pagination
+        - Search
       parameters:
         - $ref: '#/components/parameters/ProjectName'
         - $ref: '#/components/parameters/ProjectStatus'
@@ -1337,6 +1396,7 @@ paths:
         - $ref: '#/components/parameters/ProjectTeamMembersFiltering'
         - $ref: '#/components/parameters/ProjectBudgetFrom'
         - $ref: '#/components/parameters/ProjectBudgetTo'
+        - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
           description: Successful operation
@@ -1406,6 +1466,7 @@ paths:
       operationId: getProjectsCount
       tags:
         - Projects
+        - Search
       parameters:
         - $ref: '#/components/parameters/ProjectName'
         - $ref: '#/components/parameters/ProjectStatus'
@@ -1436,6 +1497,7 @@ paths:
         - name: projectId
           in: path
           required: true
+          example: "579ef28f-c539-41ff-abe2-e4f6b1c1afed"
           schema:
             type: string
       responses:
@@ -1533,6 +1595,41 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
           description: Cannot delete project that is in ACTIVE status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /projects/{projectId}/team:
+    get:
+      summary: Get project team (employees assigned to the project)
+      operationId: getProjectTeam
+      description: >
+        Returns a list of employees that are assigned to the project.
+      tags:
+        - Projects
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          example: "579ef28f-c539-41ff-abe2-e4f6b1c1afed"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectEmployeeInvolvement'
+        '404':
+          description: Employee not found
           content:
             application/json:
               schema:
@@ -2287,6 +2384,16 @@ components:
         - "COMPLETED"
         - "ON_HOLD"
       example: "ACTIVE"
+    
+    EngagementLevel:
+      type: string
+      description: Level of employee engagement in the project
+      enum:
+        - "FULL_TIME"
+        - "PARTIAL_PLUS"
+        - "HALF_TIME"
+        - "ON_DEMAND"
+      example: "FULL_TIME"
 
     Project:
       type: object
@@ -2385,7 +2492,45 @@ components:
         description:
           type: string
 
+    ProjectEmployeeInvolvement:
+      type: object
+      description: Employee's involvement in a project
+      required:
+        - employeeId
+        - projectId
+        - employeeName
+        - projectName
+        - projectStatus
+        - engagementLevel
+        - since
+      properties:
+        employeeId:
+          type: integer
+        projectId:
+          type: string
+        employeeName:
+          type: string
+        projectName:
+          type: string
+        projectStatus:
+          $ref: '#/components/schemas/ProjectStatus'
+        engagementLevel:
+          $ref: '#/components/schemas/EngagementLevel'
+        since:
+          type: string
+          format: date
+
   parameters:
+
+    PageNumber:
+      name: _page
+      in: query
+      required: false
+      description: Paginate data collections
+      schema:
+        type: number
+        description: Page number to retrieve
+        example: 1
 
     # Benefit parameters
 

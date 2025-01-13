@@ -9,12 +9,18 @@
  * ---------------------------------------------------------------
  */
 
-import { Money, Project, ProjectInput, ProjectStatus } from "./data-contracts";
+import {
+  Money,
+  Project,
+  ProjectEmployeeInvolvement,
+  ProjectInput,
+  ProjectStatus,
+} from "./data-contracts";
 
 export namespace Projects {
   /**
    * No description
-   * @tags Projects
+   * @tags Projects, Pagination, Search
    * @name GetProjects
    * @summary List all projects
    * @request GET:/projects
@@ -57,6 +63,11 @@ export namespace Projects {
        * @example "50000"
        */
       budgetTo?: string;
+      /**
+       * Page number to retrieve
+       * @example 1
+       */
+      _page?: number;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -86,7 +97,7 @@ export namespace Projects {
 
   /**
    * No description
-   * @tags Projects
+   * @tags Projects, Search
    * @name GetProjectsCount
    * @summary Get total number of projects
    * @request GET:/projects/count
@@ -147,6 +158,7 @@ export namespace Projects {
    */
   export namespace GetProjectById {
     export type RequestParams = {
+      /** @example "579ef28f-c539-41ff-abe2-e4f6b1c1afed" */
       projectId: string;
     };
     export type RequestQuery = {};
@@ -199,5 +211,27 @@ export namespace Projects {
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = void;
+  }
+
+  /**
+   * @description Returns a list of employees that are assigned to the project.
+   * @tags Projects
+   * @name GetProjectTeam
+   * @summary Get project team (employees assigned to the project)
+   * @request GET:/projects/{projectId}/team
+   * @response `200` `(ProjectEmployeeInvolvement)[]` Successful operation
+   * @response `404` `ErrorResponse` Employee not found
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
+   */
+  export namespace GetProjectTeam {
+    export type RequestParams = {
+      /** @example "579ef28f-c539-41ff-abe2-e4f6b1c1afed" */
+      projectId: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = ProjectEmployeeInvolvement[];
   }
 }

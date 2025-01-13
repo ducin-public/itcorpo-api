@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 
 import { Offices } from '../contract-types/OfficesRoute';
 import { processOfficesSearchCriteria } from './offices-search'
-import { DbSchema } from '../lib/db'
+import { DbSchema } from '../lib/db-schema'
 import { mockOffice } from '../mocks/office.mock';
 
 describe('processOfficesSearchCriteria', () => {

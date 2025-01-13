@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest'
 
 import { processProjectsSearchCriteria } from './project-search'
-import { DbSchema } from '../lib/db'
+import { DbSchema } from '../lib/db-schema'
 import { mockProject } from '../mocks/projects.mock';
-import { ProjectsSearchCriteria } from '../contract-types/data-contracts';
+import { Projects } from '../contract-types/ProjectsRoute';
 
 describe('processProjectsSearchCriteria', () => {
-  const mockDb: Pick<DbSchema, 'projects'> = {
+  const mockDb: Pick<DbSchema, 'projects' | 'projectTeams'> = {
     projects: [
       mockProject({
         id: 'a1b',
@@ -43,12 +43,22 @@ describe('processProjectsSearchCriteria', () => {
         team: [{ id: 1, name: 'John' }, { id: 2, name: 'Jane' }],
         budget: 60000
       })
+    ],
+    projectTeams: [
+      { projectId: 'a1b', projectName: 'Cloud Migration Project', employeeId: 1, employeeName: 'John', engagementLevel: 'FULL_TIME', since: '2022-01-01' },
+      { projectId: 'a1b', projectName: 'Cloud Migration Project', employeeId: 2, employeeName: 'Jane', engagementLevel: 'FULL_TIME', since: '2022-01-01' },
+      { projectId: 'a1b', projectName: 'Cloud Migration Project', employeeId: 3, employeeName: 'Bob', engagementLevel: 'PARTIAL_PLUS', since: '2022-02-01' },
+      { projectId: 'e3f', projectName: 'Cloud Security Implementation', employeeId: 1, employeeName: 'John', engagementLevel: 'HALF_TIME', since: '2022-03-01' },
+      { projectId: 'e3f', projectName: 'Cloud Security Implementation', employeeId: 4, employeeName: 'Alice', engagementLevel: 'FULL_TIME', since: '2022-01-15' },
+      { projectId: 'g4h', projectName: 'Website Redesign', employeeId: 5, employeeName: 'Eve', engagementLevel: 'FULL_TIME', since: '2022-06-01' },
+      { projectId: 'i5j', projectName: 'Legacy System Migration', employeeId: 1, employeeName: 'John', engagementLevel: 'ON_DEMAND', since: '2022-04-01' },
+      { projectId: 'i5j', projectName: 'Legacy System Migration', employeeId: 2, employeeName: 'Jane', engagementLevel: 'FULL_TIME', since: '2022-04-01' }
     ]
   };
 
   it('should return empty result for criteria with no match', async () => {
     // given
-    const criteria: ProjectsSearchCriteria = {
+    const criteria: Projects.GetProjects.RequestQuery = {
       projectName: 'non-existent'
     };
     // when
@@ -60,7 +70,7 @@ describe('processProjectsSearchCriteria', () => {
     
   it('should filter projects by name (case-insensitive partial match)', () => {
     // given
-    const criteria: ProjectsSearchCriteria = { 
+    const criteria: Projects.GetProjects.RequestQuery = { 
       projectName: 'cloud' 
     };
     // when
@@ -72,7 +82,7 @@ describe('processProjectsSearchCriteria', () => {
 
   it('should filter projects by status', () => {
     // given
-    const criteria: ProjectsSearchCriteria = { 
+    const criteria: Projects.GetProjects.RequestQuery = { 
       status: 'ACTIVE' 
     };
     // when
@@ -84,7 +94,7 @@ describe('processProjectsSearchCriteria', () => {
 
   it('should filter projects by team members with ANY mode', () => {
     // given
-    const criteria: ProjectsSearchCriteria = { 
+    const criteria: Projects.GetProjects.RequestQuery = { 
       teamMembers: '1,2'
     };
     // when
@@ -96,7 +106,7 @@ describe('processProjectsSearchCriteria', () => {
 
   it('should filter projects by team members with ALL mode', () => {
     // given
-    const criteria: ProjectsSearchCriteria = { 
+    const criteria: Projects.GetProjects.RequestQuery = { 
       teamMembers: '1,2',
       teamMembersFiltering: 'ALL'
     };
@@ -109,7 +119,7 @@ describe('processProjectsSearchCriteria', () => {
 
   it('should filter projects by minimum budget', () => {
     // given
-    const criteria: ProjectsSearchCriteria = { 
+    const criteria: Projects.GetProjects.RequestQuery = { 
       budgetFrom: '75000' 
     };
     // when
@@ -121,7 +131,7 @@ describe('processProjectsSearchCriteria', () => {
 
   it('should filter projects by maximum budget', () => {
     // given
-    const criteria: ProjectsSearchCriteria = { 
+    const criteria: Projects.GetProjects.RequestQuery = { 
       budgetTo: '50000' 
     };
     // when
@@ -133,7 +143,7 @@ describe('processProjectsSearchCriteria', () => {
 
   it('should filter projects by budget range', () => {
     // given
-    const criteria: ProjectsSearchCriteria = {
+    const criteria: Projects.GetProjects.RequestQuery = {
       budgetFrom: '40000',
       budgetTo: '80000'
     };
@@ -146,7 +156,7 @@ describe('processProjectsSearchCriteria', () => {
 
   it('should combine all search criteria', () => {
     // given
-    const criteria: ProjectsSearchCriteria = {
+    const criteria: Projects.GetProjects.RequestQuery = {
       projectName: 'cloud',
       status: 'ACTIVE',
       teamMembers: '1,2',

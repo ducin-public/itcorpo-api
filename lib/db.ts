@@ -1,22 +1,9 @@
 import { readFile, writeFile } from 'fs/promises';
 
+import { DbSchema } from './db-schema';
 import { FILES } from './files';
-import { BenefitCharge, BenefitService, BenefitSubscription, Department, Employee, Expense, Geo, Office, OfficeAmenity, Project } from '../contract-types/data-contracts';
 import { logger } from './logger';
 import { measureTime } from './perf';
-
-export interface DbSchema {
-    benefitServices: BenefitService[];
-    benefits: BenefitSubscription[];
-    benefitCharges: BenefitCharge[];
-    departments: Department[];
-    employees: Employee[];
-    expenses: Expense[];
-    geo: Geo;
-    officeAmenities: OfficeAmenity[];
-    offices: Office[];
-    projects: Project[];
-}
 
 // an object type which accepts `TDatabase extends object` where keys are keys of TDatabase, but filtered: only the ones which values are an array, (2) the array item has an id property; the value of the result type is the type of an id (e.g. { employee: number, project: string, ... })
 type CollectionIdType<TDatabase extends object> = {

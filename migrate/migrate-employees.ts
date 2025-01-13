@@ -1,7 +1,7 @@
-import { DatabaseContent } from './migration-types'
 import { logger } from '../lib/logger'
+import { DbSchema } from '../lib/db-schema';
 
-export const migrateEmployees = (db: DatabaseContent) => {
+export const migrateEmployees = (db: DbSchema) => {
     logger.debug(`Found ${db.employees.length} employees to process`);
 
 //   const departmentIdToName = db.departments.reduce((acc, department) => {

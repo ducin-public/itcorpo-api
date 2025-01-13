@@ -1,6 +1,6 @@
 import { Project } from '../contract-types/data-contracts';
 import { Projects } from '../contract-types/ProjectsRoute';
-import { DbSchema } from '../lib/db';
+import { DBProject, DbSchema } from '../lib/db-schema';
 
 /**
  * Processes projects search criteria and filters projects based on provided criteria
@@ -21,9 +21,9 @@ import { DbSchema } from '../lib/db';
  *   @see {@link Project}
  */
 export function processProjectsSearchCriteria(
-    collections: Pick<DbSchema, 'projects'>,
+    collections: Pick<DbSchema, 'projects' | 'projectTeams'>,
     criteria: Projects.GetProjects.RequestQuery
-): Project[] {
+): DBProject[] {
     let result = [...collections.projects];
 
     // Filter by project name if provided
@@ -45,8 +45,17 @@ export function processProjectsSearchCriteria(
     const teamMembers = criteria.teamMembers?.split(',').map(Number);
     if (teamMembers?.length) {
         const filtering = criteria.teamMembersFiltering || 'ANY';
+        const projectTeamsMap = new Map<string, number[]>();
+        
+        // Create a map of project IDs to employee IDs
+        collections.projectTeams.forEach(pt => {
+            const employees = projectTeamsMap.get(pt.projectId) || [];
+            employees.push(pt.employeeId);
+            projectTeamsMap.set(pt.projectId, employees);
+        });
+
         result = result.filter(project => {
-            const projectTeamIds = project.team.map(member => member.id);
+            const projectTeamIds = projectTeamsMap.get(project.id) || [];
             return filtering === 'ANY'
                 ? teamMembers.some(id => projectTeamIds.includes(id))
                 : teamMembers.every(id => projectTeamIds.includes(id));

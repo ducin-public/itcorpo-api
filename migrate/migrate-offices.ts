@@ -1,6 +1,5 @@
+import { DBOffice, DBOfficeAmenity, DbSchema } from '../lib/db-schema';
 import { logger } from '../lib/logger';
-
-import { DatabaseContent, Office, OfficeAmenity } from './migration-types';
 
 function getRandomInt(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -28,13 +27,13 @@ function getOfficeCapacity(country: string): number {
     return getRandomInt(30, 200);
 }
 
-export function migrateOffices(dbContent: DatabaseContent): Office[] {
+export function migrateOffices(dbContent: DbSchema): DBOffice[] {
     const offices = dbContent.offices;
     logger.debug(`Found ${offices.length} offices to process`);
     return offices.map(({ country, city, address, capacity, monthlyRental, estate, amenities, ...office }) => {
         return {
             country, city, address, capacity, monthlyRental, estate,
-            amenities: (amenities as any as OfficeAmenity[]).map(a => a.name),
+            amenities: (amenities as any as DBOfficeAmenity[]).map(a => a.name),
             ...office,
         };
     });

@@ -1,11 +1,11 @@
 import { v4 as uuid } from 'uuid'
 import { addMonths, parseISO, format, startOfMonth, endOfMonth, isSameMonth } from 'date-fns'
 
-import { BenefitService, BenefitCharge, BenefitChargeStatus, BenefitSubscription, Nationality, Employee } from '../contract-types/data-contracts'
-import { DatabaseContent } from './migration-types'
+import { BenefitService, BenefitCharge, BenefitChargeStatus, BenefitSubscription, Employee } from '../contract-types/data-contracts'
 import { logger } from '../lib/logger'
 import { benefitServices, PRICE_RANGES } from './benefit-services'
 import { randomInt } from './lib/random'
+import { DbSchema } from '../lib/db-schema'
 
 const PROBABILITIES = {
   EMPLOYEE: {
@@ -163,7 +163,7 @@ const generateCharges = (
     return charges
 }
 
-export const generateBenefits = (db: DatabaseContent) => {
+export const generateBenefits = (db: DbSchema) => {
     const allSubscriptions: BenefitSubscription[] = []
     const charges: BenefitCharge[] = []
 

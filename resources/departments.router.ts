@@ -3,12 +3,13 @@ import { Router, Request, Response } from 'express';
 import { Department, DepartmentInput, ErrorResponse } from '../contract-types/data-contracts';
 import { Departments } from '../contract-types/DepartmentsRoute';
 import { dbConnection } from '../lib/db/db-connection';
+import { logRouterError } from './core/error';
 
 const router = Router();
 
 // GET /departments
 router.get('/', async (
-    _req: Request<
+    req: Request<
         Departments.GetDepartments.RequestParams,
         Departments.GetDepartments.ResponseBody,
         Departments.GetDepartments.RequestBody,
@@ -20,17 +21,31 @@ router.get('/', async (
         const departments = await dbConnection.departments.findMany();
         res.json(departments);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch departments: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch departments',
+        });
     }
 });
 
 // GET /departments/count
-router.get('/count', async (_req, res) => {
+router.get('/count', async (
+    req: Request<
+        Departments.GetDepartmentsCount.RequestParams,
+        Departments.GetDepartmentsCount.ResponseBody,
+        Departments.GetDepartmentsCount.RequestBody,
+        Departments.GetDepartmentsCount.RequestQuery
+    >,
+    res: Response<Departments.GetDepartmentsCount.ResponseBody | ErrorResponse>
+) => {
     try {
         const count = await dbConnection.departments.count();
         res.json(count);
     } catch (error) {
-        res.status(500).json({ message: `Failed to count departments: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to count departments',
+        });
     }
 });
 
@@ -54,7 +69,10 @@ router.get('/:departmentId', async (
         
         res.json(department);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch department: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch department',
+        });
     }
 });
 
@@ -79,7 +97,10 @@ router.post('/', async (
         
         res.status(201).json(newRecord);
     } catch (error) {
-        res.status(500).json({ message: `Failed to create department: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to create department',
+        });
     }
 });
 
@@ -112,7 +133,10 @@ router.put('/:departmentId', async (
         
         res.json(updatedDepartment);
     } catch (error) {
-        res.status(500).json({ message: `Failed to update department: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to update department',
+        });
     }
 });
 
@@ -138,7 +162,10 @@ router.delete('/:departmentId', async (
         await dbConnection.departments.flush();
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: `Failed to delete department: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to delete department',
+        });
     }
 });
 

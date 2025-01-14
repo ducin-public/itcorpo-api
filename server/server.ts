@@ -34,6 +34,7 @@ import { geoRouter } from '../resources/geo.router';
 import { expensesRouter } from '../resources/expenses.router';
 import { maintenanceMiddleware } from '../middlewares/maintenance';
 import { openapiValidator } from '../middlewares/openapi-validator';
+import { correlationIDMiddleware } from '../middlewares/correlation-id';
 
 export type ServerConfig = {
   chaos: false | ChaosConfig;
@@ -55,6 +56,7 @@ export const createServer = (serverConfig: ServerConfig) => {
     res.setHeader('X-Powered-By', 'IT Corpo');
     next();
   });
+  app.use(correlationIDMiddleware);
 
   app.use(cors({
     origin: true,

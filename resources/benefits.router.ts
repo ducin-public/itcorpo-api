@@ -4,12 +4,14 @@ import { Benefits } from '../contract-types/BenefitsRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterBenefits } from './benefit-filters';
 import { filterBenefitCharges } from './benefit-charges-filters';
+import { logRouterError } from './core/error';
+import { CORRELATION_ID_HEADER } from '../middlewares/correlation-id';
 
 const router = Router();
 
 // GET /benefits/services
 router.get('/services', async (
-    _req: Request<
+    req: Request<
         Benefits.GetBenefitServices.RequestParams,
         Benefits.GetBenefitServices.ResponseBody,
         Benefits.GetBenefitServices.RequestBody,
@@ -21,7 +23,10 @@ router.get('/services', async (
         const services = await dbConnection.benefitServices.findMany();
         res.json(services);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch benefit services: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch benefit services',
+        });
     }
 });
 
@@ -42,7 +47,10 @@ router.get('/charges', async (
 
         res.json(filteredCharges);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch benefit charges: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch benefit charges',
+        });
     }
 });
 
@@ -67,7 +75,10 @@ router.get('/count', async (
 
         res.json(filteredBenefits.length);
     } catch (error) {
-        res.status(500).json({ message: `Failed to count benefits: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to count benefit subscriptions',
+        });
     }
 });
 
@@ -92,7 +103,10 @@ router.get('/', async (
 
         res.json(filteredBenefits);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch benefits: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch benefit subscriptions',
+        });
     }
 });
 
@@ -115,7 +129,10 @@ router.get('/:benefitId', async (
         
         res.json(benefit);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch benefit: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch benefit subscription',
+        });
     }
 });
 
@@ -136,7 +153,10 @@ router.get('/:benefitId/charges', async (
 
         res.json(filteredCharges);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch benefit charges: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch benefit charges',
+        });
     }
 });
 
@@ -170,7 +190,10 @@ router.post('/', async (
         
         res.status(201).json(newRecord);
     } catch (error) {
-        res.status(500).json({ message: `Failed to create benefit: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to create benefit',
+        });
     }
 });
 
@@ -218,7 +241,10 @@ router.put('/:benefitId', async (
         
         res.json(updatedBenefit);
     } catch (error) {
-        res.status(500).json({ message: `Failed to update benefit: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to update benefit',
+        });
     }
 });
 
@@ -278,7 +304,10 @@ router.patch('/:benefitId', async (
             return res.status(400).json({ message: 'Invalid operation. Must be either CANCEL or RENEW' });
         }
     } catch (error) {
-        res.status(500).json({ message: `Failed to update benefit status: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to update benefit subscription status',
+        });
     }
 });
 

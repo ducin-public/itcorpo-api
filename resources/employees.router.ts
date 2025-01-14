@@ -3,8 +3,7 @@ import { Employee, ErrorResponse, ProjectEmployeeInvolvement } from '../contract
 import { Employees } from '../contract-types/EmployeesRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterEmployees } from './employee-filters';
-import { logger } from '../lib/logger';
-import { getErrorGUID } from './core/error';
+import { logRouterError } from './core/error';
 
 const router = Router();
 
@@ -27,14 +26,14 @@ router.get('/count', async (
             departments: await departmentsPromise
         });
 
+        throw new Error('Test error');
+
         res.json(filteredEmployees.length);
     } catch (error) {
-        const errorGUID = getErrorGUID();
-        logger.error(`Failed to count employees: ${error}, errorGUID: ${errorGUID}`);
-        res.status(500).json({ message: `Failed to count employees, errorGUID: ${errorGUID}` });
-        if (error instanceof Error) {
-            logger.error(error.stack);
-        }
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to count employees',
+        });
     }
 });
 
@@ -59,12 +58,10 @@ router.get('/', async (
 
         res.json(filteredEmployees);
     } catch (error) {
-        const errorGUID = getErrorGUID();
-        logger.error(`Failed to fetch employees: ${error}, errorGUID: ${errorGUID}`);
-        res.status(500).json({ message: `Failed to fetch employees, errorGUID: ${errorGUID}` });
-        if (error instanceof Error) {
-            logger.error(error.stack);
-        }
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch employees',
+        });
     }
 });
 
@@ -88,12 +85,10 @@ router.get('/:employeeId', async (
         
         res.json(employee);
     } catch (error) {
-        const errorGUID = getErrorGUID();
-        logger.error(`Failed to fetch employee: ${error}, errorGUID: ${errorGUID}`);
-        res.status(500).json({ message: `Failed to fetch employee, errorGUID: ${errorGUID}` });
-        if (error instanceof Error) {
-            logger.error(error.stack);
-        }
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch employee'
+        });
     }
 });
 
@@ -133,12 +128,10 @@ router.get('/:employeeId/projects', async (
 
         res.json(projectInvolvements);
     } catch (error) {
-        const errorGUID = getErrorGUID();
-        logger.error(`Failed to fetch employee projects: ${error}, errorGUID: ${errorGUID}`);
-        res.status(500).json({ message: `Failed to fetch employee projects, errorGUID: ${errorGUID}` });
-        if (error instanceof Error) {
-            logger.error(error.stack);
-        }
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch employee projects'
+        });
     }
 });
 
@@ -154,7 +147,6 @@ router.post('/', async (
 ) => {
     try {
         const employees = await dbConnection.employees.findMany();
-        const newId = Math.max(...employees.map(e => e.id), 0) + 1;
         
         const newEmployee = {
             ...req.body
@@ -165,12 +157,10 @@ router.post('/', async (
         
         res.status(201).json(newRecord);
     } catch (error) {
-        const errorGUID = getErrorGUID();
-        logger.error(`Failed to create employee: ${error}, errorGUID: ${errorGUID}`);
-        res.status(500).json({ message: `Failed to create employee, errorGUID: ${errorGUID}` });
-        if (error instanceof Error) {
-            logger.error(error.stack);
-        }
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to create employee',
+        });
     }
 });
 
@@ -203,12 +193,10 @@ router.put('/:employeeId', async (
         
         res.json(updatedEmployee);
     } catch (error) {
-        const errorGUID = getErrorGUID();
-        logger.error(`Failed to update employee: ${error}, errorGUID: ${errorGUID}`);
-        res.status(500).json({ message: `Failed to update employee, errorGUID: ${errorGUID}` });
-        if (error instanceof Error) {
-            logger.error(error.stack);
-        }
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to update employee',
+        });
     }
 });
 
@@ -234,12 +222,10 @@ router.delete('/:employeeId', async (
         await dbConnection.employees.flush();
         res.status(204).send();
     } catch (error) {
-        const errorGUID = getErrorGUID();
-        logger.error(`Failed to delete employee: ${error}, errorGUID: ${errorGUID}`);
-        res.status(500).json({ message: `Failed to delete employee, errorGUID: ${errorGUID}` });
-        if (error instanceof Error) {
-            logger.error(error.stack);
-        }
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to delete employee',
+        });
     }
 });
 

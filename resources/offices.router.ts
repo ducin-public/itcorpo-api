@@ -4,22 +4,35 @@ import { Office, ErrorResponse } from '../contract-types/data-contracts';
 import { Offices } from '../contract-types/OfficesRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterOffices } from './offices-filters';
+import { logRouterError } from './core/error';
+import { O } from 'vitest/dist/chunks/environment.LoooBwUu';
 
 const router = Router();
 
 // GET /offices/amenities/count
-router.get('/amenities/count', async (_req, res) => {
+router.get('/amenities/count', async (
+    req: Request<
+        Offices.GetOfficeAmenitiesCount.RequestParams,
+        Offices.GetOfficeAmenitiesCount.ResponseBody,
+        Offices.GetOfficeAmenitiesCount.RequestBody,
+        Offices.GetOfficeAmenitiesCount.RequestQuery
+    >,
+    res: Response<Offices.GetOfficeAmenitiesCount.ResponseBody | ErrorResponse>
+) => {
     try {
         const count = await dbConnection.officeAmenities.count();
         res.json(count);
     } catch (error) {
-        res.status(500).json({ message: `Failed to count office amenities: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to count office amenities',
+        });
     }
 });
 
 // GET /offices/amenities
 router.get('/amenities', async (
-    _req: Request<
+    req: Request<
         Offices.GetOfficeAmenities.RequestParams,
         Offices.GetOfficeAmenities.ResponseBody,
         Offices.GetOfficeAmenities.RequestBody,
@@ -31,12 +44,23 @@ router.get('/amenities', async (
         const offices = await dbConnection.officeAmenities.findMany();
         res.json(offices);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch office amenities: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch office amenities',
+        });
     }
 });
 
 // GET /offices/count
-router.get('/count', async (req, res) => {
+router.get('/count', async (
+    req: Request<
+        Offices.GetOfficesCount.RequestParams,
+        Offices.GetOfficesCount.ResponseBody,
+        Offices.GetOfficesCount.RequestBody,
+        Offices.GetOfficesCount.RequestQuery
+    >,
+    res: Response<Offices.GetOfficesCount.ResponseBody | ErrorResponse>
+) => {
     try {
         const officesPromise = dbConnection.offices.findMany();
         const amenitiesPromise = dbConnection.officeAmenities.findMany();
@@ -50,7 +74,10 @@ router.get('/count', async (req, res) => {
 
         res.json(filteredOffices.length);
     } catch (error) {
-        res.status(500).json({ message: `Failed to count offices: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to count offices',
+        });
     }
 });
 
@@ -77,7 +104,10 @@ router.get('/', async (
 
         res.json(filteredOffices);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch offices: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch offices',
+        });
     }
 });
 
@@ -100,7 +130,10 @@ router.get('/:officeCode', async (
         
         res.json(officeByCode);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch office: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch office',
+        });
     }
 });
 
@@ -131,7 +164,10 @@ router.post('/', async (
         
         res.status(201).json(newOffice);
     } catch (error) {
-        res.status(500).json({ message: `Failed to create office: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to create office',
+        });
     }
 });
 
@@ -164,7 +200,10 @@ router.put('/:officeCode', async (
         
         res.json(updatedOffice);
     } catch (error) {
-        res.status(500).json({ message: `Failed to update office: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to update office',
+        });
     }
 });
 
@@ -189,7 +228,10 @@ router.delete('/:officeCode', async (
         await dbConnection.offices.flush();
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: `Failed to delete office: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to delete office',
+        });
     }
 });
 

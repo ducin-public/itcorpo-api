@@ -3,12 +3,13 @@ import { Router, Request, Response } from 'express';
 import { Expense, ErrorResponse } from '../contract-types/data-contracts';
 import { Expenses } from '../contract-types/ExpensesRoute';
 import { dbConnection } from '../lib/db/db-connection';
+import { logRouterError } from './core/error';
 
 const router = Router();
 
 // GET /expenses/count
 router.get('/count', async (
-    _req: Request<
+    req: Request<
         Expenses.GetExpensesCount.RequestParams,
         Expenses.GetExpensesCount.ResponseBody,
         Expenses.GetExpensesCount.RequestBody,
@@ -20,13 +21,16 @@ router.get('/count', async (
         const expenses = await dbConnection.expenses.findMany();
         res.json(expenses.length);
     } catch (error) {
-        res.status(500).json({ message: `Failed to count expenses: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to count expenses',
+        });
     }
 });
 
 // GET /expenses
 router.get('/', async (
-    _req: Request<
+    req: Request<
         Expenses.GetExpenses.RequestParams,
         Expenses.GetExpenses.ResponseBody,
         Expenses.GetExpenses.RequestBody,
@@ -38,7 +42,10 @@ router.get('/', async (
         const expenses = await dbConnection.expenses.findMany();
         res.json(expenses);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch expenses: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch expenses',
+        });
     }
 });
 
@@ -61,7 +68,10 @@ router.get('/:expenseId', async (
         
         res.json(expense);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch expense: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch expense',
+        });
     }
 });
 
@@ -86,7 +96,10 @@ router.post('/', async (
         
         res.status(201).json(newExpense);
     } catch (error) {
-        res.status(500).json({ message: `Failed to create expense: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to create expense',
+        });
     }
 });
 
@@ -118,7 +131,10 @@ router.put('/:expenseId', async (
         
         res.json(updatedExpense);
     } catch (error) {
-        res.status(500).json({ message: `Failed to update expense: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to update expense',
+        });
     }
 });
 
@@ -143,7 +159,10 @@ router.delete('/:expenseId', async (
         await dbConnection.expenses.flush();
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: `Failed to delete expense: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to delete expense',
+        });
     }
 });
 

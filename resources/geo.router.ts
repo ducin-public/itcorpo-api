@@ -3,12 +3,13 @@ import { Router, Request, Response } from 'express';
 import { ErrorResponse } from '../contract-types/data-contracts';
 import { Geo } from '../contract-types/GeoRoute';
 import { dbConnection } from '../lib/db/db-connection';
+import { logRouterError } from './core/error';
 
 const router = Router();
 
 // GET /geo
 router.get('/', async (
-    _req: Request<
+    req: Request<
         Geo.GetGeo.RequestParams,
         Geo.GetGeo.ResponseBody,
         Geo.GetGeo.RequestBody,
@@ -25,7 +26,10 @@ router.get('/', async (
             }, {} as Geo.GetGeo.ResponseBody);
         res.json(geoResult);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch geographical data: ${error}` });
+        logRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch geo data',
+        });
     }
 });
 

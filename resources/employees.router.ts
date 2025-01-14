@@ -26,8 +26,6 @@ router.get('/count', async (
             departments: await departmentsPromise
         });
 
-        throw new Error('Test error');
-
         res.json(filteredEmployees.length);
     } catch (error) {
         logRouterError({

@@ -1,0 +1,562 @@
+[
+  {
+    "id": "579ef28f-c539-41ff-abe2-e4f6b1c1afed",
+    "name": "Intelligent API",
+    "status": "ON_HOLD",
+    "budget": 490000,
+    "startDate": "2013-04-16",
+    "endDate": "2019-04-27",
+    "manager": 67429059,
+    "description": "Deleniti rerum impedit.\nCum sed eaque quo accusantium.\nVoluptas reprehenderit aut pariatur eligendi consequatur."
+  },
+  {
+    "id": "47796f42-c056-4034-a86f-b6ac617f2ec5",
+    "name": "Auto Bank",
+    "status": "ACTIVE",
+    "budget": 681000,
+    "startDate": "2014-05-08",
+    "endDate": "2020-02-03",
+    "manager": 81994,
+    "description": "Et quas voluptatum sit ex repudiandae minus voluptas.\nQuam similique explicabo.\nEst suscipit odit qui ut deleniti sunt ea."
+  },
+  {
+    "id": "da0ae143-a456-4bdf-8f96-747895a7ffa3",
+    "name": "[Ultra] AI Platform",
+    "status": "ON_HOLD",
+    "budget": 337000,
+    "startDate": "2015-02-26",
+    "endDate": "2020-06-05",
+    "manager": 185080295,
+    "description": "Veniam exercitationem in molestias eveniet ex tempore qui.\nSed aut aspernatur dolores veniam non.\nAut quo consectetur."
+  },
+  {
+    "id": "731f8760-f251-4d9f-93d6-0bbe27fe3377",
+    "name": "Neural Diagnostic Network",
+    "status": "ACTIVE",
+    "budget": 7190000,
+    "startDate": "2012-03-15",
+    "endDate": "2018-10-18",
+    "manager": 10499,
+    "description": "Sit qui aut quia quia est saepe laudantium.\nFacilis culpa explicabo est.\nEt officia necessitatibus in quis omnis optio voluptatem."
+  },
+  {
+    "id": "e504fd36-608e-4893-9401-9cd83cab03a1",
+    "name": "QuantumResearch",
+    "status": "COMPLETED",
+    "budget": 767000,
+    "startDate": "2011-04-12",
+    "endDate": "2021-01-24",
+    "manager": 3555,
+    "description": "Modi cum et et illo fugit perspiciatis.\nTotam quasi ut omnis tempora voluptas.\nQui consequatur quia quia totam quis consectetur impedit praesentium."
+  },
+  {
+    "id": "8dc16114-4e81-42d3-a08c-e63fe8dc07c8",
+    "name": "Smart Research",
+    "status": "COMPLETED",
+    "budget": 5831000,
+    "startDate": "2015-01-14",
+    "endDate": "2019-08-02",
+    "manager": 65009935,
+    "description": "Autem eum rerum eligendi eum hic laborum odio minus.\nDeserunt tempora quas.\nQuos saepe esse."
+  },
+  {
+    "id": "38b19d02-36c3-4ce9-87d7-e8573e9a9caf",
+    "name": "Auto-Manufacturing X",
+    "status": "ACTIVE",
+    "budget": 3661000,
+    "startDate": "2011-02-13",
+    "endDate": "2020-11-30",
+    "manager": 846450,
+    "description": "Commodi recusandae odit occaecati voluptas consequuntur.\nArchitecto perspiciatis omnis iure dolor veritatis incidunt quis ut quibusdam.\nIncidunt placeat hic et nisi similique assumenda omnis quas aut."
+  },
+  {
+    "id": "b7f64a59-a0d6-4805-a9a8-38fb37e57c6a",
+    "name": "Smart-Security 2.0",
+    "status": "ON_HOLD",
+    "budget": 5470000,
+    "startDate": "2016-07-27",
+    "endDate": "2020-10-27",
+    "manager": 45399,
+    "description": "Illum minus facere accusamus laboriosam enim corporis sit.\nConsectetur et mollitia deleniti.\nQui mollitia molestias vel laborum est harum repellendus."
+  },
+  {
+    "id": "f1f9027c-f85f-4870-b04f-266461d653ce",
+    "name": "VehicleFramework",
+    "status": "PLANNING",
+    "budget": 5873000,
+    "startDate": "2013-11-21",
+    "endDate": "2020-06-20",
+    "manager": 808692571,
+    "description": "Quis totam magni voluptatem iste esse et.\nEos at quos vel aut quae.\nTempora neque dolore qui autem sint assumenda et architecto."
+  },
+  {
+    "id": "6ff48068-a749-42bd-8df2-5176a57be4bc",
+    "name": "Project Smart Supply",
+    "status": "COMPLETED",
+    "budget": 6807000,
+    "startDate": "2016-06-04",
+    "endDate": "2020-11-30",
+    "manager": 6222339,
+    "description": "Quisquam magni eveniet qui.\nUt delectus est animi cupiditate molestiae repellat libero cum dolores.\nAtque sed et autem possimus facilis nemo."
+  },
+  {
+    "id": "2e40b214-7fc3-43df-95d7-3780b9eb0e82",
+    "name": "Smart Service",
+    "status": "ACTIVE",
+    "budget": 592000,
+    "startDate": "2015-02-10",
+    "endDate": "2020-02-22",
+    "manager": 970286,
+    "description": "Maxime ut omnis animi.\nRatione accusamus consequatur aliquam ut aut excepturi qui nobis deleniti.\nId assumenda sit ut."
+  },
+  {
+    "id": "8d6ee91f-607d-4cbe-8cf1-eb889c934678",
+    "name": "Robotics Portal",
+    "status": "ACTIVE",
+    "budget": 3107000,
+    "startDate": "2012-03-24",
+    "endDate": "2019-09-06",
+    "manager": 77073,
+    "description": "Occaecati nesciunt architecto dolores.\nNecessitatibus iusto qui dolorem.\nHic dolorem deserunt repellat molestiae omnis quo."
+  },
+  {
+    "id": "4d713030-c7b7-40fe-87d3-5000c1de1bd8",
+    "name": "QuantumAuthentication",
+    "status": "ON_HOLD",
+    "budget": 4403000,
+    "startDate": "2016-11-18",
+    "endDate": "2020-10-22",
+    "manager": 6986633,
+    "description": "Maxime voluptate rerum facilis voluptates autem.\nQuod alias corporis molestias nobis.\nRepellendus aut nemo repudiandae qui nam quia ut."
+  },
+  {
+    "id": "6f02c3fb-d56b-4425-82c1-1f0fcbaec375",
+    "name": "Security Module",
+    "status": "COMPLETED",
+    "budget": 308000,
+    "startDate": "2015-01-28",
+    "endDate": "2019-10-25",
+    "manager": 776715799,
+    "description": "Nobis reiciendis itaque magni unde possimus animi mollitia voluptatibus et.\nAlias dicta dignissimos maiores nihil officiis.\nEos assumenda consectetur impedit sed."
+  },
+  {
+    "id": "d834cf54-1632-4f7e-a1d7-819bcc0ee6aa",
+    "name": "Project Data Learning",
+    "status": "ACTIVE",
+    "budget": 524000,
+    "startDate": "2011-01-06",
+    "endDate": "2019-09-24",
+    "manager": 2063837,
+    "description": "Ut et ducimus in cumque quo dolor debitis quam.\nMolestias perspiciatis est quam pariatur id.\nOmnis enim adipisci soluta."
+  },
+  {
+    "id": "597fad59-5122-4258-b8f9-66d80d4fd714",
+    "name": "Mobile-Car-Solution 2.0",
+    "status": "ACTIVE",
+    "budget": 763000,
+    "startDate": "2016-03-07",
+    "endDate": "2019-07-19",
+    "manager": 412000080,
+    "description": "Qui et in dolores cumque quia saepe nostrum aspernatur aut.\nAdipisci consequatur laboriosam quod qui.\nIpsam velit dicta voluptas animi est qui maxime et laudantium."
+  },
+  {
+    "id": "2e7ce83c-2b08-4764-8697-f2fbf92e25b2",
+    "name": "MLHealthAPI",
+    "status": "COMPLETED",
+    "budget": 776000,
+    "startDate": "2017-09-28",
+    "endDate": "2020-03-11",
+    "manager": 75261135,
+    "description": "Voluptatibus rem molestiae voluptas.\nDolorum velit totam natus vitae.\nVelit necessitatibus et possimus est consequatur consectetur adipisci eaque dolorem."
+  },
+  {
+    "id": "e244d24c-8cfb-4761-9575-3c90655ee033",
+    "name": "Data Authentication",
+    "status": "ON_HOLD",
+    "budget": 3808000,
+    "startDate": "2010-09-28",
+    "endDate": "2019-08-24",
+    "manager": 616490924,
+    "description": "Numquam est dolorem.\nFacere quos quia possimus qui magni blanditiis.\nPraesentium assumenda quisquam."
+  },
+  {
+    "id": "e21a137d-d95a-4cef-ac50-ef3d2fb66d44",
+    "name": "ConnectedVehicleCore",
+    "status": "ACTIVE",
+    "budget": 2972000,
+    "startDate": "2012-05-19",
+    "endDate": "2020-03-01",
+    "manager": 276488,
+    "description": "Voluptates pariatur ut ipsum qui voluptatum officia quisquam molestiae.\nHic assumenda est ut nihil.\nVoluptas perspiciatis voluptatem ab."
+  },
+  {
+    "id": "4ea27833-8a34-4943-bbca-ec14c0ed6fe3",
+    "name": "Mobile Manufacturing",
+    "status": "COMPLETED",
+    "budget": 742000,
+    "startDate": "2011-02-10",
+    "endDate": "2018-06-26",
+    "manager": 970286,
+    "description": "Dolorem autem totam pariatur placeat ad aspernatur asperiores consequuntur dolores.\nVel doloremque rem dolores veritatis et quis.\nQuo culpa expedita error commodi."
+  },
+  {
+    "id": "bfd21248-fca4-4425-9cb9-de74d53ed0cc",
+    "name": "Hybrid Vehicle System",
+    "status": "PLANNING",
+    "budget": 227000,
+    "startDate": "2013-12-13",
+    "endDate": "2020-08-26",
+    "manager": 6535446,
+    "description": "Ab in nulla sit aut autem veniam voluptate sit.\nDelectus beatae provident voluptatem vero.\nAutem quia ea nostrum doloremque dolorum."
+  },
+  {
+    "id": "96e7ed40-3c16-4d6b-a9ed-1c1162b79539",
+    "name": "Connected Authentication",
+    "status": "ON_HOLD",
+    "budget": 7069000,
+    "startDate": "2014-12-11",
+    "endDate": "2020-11-15",
+    "manager": 128980,
+    "description": "Aut soluta omnis.\nNumquam recusandae fugiat aut voluptatibus quibusdam consequatur nisi quisquam animi.\nAd placeat rem."
+  },
+  {
+    "id": "1b05249e-1f6a-4bc2-bc1d-136c6adeb686",
+    "name": "Payment API",
+    "status": "PLANNING",
+    "budget": 5055000,
+    "startDate": "2011-09-16",
+    "endDate": "2019-05-30",
+    "manager": 834255635,
+    "description": "Dolores magnam commodi.\nAspernatur voluptatem ullam corrupti.\nCorporis qui ex qui."
+  },
+  {
+    "id": "2ab9f02e-d5b3-467e-b1a2-5ab26d0503b6",
+    "name": "Project Quantum Research Portal",
+    "status": "ACTIVE",
+    "budget": 634000,
+    "startDate": "2012-01-01",
+    "endDate": "2019-08-22",
+    "manager": 384162,
+    "description": "Minima eum a libero voluptas et iure rerum.\nNeque est et eligendi.\nError optio voluptatem pariatur alias asperiores autem maiores rerum."
+  },
+  {
+    "id": "21baf181-46f7-4d05-917f-76fcc3feda47",
+    "name": "Secure Bank",
+    "status": "COMPLETED",
+    "budget": 294000,
+    "startDate": "2017-07-29",
+    "endDate": "2020-02-15",
+    "manager": 45399,
+    "description": "Eligendi ut reprehenderit rem tempora accusamus.\nDolor libero facere numquam neque porro aut quia ducimus.\nQuia eum ut."
+  },
+  {
+    "id": "3b1775dd-5291-465f-808c-2dbdaa085713",
+    "name": "Project Secure Car",
+    "status": "COMPLETED",
+    "budget": 5393000,
+    "startDate": "2010-10-28",
+    "endDate": "2018-08-23",
+    "manager": 2063837,
+    "description": "Incidunt voluptatem facere ut.\nAliquid architecto qui.\nVoluptate voluptatem cum est et."
+  },
+  {
+    "id": "f3fdd726-7869-482d-8791-d69ed48fc05e",
+    "name": "ML Manufacturing",
+    "status": "ON_HOLD",
+    "budget": 483000,
+    "startDate": "2017-04-20",
+    "endDate": "2019-01-26",
+    "manager": 2638163,
+    "description": "Aliquam est et praesentium esse.\nNisi quia et.\nIure similique et rerum aut dicta autem accusantium vel numquam."
+  },
+  {
+    "id": "8c0a0d91-b963-4d56-9c31-4bf9ebdad6bb",
+    "name": "Digital Finance",
+    "status": "ON_HOLD",
+    "budget": 7765000,
+    "startDate": "2016-06-05",
+    "endDate": "2021-03-08",
+    "manager": 23611097,
+    "description": "Sit modi sapiente similique.\nSimilique tempore deserunt aliquam aperiam et laudantium dolorum.\nVero est cupiditate at aut."
+  },
+  {
+    "id": "e854434e-a57e-473d-9c49-f038a45aeb46",
+    "name": "Trading Interface",
+    "status": "PLANNING",
+    "budget": 207000,
+    "startDate": "2012-01-02",
+    "endDate": "2019-04-26",
+    "manager": 770716,
+    "description": "Temporibus voluptas error qui voluptatem vero ad.\nFugiat iste ea.\nExpedita voluptatem nulla commodi maxime nostrum vero."
+  },
+  {
+    "id": "3184e0ad-ece9-4ddf-bc6d-b824d3fc1f89",
+    "name": "Digital-Analytics X",
+    "status": "PLANNING",
+    "budget": 664000,
+    "startDate": "2011-08-11",
+    "endDate": "2021-01-14",
+    "manager": 18065762,
+    "description": "Cum quisquam nihil.\nMaxime et minima similique.\nNihil et quo eos ut."
+  },
+  {
+    "id": "158ad395-e29c-46fe-ad05-fb3623f04bcb",
+    "name": "Research Network",
+    "status": "PLANNING",
+    "budget": 217000,
+    "startDate": "2014-12-14",
+    "endDate": "2020-09-16",
+    "manager": 93337,
+    "description": "Quisquam maxime totam eos quas.\nVeritatis quidem ut.\nDolorem ipsum corporis assumenda distinctio porro aut."
+  },
+  {
+    "id": "fa0d6240-a6b1-465b-954e-28e688454377",
+    "name": "Connected Service",
+    "status": "PLANNING",
+    "budget": 420000,
+    "startDate": "2011-08-18",
+    "endDate": "2019-09-25",
+    "manager": 29570875,
+    "description": "Dolor explicabo sapiente quasi id.\nProvident porro voluptas sint iste.\nAutem sequi voluptas nostrum et rerum magnam perferendis qui."
+  },
+  {
+    "id": "f598c2c0-400f-449d-be7a-2eb6cac04f2a",
+    "name": "Data Interface",
+    "status": "ON_HOLD",
+    "budget": 3363000,
+    "startDate": "2018-01-24",
+    "endDate": "2018-10-07",
+    "manager": 643142,
+    "description": "Quia molestiae rerum possimus quo unde est laudantium voluptatibus minima.\nQuis minus ut atque impedit et ut necessitatibus suscipit.\nBlanditiis quod excepturi consequatur eos vel ea eligendi."
+  },
+  {
+    "id": "86c0cd06-bd83-4d50-82d7-d1c10743ec48",
+    "name": "Future Supply Module",
+    "status": "PLANNING",
+    "budget": 4525000,
+    "startDate": "2012-05-03",
+    "endDate": "2021-01-27",
+    "manager": 2063837,
+    "description": "Magni temporibus ad aut quaerat.\nConsectetur aut eaque.\nQuidem quos excepturi dolorem velit non placeat."
+  },
+  {
+    "id": "2734bc74-23f8-416a-8b97-bba927329485",
+    "name": "Cloud-Authentication-Chain 2.0",
+    "status": "COMPLETED",
+    "budget": 3273000,
+    "startDate": "2011-03-04",
+    "endDate": "2019-11-07",
+    "manager": 162837,
+    "description": "Esse eum in dicta sed laborum et aut.\nA fugit voluptatem suscipit et ipsum.\nEt ipsa tempora quam ut libero provident quas dolores."
+  },
+  {
+    "id": "abe507ea-42a2-47c4-884a-f9255da36d01",
+    "name": "Revolutionary Enterprise Manufacturing",
+    "status": "PLANNING",
+    "budget": 303000,
+    "startDate": "2014-07-26",
+    "endDate": "2020-12-10",
+    "manager": 896471979,
+    "description": "Consequuntur consequatur id accusamus molestiae quia aut eius similique.\nTenetur non et ullam.\nNisi autem explicabo modi adipisci quod iste nemo optio."
+  },
+  {
+    "id": "6eb66b37-1996-4a2a-a110-be6a299bc541",
+    "name": "Smart-Vehicle Enterprise",
+    "status": "ON_HOLD",
+    "budget": 279000,
+    "startDate": "2016-03-17",
+    "endDate": "2019-08-01",
+    "manager": 23004,
+    "description": "Veritatis quas et necessitatibus culpa provident.\nNostrum quae reprehenderit quo ipsum vero.\nSaepe soluta in."
+  },
+  {
+    "id": "07be6358-4c88-4665-b403-ce1c8b8f05fa",
+    "name": "Data-Service 2.0",
+    "status": "COMPLETED",
+    "budget": 610000,
+    "startDate": "2014-07-16",
+    "endDate": "2020-09-08",
+    "manager": 41087,
+    "description": "Temporibus dignissimos accusamus ratione.\nMaiores porro ducimus earum quos ullam consequatur.\nAutem enim amet nihil placeat."
+  },
+  {
+    "id": "5decf099-8b20-4512-be8b-65496da8c086",
+    "name": "Secure Health",
+    "status": "COMPLETED",
+    "budget": 719000,
+    "startDate": "2012-08-16",
+    "endDate": "2019-08-03",
+    "manager": 5673795,
+    "description": "Qui culpa deserunt qui maiores voluptas.\nDolorem qui nemo odio cupiditate et autem deserunt est id.\nPlaceat assumenda dignissimos maxime provident sed at reprehenderit."
+  },
+  {
+    "id": "1f8e7c15-7e03-4a26-b5d0-88a72f178694",
+    "name": "Authentication API",
+    "status": "ACTIVE",
+    "budget": 263000,
+    "startDate": "2013-04-20",
+    "endDate": "2020-04-17",
+    "manager": 3555,
+    "description": "Sunt aut voluptas sed sed illum laudantium dolor facere.\nNon tempora ad corrupti optio voluptatem fuga et aperiam mollitia.\nExpedita qui quibusdam sed exercitationem illum deserunt doloribus itaque in."
+  },
+  {
+    "id": "5785bbc1-70a7-494c-b3af-bfd1083413e2",
+    "name": "Virtual Bank",
+    "status": "ON_HOLD",
+    "budget": 773000,
+    "startDate": "2013-07-01",
+    "endDate": "2019-12-26",
+    "manager": 993536667,
+    "description": "Vel exercitationem ad maxime quia consectetur.\nEt ut modi expedita sit assumenda odio.\nDeleniti qui sequi optio voluptatum dolor ut illo amet eum."
+  },
+  {
+    "id": "0075e62d-efc1-4f28-b0a6-c088900fd67a",
+    "name": "Revolutionary Intelligent Learning",
+    "status": "ACTIVE",
+    "budget": 2436000,
+    "startDate": "2015-02-01",
+    "endDate": "2018-12-28",
+    "manager": 710929387,
+    "description": "Velit hic exercitationem perferendis autem autem quia sapiente est possimus.\nExplicabo beatae a ipsa.\nVeniam quisquam cupiditate consequatur fugit."
+  },
+  {
+    "id": "1a16bb18-e236-489b-aefe-932337d23b1f",
+    "name": "IoT Payment Interface",
+    "status": "ACTIVE",
+    "budget": 6218000,
+    "startDate": "2017-11-03",
+    "endDate": "2020-02-03",
+    "manager": 402930527,
+    "description": "Velit nihil nemo.\nOdit quia minus excepturi nisi quia.\nReiciendis in eaque quisquam repellat."
+  },
+  {
+    "id": "8fd5d72e-8ac8-4855-9337-9f6f47fd5753",
+    "name": "Authentication Analytics",
+    "status": "COMPLETED",
+    "budget": 539000,
+    "startDate": "2018-02-09",
+    "endDate": "2019-11-14",
+    "manager": 23149936,
+    "description": "Dolorum ut atque optio perspiciatis quo velit ducimus quia quisquam.\nSuscipit cupiditate doloremque.\nQuia natus pariatur iure in quia consequatur."
+  },
+  {
+    "id": "b661394a-45a1-40a3-b4e9-ffbb2d98411e",
+    "name": "Enterprise-Finance 2.0",
+    "status": "COMPLETED",
+    "budget": 267000,
+    "startDate": "2015-02-09",
+    "endDate": "2019-05-16",
+    "manager": 10367,
+    "description": "Est cum explicabo.\nDucimus repudiandae sed.\nVoluptate sint quam."
+  },
+  {
+    "id": "4b149cf3-909b-49a4-8caf-d96d7ab4fbc9",
+    "name": "Digital System",
+    "status": "ACTIVE",
+    "budget": 243000,
+    "startDate": "2016-01-13",
+    "endDate": "2020-03-06",
+    "manager": 48145801,
+    "description": "Et dolore laudantium.\nNemo quis alias voluptatem aliquam qui molestias.\nOfficiis libero ea nesciunt voluptas."
+  },
+  {
+    "id": "77477d44-c322-428b-bf9a-59d5f6d6a48b",
+    "name": "VirtualCarAPI",
+    "status": "COMPLETED",
+    "budget": 3809000,
+    "startDate": "2015-09-24",
+    "endDate": "2019-12-14",
+    "manager": 94062056,
+    "description": "Illum omnis reiciendis.\nVoluptatem ut recusandae reiciendis culpa expedita quod.\nEst fuga vitae odio."
+  },
+  {
+    "id": "7717c861-ca63-4ceb-b24d-a6f173ee2843",
+    "name": "Connected Health",
+    "status": "ON_HOLD",
+    "budget": 3833000,
+    "startDate": "2011-01-02",
+    "endDate": "2020-04-06",
+    "manager": 71877,
+    "description": "Explicabo perspiciatis doloremque corporis architecto.\nConsequatur cupiditate voluptatum nihil a aspernatur.\nAut labore provident in."
+  },
+  {
+    "id": "5d379fe7-52d9-4831-8b66-be54d9aab25c",
+    "name": "QuantumPlatform",
+    "status": "PLANNING",
+    "budget": 532000,
+    "startDate": "2011-07-24",
+    "endDate": "2019-02-16",
+    "manager": 1053379,
+    "description": "Adipisci dolores dignissimos tenetur ab sed.\nEarum voluptatem inventore dicta quibusdam.\nMagnam architecto eum."
+  },
+  {
+    "id": "1cd6e5c1-2733-4111-9ab7-b5f2e334d9fe",
+    "name": "Edge API",
+    "status": "COMPLETED",
+    "budget": 314000,
+    "startDate": "2012-08-27",
+    "endDate": "2020-05-27",
+    "manager": 162837,
+    "description": "Dolorum debitis recusandae et consequuntur possimus hic soluta beatae doloremque.\nSunt cumque quis voluptates minus.\nIpsa maiores minima tempore enim."
+  },
+  {
+    "id": "fded698e-df3d-4483-9359-cfd8537d979f",
+    "name": "AI Car",
+    "status": "COMPLETED",
+    "budget": 3928000,
+    "startDate": "2012-04-23",
+    "endDate": "2019-12-21",
+    "manager": 29831,
+    "description": "Non labore consequuntur illo vel harum reiciendis dolor.\nDicta est laboriosam quidem omnis.\nQuia odit ab."
+  },
+  {
+    "id": "6aa3c367-e8f6-43cc-9042-3c19594fadb6",
+    "name": "Cloud Learning Framework",
+    "status": "COMPLETED",
+    "budget": 4729000,
+    "startDate": "2018-01-15",
+    "endDate": "2020-07-02",
+    "manager": 71506176,
+    "description": "Aut impedit autem ea.\nIpsa magnam aspernatur quibusdam corporis.\nUnde quam accusantium amet assumenda accusamus."
+  },
+  {
+    "id": "158c4f20-2209-417c-b659-49cc9bb7c31d",
+    "name": "AI Diagnostic Core",
+    "status": "COMPLETED",
+    "budget": 3958000,
+    "startDate": "2014-07-11",
+    "endDate": "2018-07-05",
+    "manager": 66856314,
+    "description": "Et reprehenderit quidem dolorem perferendis eum sed molestias pariatur.\nIpsa ut ab deserunt est consequatur quam quis.\nQuis quod cupiditate."
+  },
+  {
+    "id": "d8b91063-57a9-454f-8534-b80528b74c9b",
+    "name": "Blockchain Health",
+    "status": "COMPLETED",
+    "budget": 404000,
+    "startDate": "2018-05-12",
+    "endDate": "2018-10-22",
+    "manager": 45906689,
+    "description": "Perspiciatis aut nostrum alias et nulla nemo a.\nPariatur reprehenderit sed quod aut iste aut ut.\nSoluta quos aut veritatis similique est."
+  },
+  {
+    "id": "8ff77ccc-5b97-443d-b6b4-a3564706e4df",
+    "name": "IoT Authentication",
+    "status": "ON_HOLD",
+    "budget": 770000,
+    "startDate": "2011-01-31",
+    "endDate": "2020-04-01",
+    "manager": 73305024,
+    "description": "Vero ratione quia fuga ea tempora nam alias.\nSimilique et adipisci quia accusantium voluptatem quam dolores odio.\nTempore maiores voluptate qui voluptatem nesciunt."
+  },
+  {
+    "id": "852b697f-1d11-4cfd-ab26-5aa2f926e79d",
+    "name": "MLRoboticsSolution",
+    "status": "ACTIVE",
+    "budget": 354000,
+    "startDate": "2014-07-09",
+    "endDate": "2020-06-22",
+    "manager": 2670735,
+    "description": "Est velit sed saepe totam laboriosam quod eligendi.\nQuos magni impedit.\nEos praesentium et nostrum quidem voluptas unde."
+  }
+]

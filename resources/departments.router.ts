@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
 
-import { Department, ErrorResponse } from '../contract-types/data-contracts';
+import { Department, DepartmentInput, ErrorResponse } from '../contract-types/data-contracts';
 import { Departments } from '../contract-types/DepartmentsRoute';
-import { db } from '../lib/db/db-connection';
+import { dbConnection } from '../lib/db/db-connection';
 
 const router = Router();
 
@@ -17,8 +17,8 @@ router.get('/', async (
     res: Response<Departments.GetDepartments.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        res.json(db.data.departments);
+        const departments = await dbConnection.departments.findMany();
+        res.json(departments);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch departments: ${error}` });
     }
@@ -27,8 +27,8 @@ router.get('/', async (
 // GET /departments/count
 router.get('/count', async (_req, res) => {
     try {
-        await db.read();
-        res.json(db.data.departments.length);
+        const count = await dbConnection.departments.count();
+        res.json(count);
     } catch (error) {
         res.status(500).json({ message: `Failed to count departments: ${error}` });
     }
@@ -45,11 +45,8 @@ router.get('/:departmentId', async (
     res: Response<Departments.GetDepartmentById.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
         const departmentId = Number(req.params.departmentId);
-        const department = db.data.departments.find(
-            d => d.id === departmentId
-        );
+        const department = await dbConnection.departments.findOne(d => d.id === departmentId);
         
         if (!department) {
             return res.status(404).json({ message: 'Department not found' });
@@ -72,18 +69,15 @@ router.post('/', async (
     res: Response<Departments.CreateDepartment.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const departmentData = { ...req.body };
         
-        const newDepartment: Department = {
-            ...departmentData,
-            id: db.getNextId('departments')
+        const newDepartment: DepartmentInput = {
+            ...req.body,
         };
         
-        db.data.departments.push(newDepartment);
-        await db.write();
+        const newRecord = await dbConnection.departments.insertOne(newDepartment);
+        await dbConnection.departments.flush();
         
-        res.status(201).json(newDepartment);
+        res.status(201).json(newRecord);
     } catch (error) {
         res.status(500).json({ message: `Failed to create department: ${error}` });
     }
@@ -100,10 +94,8 @@ router.put('/:departmentId', async (
     res: Response<Departments.UpdateDepartment.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
         const departmentId = Number(req.params.departmentId);
-        const departmentData = { ...req.body };
-        const departmentToUpdate = db.data.departments.find(d => d.id === departmentId);
+        const departmentToUpdate = await dbConnection.departments.findOne(d => d.id === departmentId);
         
         if (!departmentToUpdate) {
             return res.status(404).json({ message: 'Department not found' });
@@ -111,14 +103,12 @@ router.put('/:departmentId', async (
 
         const updatedDepartment: Department = {
             ...departmentToUpdate,
-            ...departmentData,
+            ...req.body,
             id: departmentId
         };
 
-        db.data.departments = db.data.departments.map(d => 
-            d.id === departmentId ? updatedDepartment : d
-        );
-        await db.write();
+        await dbConnection.departments.replaceOne(d => d.id === departmentId, updatedDepartment);
+        await dbConnection.departments.flush();
         
         res.json(updatedDepartment);
     } catch (error) {
@@ -137,17 +127,15 @@ router.delete('/:departmentId', async (
     res: Response<Departments.DeleteDepartment.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
         const departmentId = Number(req.params.departmentId);
-        const initialLength = db.data.departments.length;
+        const departmentToDelete = await dbConnection.departments.findOne(d => d.id === departmentId);
         
-        db.data.departments = db.data.departments.filter(d => d.id !== departmentId);
-        
-        if (db.data.departments.length === initialLength) {
+        if (!departmentToDelete) {
             return res.status(404).json({ message: 'Department not found' });
         }
-        
-        await db.write();
+
+        await dbConnection.departments.deleteOne(d => d.id === departmentId);
+        await dbConnection.departments.flush();
         res.status(204).send();
     } catch (error) {
         res.status(500).json({ message: `Failed to delete department: ${error}` });

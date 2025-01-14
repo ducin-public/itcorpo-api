@@ -261,7 +261,7 @@ const Project = z
     status: ProjectStatus,
     budget: Money,
     startDate: z.string(),
-    endDate: z.string(),
+    endDate: z.string().optional(),
     team: z.array(
       z
         .object({ id: z.number().int(), name: z.string() })

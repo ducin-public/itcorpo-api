@@ -2403,7 +2403,6 @@ components:
         - status
         - budget
         - startDate
-        - endDate
         - team
         - manager
         - description

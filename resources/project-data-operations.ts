@@ -1,5 +1,6 @@
 import { Project } from '../contract-types/data-contracts';
-import { DBProject, DBProjectTeam } from '../lib/db/db-schema';
+import { DBProjectTeam } from '../lib/db/db-zod-schemas/project-team.schema';
+import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
 
 export const attachTeamToProject = (project: DBProject, projectTeams: DBProjectTeam[]): Project => {
     const teamMembers = projectTeams

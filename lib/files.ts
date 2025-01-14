@@ -5,12 +5,13 @@ import { logger } from "./logger";
 const ROOT_DIR = path.join(__dirname, '../');
 
 export const FILES = {
-    DATABASE_FILE: path.join(ROOT_DIR, 'database/database.json'),
     CONTRACT_FILE: path.join(ROOT_DIR, 'contract/openapi.yml'),
     APP_CONFIG_FILE: path.join(ROOT_DIR, 'config.json'),
     ROUTES_FILE: path.join(ROOT_DIR, 'routes.json'),
     MAINTENANCE_FILE: path.join(ROOT_DIR, '.MAINTENANCE')
 } as const;
+
+export const DB_FILE = (collection: string) => path.join(ROOT_DIR, `database/${collection}.json`);
 
 Object.entries(FILES).forEach(([key, filepath]) => {
     if (!fs.existsSync(filepath)) {

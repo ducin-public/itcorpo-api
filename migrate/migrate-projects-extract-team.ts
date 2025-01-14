@@ -1,12 +1,13 @@
 import { Project } from "../contract-types/data-contracts";
-import { DBProject } from "../lib/db/db-schema";
-import { migrationBuffer } from "./migration-buffer";
+import { DBProject } from "../lib/db/db-zod-schemas/project.schema";
 
 // IMPORTANT: This function mutates migrationBuffer
 export const extractTeamMembersFromProject = (project: DBProject) => {
-    const projectBeforeMigration = project as Project;
+    const projectTeams = []
+
+    const projectBeforeMigration = project as Project
     if ((projectBeforeMigration).team) {
-        migrationBuffer.projectTeams.push(...projectBeforeMigration.team.map(member => ({
+        projectTeams.push(...projectBeforeMigration.team.map(member => ({
             employeeId: member.id,
             projectId: project.id,
             employeeName: member.name,

@@ -5,7 +5,7 @@ import { BenefitService, BenefitCharge, BenefitChargeStatus, BenefitSubscription
 import { logger } from '../lib/logger'
 import { benefitServices, PRICE_RANGES } from './benefit-services'
 import { randomInt } from './lib/random'
-import { DbSchema } from '../lib/db/db-schema'
+import { DBConnection } from '../lib/db/db-connection'
 
 const PROBABILITIES = {
   EMPLOYEE: {
@@ -163,38 +163,48 @@ const generateCharges = (
     return charges
 }
 
-export const generateBenefits = (db: DbSchema) => {
+export async function generateBenefits (dbConnection: DBConnection) {
     const allSubscriptions: BenefitSubscription[] = []
-    const charges: BenefitCharge[] = []
+    const allCharges: BenefitCharge[] = []
 
-    db.employees.forEach(employee => {
+    const employees = await dbConnection.employees.findMany();
+    for (const employee of employees) {
         if (Math.random() < PROBABILITIES.EMPLOYEE.HAS_BENEFIT) {
             const availableServices = benefitServices.filter(s => 
                 s.availableCountries.includes(employee.nationality)
             )
-
+    
             const hasMultiple = Math.random() < PROBABILITIES.EMPLOYEE.HAS_MULTIPLE_BENEFITS
             const servicesToAssign = hasMultiple 
                 ? availableServices.slice(0, Math.floor(Math.random() * 3) + 1)
                 : [availableServices[Math.floor(Math.random() * availableServices.length)]]
-
+    
             for (const service of servicesToAssign) {
                 const employeeSubscriptions = generateSubscriptionsOfAnEmployee(employee, service)
                 allSubscriptions.push(...employeeSubscriptions)
-
+    
                 for (const subscription of employeeSubscriptions) {   
                     const subscriptionCharges = generateCharges(subscription, employee.id, service)
-                    charges.push(...subscriptionCharges)
+                    allCharges.push(...subscriptionCharges)
                 }
             }
         }
-    })
-
-    logger.info(`Generated ${benefitServices.length} services, ${allSubscriptions.length} subscriptions, ${charges.length} charges`)
-
-    return {
-        benefitServices,
-        benefitSubscriptions: allSubscriptions,
-        benefitCharges: charges,
     }
+
+    await dbConnection.benefitServices.deleteMany();
+    await dbConnection.benefitServices.insertMany(benefitServices);
+    await dbConnection.benefitServices.validateInMemory();
+    await dbConnection.benefitServices.flush();
+
+    await dbConnection.benefitSubscriptions.deleteMany();
+    await dbConnection.benefitSubscriptions.insertMany(allSubscriptions);
+    await dbConnection.benefitSubscriptions.validateInMemory();
+    await dbConnection.benefitSubscriptions.flush();
+
+    await dbConnection.benefitCharges.deleteMany();
+    await dbConnection.benefitCharges.insertMany(allCharges);
+    await dbConnection.benefitCharges.validateInMemory();
+    await dbConnection.benefitCharges.flush();
+
+    logger.info(`Generated ${benefitServices.length} services, ${allSubscriptions.length} subscriptions, ${allCharges.length} charges`)
 }

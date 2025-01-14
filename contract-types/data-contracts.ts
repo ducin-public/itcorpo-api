@@ -379,7 +379,7 @@ export interface Project {
   /** @format date */
   startDate: string;
   /** @format date */
-  endDate: string;
+  endDate?: string;
   team: {
     id: number;
     name: string;

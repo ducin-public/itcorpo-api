@@ -1,22 +1,25 @@
-import { DBProject, DbSchema } from '../lib/db/db-schema';
-import { migrationBuffer } from './migration-buffer';
 import { logger } from '../lib/logger';
+import { DBConnection } from '../lib/db/db-connection';
+import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
 
-export const migrateProjects = (dbContent: DbSchema): DBProject[] => {
-    const projects = dbContent.projects;
-    logger.debug(`Found ${projects.length} projects to process`);
-    
-    migrationBuffer.projectTeams = [];
+const updateProject = (project: DBProject) => {
+    let updatedProject = {
+        ...project,
+        // name: generateNewProjectName()
+    };
+    // updatedProject = extractTeamMembersFromProject(updatedProject);
+    return updatedProject;
+}
 
-    // Process projects and extract teams
-    const processedProjects = projects.map(project => {
-        let updatedProject = {
-            ...project,
-            // name: generateNewProjectName()
-        };
-        // updatedProject = extractTeamMembersFromProject(updatedProject);
-        return updatedProject;
-    });
+export async function migrateProjects(dbConnection: DBConnection) {
+    const allProjects = await dbConnection.projects.findMany();
+    logger.debug(`Found ${allProjects.length} projects to process`);
     
-    return processedProjects;
+    const newProjects = allProjects.map(updateProject);
+    await dbConnection.projects.deleteMany();
+    await dbConnection.projects.insertMany(newProjects);
+    await dbConnection.projects.validateInMemory();
+    
+    await dbConnection.projects.flush();
+    logger.info(`Migrated ${allProjects.length} projects`);
 };

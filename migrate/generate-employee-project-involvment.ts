@@ -1,5 +1,4 @@
-import { DbSchema } from '../lib/db/db-schema';
-import { EngagementLevel } from '../contract-types/data-contracts';
+import { EngagementLevel } from './migrate-project-teams';
 
 // export enum EngagementLevel {
 //     FULL_TIME = 'FULL_TIME',       // 100%-75%
@@ -60,7 +59,7 @@ const generateAllocation = (employeeId: string, projectId: string): AllocationRa
     projectId,
     engagementLevel: generateRandomEngagementLevel()
 });
-
+/*
 const generateEmployeeProjectInvolvement = (dbContent: DbSchema): EmployeeProjectInvolvement[] => {
     const involvements: EmployeeProjectInvolvement[] = [];
     
@@ -99,3 +98,4 @@ export {
     AllocationRate, 
     EngagementLevel 
 };
+*/

@@ -2,9 +2,8 @@ import { Router, Request, Response } from 'express';
 
 import { Project, ErrorResponse, ProjectEmployeeInvolvement } from '../contract-types/data-contracts';
 import { Projects } from '../contract-types/ProjectsRoute';
-import { db } from '../lib/db/db-connection';
-import { Employees } from '../contract-types/EmployeesRoute';
-import { processProjectsSearchCriteria } from './project-search';
+import { dbConnection } from '../lib/db/db-connection';
+import { filterProjects } from './project-filters';
 import { attachTeamToProject, attachTeamToAllProjects } from './project-data-operations';
 
 const router = Router();
@@ -20,8 +19,14 @@ router.get('/count', async (
     res: Response<Projects.GetProjectsCount.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const filteredProjects = processProjectsSearchCriteria(db.data, req.query);
+        const projectsPromise = dbConnection.projects.findMany();
+        const projectTeamsPromise = dbConnection.projectTeams.findMany();
+
+        const filteredProjects = filterProjects(req.query, {
+            projects: await projectsPromise,
+            projectTeams: await projectTeamsPromise,
+        });
+
         res.json(filteredProjects.length);
     } catch (error) {
         res.status(500).json({ message: `Failed to count projects: ${error}` });
@@ -39,9 +44,15 @@ router.get('/', async (
     res: Response<Projects.GetProjects.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const filteredProjects = processProjectsSearchCriteria(db.data, req.query);
-        const projectsWithTeams = attachTeamToAllProjects(filteredProjects, db.data.projectTeams);
+        const projectsPromise = dbConnection.projects.findMany();
+        const projectTeamsPromise = dbConnection.projectTeams.findMany();
+
+        const filteredProjects = filterProjects(req.query, {
+            projects: await projectsPromise,
+            projectTeams: await projectTeamsPromise,
+        });
+
+        const projectsWithTeams = attachTeamToAllProjects(filteredProjects, await projectTeamsPromise);
         res.json(projectsWithTeams);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch projects: ${error}` });
@@ -59,15 +70,14 @@ router.get('/:projectId', async (
     res: Response<Projects.GetProjectById.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const projectId = req.params.projectId;
-        const project = db.data.projects.find(p => p.id === projectId);
+        const project = await dbConnection.projects.findOne(p => p.id === req.params.projectId);
         
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
         
-        const projectWithTeam = attachTeamToProject(project, db.data.projectTeams);
+        const projectTeams = await dbConnection.projectTeams.findMany((pt) => pt.projectId === project.id);
+        const projectWithTeam = attachTeamToProject(project, projectTeams);
         res.json(projectWithTeam);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch project: ${error}` });
@@ -85,16 +95,13 @@ router.post('/', async (
     res: Response<Projects.CreateProject.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const projectData = { ...req.body };
-        
         const newProject: Project = {
-            ...projectData,
+            ...req.body,
             id: Math.random().toString(36).substr(2, 9) // Generate random ID
         };
         
-        db.data.projects.push(newProject);
-        await db.write();
+        await dbConnection.projects.insertOne(newProject);
+        await dbConnection.projects.flush();
         
         res.status(201).json(newProject);
     } catch (error) {
@@ -113,10 +120,7 @@ router.put('/:projectId', async (
     res: Response<Projects.UpdateProject.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const projectId = req.params.projectId;
-        const projectData = { ...req.body };
-        const projectToUpdate = db.data.projects.find(p => p.id === projectId);
+        const projectToUpdate = await dbConnection.projects.findOne(p => p.id === req.params.projectId);
         
         if (!projectToUpdate) {
             return res.status(404).json({ message: 'Project not found' });
@@ -124,14 +128,12 @@ router.put('/:projectId', async (
 
         const updatedProject: Project = {
             ...projectToUpdate,
-            ...projectData,
+            ...req.body,
             id: req.params.projectId
         };
 
-        db.data.projects = db.data.projects.map(p => 
-            p.id === req.params.projectId ? updatedProject : p
-        );
-        await db.write();
+        await dbConnection.projects.replaceOne(p => p.id === req.params.projectId, updatedProject);
+        await dbConnection.projects.flush();
         
         res.json(updatedProject);
     } catch (error) {
@@ -150,17 +152,14 @@ router.delete('/:projectId', async (
     res: Response<Projects.DeleteProject.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const projectId = req.params.projectId;
-        const initialLength = db.data.projects.length;
+        const projectToDelete = await dbConnection.projects.findOne(p => p.id === req.params.projectId);
         
-        db.data.projects = db.data.projects.filter(p => p.id !== projectId);
-        
-        if (db.data.projects.length === initialLength) {
+        if (!projectToDelete) {
             return res.status(404).json({ message: 'Project not found' });
         }
-        
-        await db.write();
+
+        await dbConnection.projects.deleteOne(p => p.id === req.params.projectId);
+        await dbConnection.projects.flush();
         res.status(204).send();
     } catch (error) {
         res.status(500).json({ message: `Failed to delete project: ${error}` });
@@ -178,28 +177,26 @@ router.get('/:projectId/team', async (
     res: Response<Projects.GetProjectTeam.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const projectId = req.params.projectId;
-        
-        const project = db.data.projects.find(p => p.id === projectId);
+        const project = await dbConnection.projects.findOne(p => p.id === req.params.projectId);
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
 
-        const projectInvolvements: ProjectEmployeeInvolvement[] = db.data.projectTeams
-            .filter(assignment => assignment.projectId === projectId)
-            .map(assignment => {
-                const employee = db.data.employees.find(e => e.id === assignment.employeeId)!;
-                return {
-                    employeeId: employee.id,
-                    projectId: project.id,
-                    employeeName: `${employee.firstName} ${employee.lastName}`,
-                    projectName: project.name,
-                    projectStatus: project.status,
-                    engagementLevel: assignment.engagementLevel,
-                    since: assignment.since
-                };
-            });
+        const projectTeams = await dbConnection.projectTeams.findMany(pt => pt.projectId === req.params.projectId);
+        const employees = await dbConnection.employees.findMany();
+        
+        const projectInvolvements: ProjectEmployeeInvolvement[] = projectTeams.map(assignment => {
+            const employee = employees.find(e => e.id === assignment.employeeId)!;
+            return {
+                employeeId: employee.id,
+                projectId: project.id,
+                employeeName: `${employee.firstName} ${employee.lastName}`,
+                projectName: project.name,
+                projectStatus: project.status,
+                engagementLevel: assignment.engagementLevel,
+                since: assignment.since
+            };
+        });
 
         res.json(projectInvolvements);
     } catch (error) {

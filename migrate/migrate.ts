@@ -1,31 +1,52 @@
+import { checkIntegrity } from './check-integrity';
 import { logger } from '../lib/logger';
+
 import { migrateOffices } from './migrate-offices';
 import { migrateProjects } from './migrate-projects';
 import { migrateEmployees } from './migrate-employees';
-import { readDatabaseFile, writeDatabaseFile } from './lib/file-utils';
-import { generateBenefits } from './generate-benefits';
-import { FILES } from '../lib/files';
-import { DbSchema } from '../lib/db/db-schema';
-import { checkIntegrity } from './check-integrity';
-import { validateDatabase } from './validate-database';
 import { migrateProjectTeams } from './migrate-project-teams';
+import { generateBenefits } from './generate-benefits';
 import { generateTimesheets } from './generate-timesheets';
+import { dbConnection, DBConnection } from '../lib/db/db-connection';
+import { DBError } from '../lib/db/db-error';
 
 process.env.TZ = 'UTC';
 
 logger.info('Starting database migration...');
-const dbContent: DbSchema = readDatabaseFile(FILES.DATABASE_FILE);
 
-const migrateToggles = {
-    employees: false,
-    benefits: false,
-    offices: false,
-    projects: false,
-    projectTeams: false,
-    timesheets: false,
+const migrationSettings: {
+    [collection in string]: {
+        enabled: boolean;
+        processFn: (dbConnection: DBConnection) => Promise<void>;
+    }
+} = {
+    employees: {
+        enabled: false,
+        processFn: migrateEmployees,
+    },
+    benefits: {
+        enabled: false,
+        processFn: generateBenefits,
+    },
+    offices: {
+        enabled: true,
+        processFn: migrateOffices,
+    },
+    projects: {
+        enabled: false,
+        processFn: migrateProjects,
+    },
+    projectTeams: {
+        enabled: false,
+        processFn: migrateProjectTeams,
+    },
+    timesheets: {
+        enabled: false,
+        processFn: generateTimesheets,
+    }
 }
 
-const migrationTargets = Object.entries(migrateToggles).filter(([_, value]) => value).map(([key]) => key)
+const migrationTargets = Object.entries(migrationSettings).filter(([_, { enabled }]) => enabled).map(([key]) => key)
 if (migrationTargets.length === 0) {
     logger.warn('No migration targets selected. Exiting...');
     process.exit(0);
@@ -33,30 +54,19 @@ if (migrationTargets.length === 0) {
     logger.info(`Migrating: ${migrationTargets.join(', ')}.`);
 }
 
-function reorderDatabaseContentKeys(content: DbSchema): DbSchema {
-    const { logs, benefitServices, benefitSubscriptions, benefitCharges, ...rest } = content;
-    return {
-        logs,
-        benefitServices,
-        benefitSubscriptions,
-        benefitCharges,
-        ...rest,
-    };
+for (const [collectionName, { processFn }] of  Object.entries(migrationSettings)){
+    try {
+        logger.info(`Migrating ${collectionName}...`);
+        processFn(dbConnection);
+        logger.info(`Migration successfully finished for ${collectionName}.`);
+    } catch (e) {
+        if (e instanceof DBError) {
+            logger.error(`DBError occurred while migrating ${collectionName}:`, e);
+            process.exit(1);
+        }
+        logger.error(`Other error occurred while migrating ${collectionName}:`, e);
+    }
 }
 
-const updatedContent: DbSchema = {
-    ...dbContent,
-    ...(migrateToggles.offices && { offices: migrateOffices(dbContent) }),
-    ...(migrateToggles.projects && { projects: migrateProjects(dbContent) }),
-    ...(migrateToggles.employees && { employees: migrateEmployees(dbContent) }),
-    ...(migrateToggles.benefits && generateBenefits(dbContent)),
-    ...(migrateToggles.projectTeams && { projectTeams: migrateProjectTeams(dbContent) }),
-    ...(migrateToggles.timesheets && generateTimesheets(dbContent)),
-};
-
 // check integrity before writing the database file
-checkIntegrity(updatedContent);
-// validate schemas before writing the database file
-validateDatabase(updatedContent);
-
-writeDatabaseFile(FILES.DATABASE_FILE, reorderDatabaseContentKeys(updatedContent));
+checkIntegrity(dbConnection);

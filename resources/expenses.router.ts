@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import { Expense, ErrorResponse } from '../contract-types/data-contracts';
 import { Expenses } from '../contract-types/ExpensesRoute';
-import { db } from '../lib/db/db-connection';
+import { dbConnection } from '../lib/db/db-connection';
 
 const router = Router();
 
@@ -17,8 +17,8 @@ router.get('/count', async (
     res: Response<Expenses.GetExpensesCount.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        res.json(db.data.expenses.length);
+        const expenses = await dbConnection.expenses.findMany();
+        res.json(expenses.length);
     } catch (error) {
         res.status(500).json({ message: `Failed to count expenses: ${error}` });
     }
@@ -35,8 +35,8 @@ router.get('/', async (
     res: Response<Expenses.GetExpenses.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        res.json(db.data.expenses);
+        const expenses = await dbConnection.expenses.findMany();
+        res.json(expenses);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch expenses: ${error}` });
     }
@@ -53,8 +53,7 @@ router.get('/:expenseId', async (
     res: Response<Expenses.GetExpenseById.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const expense = db.data.expenses.find(e => e.id === req.params.expenseId);
+        const expense = await dbConnection.expenses.findOne(e => e.id === req.params.expenseId);
         
         if (!expense) {
             return res.status(404).json({ message: 'Expense not found' });
@@ -77,16 +76,13 @@ router.post('/', async (
     res: Response<Expenses.CreateExpense.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const expenseData = { ...req.body };
-        
-        const newExpense: Expense = {
-            ...expenseData,
+        const newExpense = {
+            ...req.body,
             id: Math.random().toString(36).substr(2, 9)
         };
         
-        db.data.expenses.push(newExpense);
-        await db.write();
+        await dbConnection.expenses.insertOne(newExpense);
+        await dbConnection.expenses.flush();
         
         res.status(201).json(newExpense);
     } catch (error) {
@@ -105,10 +101,7 @@ router.put('/:expenseId', async (
     res: Response<Expenses.UpdateExpense.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const expenseId = req.params.expenseId;
-        const expenseData = { ...req.body };
-        const expenseToUpdate = db.data.expenses.find(e => e.id === expenseId);
+        const expenseToUpdate = await dbConnection.expenses.findOne(e => e.id === req.params.expenseId);
         
         if (!expenseToUpdate) {
             return res.status(404).json({ message: 'Expense not found' });
@@ -116,14 +109,12 @@ router.put('/:expenseId', async (
 
         const updatedExpense: Expense = {
             ...expenseToUpdate,
-            ...expenseData,
-            id: expenseId
+            ...req.body,
+            id: req.params.expenseId
         };
 
-        db.data.expenses = db.data.expenses.map(e => 
-            e.id === expenseId ? updatedExpense : e
-        );
-        await db.write();
+        await dbConnection.expenses.replaceOne(e => e.id === req.params.expenseId, updatedExpense);
+        await dbConnection.expenses.flush();
         
         res.json(updatedExpense);
     } catch (error) {
@@ -142,17 +133,14 @@ router.delete('/:expenseId', async (
     res: Response<Expenses.DeleteExpense.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const expenseId = req.params.expenseId;
-        const initialLength = db.data.expenses.length;
+        const expenseToDelete = await dbConnection.expenses.findOne(e => e.id === req.params.expenseId);
         
-        db.data.expenses = db.data.expenses.filter(e => e.id !== expenseId);
-        
-        if (db.data.expenses.length === initialLength) {
+        if (!expenseToDelete) {
             return res.status(404).json({ message: 'Expense not found' });
         }
-        
-        await db.write();
+
+        await dbConnection.expenses.deleteOne(e => e.id === req.params.expenseId);
+        await dbConnection.expenses.flush();
         res.status(204).send();
     } catch (error) {
         res.status(500).json({ message: `Failed to delete expense: ${error}` });

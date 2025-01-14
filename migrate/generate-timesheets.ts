@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-
-import { ACTIVITY_TYPES, DbSchema, DBTimeEntry, DBTimesheetPeriod } from '../lib/db/db-schema';
+import { DBConnection } from '../lib/db/db-connection';
+import { ACTIVITY_TYPES, DBTimeEntry } from '../lib/db/db-zod-schemas/time-entry';
+import { DBTimesheetPeriod } from '../lib/db/db-zod-schemas/timesheet-period';
+import { logger } from '../lib/logger';
 
 const generateTimeEntry = (
     employeeId: number,
@@ -65,9 +67,11 @@ const generateTimesheetPeriod = (
     return result;
 };
 
-export const generateTimesheets = (dbContent: DbSchema) => {
+export async function generateTimesheets (dbConnection: DBConnection) {
     const timeEntries: DBTimeEntry[] = [];
     const timesheetPeriods: DBTimesheetPeriod[] = [];
+
+    const allProjectTeams = await dbConnection.projectTeams.findMany();
 
     // Generate entries for last 3 months
     const today = new Date();
@@ -77,7 +81,7 @@ export const generateTimesheets = (dbContent: DbSchema) => {
         const currentDate = startDate.toISOString().split('T')[0];
         
         // For each employee with project involvement
-        dbContent.projectTeams.forEach(pt => {
+        allProjectTeams.forEach(pt => {
             if (Math.random() > 0.7) { // 30% chance of having entries for this day
                 timeEntries.push(
                     generateTimeEntry(
@@ -124,9 +128,16 @@ export const generateTimesheets = (dbContent: DbSchema) => {
         });
     });
 
-    return {
-        timeEntries,
-        timesheetPeriods
-    };
+    await dbConnection.timeEntries.deleteMany();
+    await dbConnection.timeEntries.insertMany(timeEntries);
+    await dbConnection.timeEntries.validateInMemory();
+    await dbConnection.timeEntries.flush();
+
+    await dbConnection.timesheetPeriods.deleteMany();
+    await dbConnection.timesheetPeriods.insertMany(timesheetPeriods);
+    await dbConnection.timesheetPeriods.validateInMemory();
+    await dbConnection.timesheetPeriods.flush();
+
+    logger.info(`Generated ${timeEntries.length} time entries and ${timesheetPeriods.length} timesheet periods`);
 };
 

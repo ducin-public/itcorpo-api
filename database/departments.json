@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Management"
+  },
+  {
+    "id": 2,
+    "name": "Sales"
+  },
+  {
+    "id": 3,
+    "name": "Accounting"
+  },
+  {
+    "id": 4,
+    "name": "Human Resources"
+  },
+  {
+    "id": 5,
+    "name": "Marketing"
+  },
+  {
+    "id": 6,
+    "name": "Development"
+  },
+  {
+    "id": 7,
+    "name": "Support"
+  }
+]

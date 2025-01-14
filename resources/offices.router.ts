@@ -2,16 +2,16 @@ import { Router, Request, Response } from 'express';
 
 import { Office, ErrorResponse } from '../contract-types/data-contracts';
 import { Offices } from '../contract-types/OfficesRoute';
-import { db } from '../lib/db/db-connection';
-import { processOfficesSearchCriteria } from './offices-search';
+import { dbConnection } from '../lib/db/db-connection';
+import { filterOffices } from './offices-filters';
 
 const router = Router();
 
 // GET /offices/amenities/count
 router.get('/amenities/count', async (_req, res) => {
     try {
-        await db.read();
-        res.json(db.data.officeAmenities.length);
+        const count = await dbConnection.officeAmenities.count();
+        res.json(count);
     } catch (error) {
         res.status(500).json({ message: `Failed to count office amenities: ${error}` });
     }
@@ -28,8 +28,8 @@ router.get('/amenities', async (
     res: Response<Offices.GetOfficeAmenities.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        res.json(db.data.officeAmenities);
+        const offices = await dbConnection.officeAmenities.findMany();
+        res.json(offices);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch office amenities: ${error}` });
     }
@@ -38,12 +38,16 @@ router.get('/amenities', async (
 // GET /offices/count
 router.get('/count', async (req, res) => {
     try {
-        await db.read();
-        const filteredOffices = processOfficesSearchCriteria({
-            offices: db.data.offices,
-            geo: db.data.geo,
-            officeAmenities: db.data.officeAmenities
-        }, req.query);
+        const officesPromise = dbConnection.offices.findMany();
+        const amenitiesPromise = dbConnection.officeAmenities.findMany();
+        const countriesPromise = dbConnection.countries.findMany();
+
+        const filteredOffices = await filterOffices(req.query, {
+            offices: await officesPromise,
+            officeAmenities: await amenitiesPromise,
+            countries: await countriesPromise
+        });
+
         res.json(filteredOffices.length);
     } catch (error) {
         res.status(500).json({ message: `Failed to count offices: ${error}` });
@@ -61,12 +65,16 @@ router.get('/', async (
     res: Response<Offices.GetOffices.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const filteredOffices = processOfficesSearchCriteria({
-            offices: db.data.offices,
-            geo: db.data.geo,
-            officeAmenities: db.data.officeAmenities
-        }, req.query);
+        const officesPromise = dbConnection.offices.findMany();
+        const amenitiesPromise = dbConnection.officeAmenities.findMany();
+        const countriesPromise = dbConnection.countries.findMany();
+
+        const filteredOffices = await filterOffices(req.query, {
+            offices: await officesPromise,
+            officeAmenities: await amenitiesPromise,
+            countries: await countriesPromise
+        });
+
         res.json(filteredOffices);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch offices: ${error}` });
@@ -84,14 +92,13 @@ router.get('/:officeCode', async (
     res: Response<Offices.GetOfficeByCode.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const office = db.data.offices.find(o => o.code === req.params.officeCode);
+        const officeByCode = await dbConnection.offices.findOne(o => o.code === req.params.officeCode);
         
-        if (!office) {
+        if (!officeByCode) {
             return res.status(404).json({ message: 'Office not found' });
         }
         
-        res.json(office);
+        res.json(officeByCode);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch office: ${error}` });
     }
@@ -108,9 +115,9 @@ router.post('/', async (
     res: Response<Offices.CreateOffice.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
+        const recordWithExistingCode = await dbConnection.offices.findOne(o => o.code === req.body.code);
         
-        if (db.data.offices.some(o => o.code === req.body.code)) {
+        if (recordWithExistingCode) {
             return res.status(400).json({ message: 'Office with this code already exists' });
         }
         
@@ -119,8 +126,8 @@ router.post('/', async (
             amenities: req.body.amenities?.map(a => a.code) || []
         };
         
-        db.data.offices.push(newOffice);
-        await db.write();
+        await dbConnection.offices.insertOne(newOffice);
+        await dbConnection.offices.flush();
         
         res.status(201).json(newOffice);
     } catch (error) {
@@ -139,8 +146,7 @@ router.put('/:officeCode', async (
     res: Response<Offices.UpdateOffice.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const officeToUpdate = db.data.offices.find(o => o.code === req.params.officeCode);
+        const officeToUpdate = await dbConnection.offices.findOne(o => o.code === req.params.officeCode);
         
         if (!officeToUpdate) {
             return res.status(404).json({ message: 'Office not found' });
@@ -153,10 +159,8 @@ router.put('/:officeCode', async (
             amenities: req.body.amenities?.map(a => a.code) || officeToUpdate.amenities
         };
 
-        db.data.offices = db.data.offices.map(o => 
-            o.code === req.params.officeCode ? updatedOffice : o
-        );
-        await db.write();
+        await dbConnection.offices.replaceOne(o => o.code === req.params.officeCode, updatedOffice);
+        await dbConnection.offices.flush();
         
         res.json(updatedOffice);
     } catch (error) {
@@ -175,17 +179,14 @@ router.delete('/:officeCode', async (
     res: Response<Offices.DeleteOffice.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const officeCode = req.params.officeCode;
-        const initialLength = db.data.offices.length;
-        
-        db.data.offices = db.data.offices.filter(o => o.code !== officeCode);
-        
-        if (db.data.offices.length === initialLength) {
+        const officeToDelete = await dbConnection.offices.findOne(o => o.code === req.params.officeCode);
+  
+        if (!officeToDelete) {
             return res.status(404).json({ message: 'Office not found' });
         }
-        
-        await db.write();
+
+        await dbConnection.offices.deleteOne(o => o.code === req.params.officeCode);
+        await dbConnection.offices.flush();
         res.status(204).send();
     } catch (error) {
         res.status(500).json({ message: `Failed to delete office: ${error}` });

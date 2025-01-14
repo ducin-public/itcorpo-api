@@ -1,0 +1,114 @@
+[
+  {
+    "code": "WIFI",
+    "name": "Wi-Fi"
+  },
+  {
+    "code": "CONFERENCE_ROOMS",
+    "name": "Conference rooms"
+  },
+  {
+    "code": "KITCHEN",
+    "name": "Kitchen"
+  },
+  {
+    "code": "FREE_PARKING",
+    "name": "Free parking"
+  },
+  {
+    "code": "BIKE_RACKS",
+    "name": "Bike racks"
+  },
+  {
+    "code": "SHOWERS",
+    "name": "Showers"
+  },
+  {
+    "code": "AIR_CONDITIONING",
+    "name": "Air conditioning"
+  },
+  {
+    "code": "QUIET_ROOMS",
+    "name": "Quiet rooms"
+  },
+  {
+    "code": "STANDING_DESKS",
+    "name": "Standing desks"
+  },
+  {
+    "code": "OUTDOOR_SEATING",
+    "name": "Outdoor seating"
+  },
+  {
+    "code": "WATER_COOLER",
+    "name": "Water cooler"
+  },
+  {
+    "code": "PRIVATE_DESKS",
+    "name": "Private desks"
+  },
+  {
+    "code": "REFRIGERATOR",
+    "name": "Refrigerator"
+  },
+  {
+    "code": "NAP_PODS",
+    "name": "Nap pods"
+  },
+  {
+    "code": "OPEN_SPACE",
+    "name": "Open space"
+  },
+  {
+    "code": "IT_SUPPORT",
+    "name": "IT support"
+  },
+  {
+    "code": "RECYCLING_BINS",
+    "name": "Recycling bins"
+  },
+  {
+    "code": "SNACKS",
+    "name": "Snacks"
+  },
+  {
+    "code": "TEAM_EVENTS",
+    "name": "Team events"
+  },
+  {
+    "code": "GAME_ROOM",
+    "name": "Game room"
+  },
+  {
+    "code": "PRINTING",
+    "name": "Printing"
+  },
+  {
+    "code": "FRUIT_MONDAYS",
+    "name": "Fruit Mondays"
+  },
+  {
+    "code": "GYM",
+    "name": "Gym"
+  },
+  {
+    "code": "LOCKERS",
+    "name": "Lockers"
+  },
+  {
+    "code": "PING_PONG",
+    "name": "Ping-pong"
+  },
+  {
+    "code": "TWENTY_FOUR_SEVEN",
+    "name": "24/7 access"
+  },
+  {
+    "code": "MICROWAVE",
+    "name": "Microwave"
+  },
+  {
+    "code": "HAND_SANITIZERS",
+    "name": "Hand sanitizers"
+  }
+]

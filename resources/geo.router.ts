@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import { ErrorResponse } from '../contract-types/data-contracts';
 import { Geo } from '../contract-types/GeoRoute';
-import { db } from '../lib/db/db-connection';
+import { dbConnection } from '../lib/db/db-connection';
 
 const router = Router();
 
@@ -17,8 +17,13 @@ router.get('/', async (
     res: Response<Geo.GetGeo.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        res.json(db.data.geo);
+        const countries = await dbConnection.countries.findMany();
+        const geoResult: Geo.GetGeo.ResponseBody =
+            countries.reduce((result, country) => {
+                result[country.code] = country.name;
+                return result;
+            }, {} as Geo.GetGeo.ResponseBody);
+        res.json(geoResult);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch geographical data: ${error}` });
     }

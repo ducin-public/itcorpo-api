@@ -1,0 +1,1171 @@
+[
+  {
+    "id": "6bf03435-53a4-4ece-b9ca-805c25da3c45",
+    "beneficiary": {
+      "name": "Kira Jamrozy",
+      "email": "kija@itcorpo.de"
+    },
+    "service": {
+      "name": "Sodexo Restaurant Pass Premium",
+      "provider": "Sodexo Benefits and Rewards"
+    },
+    "category": "LUNCH_FOOD",
+    "country": "Tunisia",
+    "city": "Lake Valentina chester",
+    "monthlyFee": 275,
+    "subscribedAtDate": "2020-03-09"
+  },
+  {
+    "id": "6314526d-955d-4557-b21e-9f9dcc828725",
+    "beneficiary": {
+      "name": "Arystarch Woźniak",
+      "email": "arwo@itcorpo.pl"
+    },
+    "service": {
+      "name": "MultiSport Weekend Card",
+      "provider": "Benefit Systems"
+    },
+    "category": "SPORT_WELLNESS",
+    "country": "Italy",
+    "city": "East Nathanial",
+    "monthlyFee": 30,
+    "subscribedAtDate": "2019-02-11",
+    "cancelledAtDate": "2019-04-11"
+  },
+  {
+    "id": "1a693e75-a771-46af-96d6-1c82f48009a1",
+    "beneficiary": {
+      "name": "Sanne Bosch",
+      "email": "sabo@itcorpo.nl"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Lithuania",
+    "city": "North Deven town",
+    "monthlyFee": 492,
+    "subscribedAtDate": "2021-04-08",
+    "cancelledAtDate": "2021-12-08"
+  },
+  {
+    "id": "8dbc2d9c-2aef-4156-a077-87eb4e97a99c",
+    "beneficiary": {
+      "name": "Mayra West",
+      "email": "mawe@itcorpo.com"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "United States Minor Outlying Islands",
+    "city": "Hirthe mouth",
+    "monthlyFee": 500,
+    "subscribedAtDate": "2021-02-24",
+    "cancelledAtDate": "2021-04-24"
+  },
+  {
+    "id": "fbc68c6c-45e0-4bec-a3ab-0162d56c2273",
+    "beneficiary": {
+      "name": "Lindsey Parisian",
+      "email": "lipa@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Ghana",
+    "city": "Reinger burgh",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2021-10-02"
+  },
+  {
+    "id": "c7041892-a191-4b8b-8892-c3854a87baca",
+    "beneficiary": {
+      "name": "Reginald Jankowiak",
+      "email": "Reginald14@itcorpo.pl"
+    },
+    "service": {
+      "name": "Medicover Local Plus",
+      "provider": "Medicover"
+    },
+    "category": "HEALTHCARE",
+    "country": "Cuba",
+    "city": "Port Haleigh port",
+    "monthlyFee": 100,
+    "subscribedAtDate": "2022-02-06",
+    "cancelledAtDate": "2022-03-06"
+  },
+  {
+    "id": "70136939-28d4-4491-82bb-cde95dee9307",
+    "beneficiary": {
+      "name": "Sanne Groot",
+      "email": "sagr@itcorpo.com"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Saint Vincent and the Grenadines",
+    "city": "West Sister fort",
+    "monthlyFee": 492,
+    "subscribedAtDate": "2023-03-07"
+  },
+  {
+    "id": "c133e3e0-a68e-4a9b-b3c1-5060eb90997e",
+    "beneficiary": {
+      "name": "Sanne Groot",
+      "email": "sagr@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Saint Vincent and the Grenadines",
+    "city": "West Sister fort",
+    "monthlyFee": 127,
+    "subscribedAtDate": "2021-07-17",
+    "cancelledAtDate": "2024-09-17"
+  },
+  {
+    "id": "fdf36ca6-6c16-4f18-ac82-32e7ef423080",
+    "beneficiary": {
+      "name": "Angelique Faller",
+      "email": "Angelique_Faller@itcorpo.de"
+    },
+    "service": {
+      "name": "LuxMed Gold Family Plan",
+      "provider": "LuxMed"
+    },
+    "category": "HEALTHCARE",
+    "country": "Bhutan",
+    "city": "Ruecker fort",
+    "monthlyFee": 290,
+    "subscribedAtDate": "2023-05-20"
+  },
+  {
+    "id": "ad9416e7-91bb-4ca0-8c70-173388136c34",
+    "beneficiary": {
+      "name": "Angelique Faller",
+      "email": "Angelique_Faller@itcorpo.de"
+    },
+    "service": {
+      "name": "Medicover International Care",
+      "provider": "Medicover"
+    },
+    "category": "HEALTHCARE",
+    "country": "Bhutan",
+    "city": "Ruecker fort",
+    "monthlyFee": 345,
+    "subscribedAtDate": "2019-07-24",
+    "cancelledAtDate": "2021-06-24"
+  },
+  {
+    "id": "0201e8bf-331c-4ba0-81f4-776e231cb19e",
+    "beneficiary": {
+      "name": "Angelique Faller",
+      "email": "Angelique_Faller@itcorpo.de"
+    },
+    "service": {
+      "name": "Sodexo Restaurant Pass Premium",
+      "provider": "Sodexo Benefits and Rewards"
+    },
+    "category": "LUNCH_FOOD",
+    "country": "Bhutan",
+    "city": "Ruecker fort",
+    "monthlyFee": 275,
+    "subscribedAtDate": "2020-08-14"
+  },
+  {
+    "id": "189e6e9f-4e8b-430a-84f4-d5bf74dccc6c",
+    "beneficiary": {
+      "name": "Teodor Kowalewski",
+      "email": "teko@itcorpo.pl"
+    },
+    "service": {
+      "name": "LuxMed Gold Family Plan",
+      "provider": "LuxMed"
+    },
+    "category": "HEALTHCARE",
+    "country": "Bulgaria",
+    "city": "West Nicklaus",
+    "monthlyFee": 150,
+    "subscribedAtDate": "2020-10-19",
+    "cancelledAtDate": "2020-11-19"
+  },
+  {
+    "id": "33c0b07b-9e63-443e-8524-2fd8e53c5239",
+    "beneficiary": {
+      "name": "Nannie Bergnaum",
+      "email": "Nannie96@itcorpo.com"
+    },
+    "service": {
+      "name": "Medicover International Care",
+      "provider": "Medicover"
+    },
+    "category": "HEALTHCARE",
+    "country": "Gabon",
+    "city": "Gayle furt",
+    "monthlyFee": 350,
+    "subscribedAtDate": "2022-07-21"
+  },
+  {
+    "id": "ff38e376-fb7c-46f5-bb39-84c52bbcf783",
+    "beneficiary": {
+      "name": "Gloria Carrasco",
+      "email": "glca@itcorpo.es"
+    },
+    "service": {
+      "name": "Benefit Culture Plus",
+      "provider": "Culture Benefits Group"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Vietnam",
+    "city": "West Jamal chester",
+    "monthlyFee": 100,
+    "subscribedAtDate": "2020-03-18",
+    "cancelledAtDate": "2022-09-18"
+  },
+  {
+    "id": "9e0dfd0a-7f49-4ad9-a997-697f58b5b3e4",
+    "beneficiary": {
+      "name": "Murphy Anderson",
+      "email": "Murphy_Anderson@itcorpo.com"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Luxembourg",
+    "city": "Stehr furt",
+    "monthlyFee": 600,
+    "subscribedAtDate": "2021-03-30",
+    "cancelledAtDate": "2021-10-30"
+  },
+  {
+    "id": "f7ce7d50-a720-40dc-815e-e5eca2743396",
+    "beneficiary": {
+      "name": "Murphy Anderson",
+      "email": "Murphy_Anderson@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Luxembourg",
+    "city": "Stehr furt",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2021-11-04"
+  },
+  {
+    "id": "b7c976d8-705d-4a59-9608-3bdf29835121",
+    "beneficiary": {
+      "name": "Clarissa Price",
+      "email": "clpr@itcorpo.com"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Mali",
+    "city": "Zemlak haven",
+    "monthlyFee": 600,
+    "subscribedAtDate": "2020-03-07",
+    "cancelledAtDate": "2022-10-07"
+  },
+  {
+    "id": "8fc1ecaf-b671-49f2-ad6c-2b591b2c0055",
+    "beneficiary": {
+      "name": "Sylwia Dobrzyński",
+      "email": "Sylwia.Dobrzyski@itcorpo.pl"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Peru",
+    "city": "South Clifton ville",
+    "monthlyFee": 70,
+    "subscribedAtDate": "2020-10-19",
+    "cancelledAtDate": "2021-02-19"
+  },
+  {
+    "id": "67b0da76-f427-499e-bfe8-603ab5cc6c2c",
+    "beneficiary": {
+      "name": "Emilie Arnaud",
+      "email": "emar@itcorpo.fr"
+    },
+    "service": {
+      "name": "Sodexo Restaurant Pass Premium",
+      "provider": "Sodexo Benefits and Rewards"
+    },
+    "category": "LUNCH_FOOD",
+    "country": "Netherlands Antilles",
+    "city": "Doyle town",
+    "monthlyFee": 270,
+    "subscribedAtDate": "2022-08-04"
+  },
+  {
+    "id": "9fe0ed2e-5a01-4e88-8b4b-209d969fb18e",
+    "beneficiary": {
+      "name": "Sandra Thränhardt",
+      "email": "sath@itcorpo.de"
+    },
+    "service": {
+      "name": "LuxMed Gold Family Plan",
+      "provider": "LuxMed"
+    },
+    "category": "HEALTHCARE",
+    "country": "Ukraine",
+    "city": "Port Orion",
+    "monthlyFee": 290,
+    "subscribedAtDate": "2021-05-23",
+    "cancelledAtDate": "2021-06-23"
+  },
+  {
+    "id": "a2955b55-aacb-45d9-88e3-c7ecbbcd698e",
+    "beneficiary": {
+      "name": "August Kwaśniewski",
+      "email": "August81@itcorpo.com"
+    },
+    "service": {
+      "name": "Empik Go Unlimited Pass",
+      "provider": "Empik"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Andorra",
+    "city": "New Vidal",
+    "monthlyFee": 25,
+    "subscribedAtDate": "2019-08-07",
+    "cancelledAtDate": "2022-02-07"
+  },
+  {
+    "id": "9576ee7a-4c35-4219-a4fa-03bdf238b447",
+    "beneficiary": {
+      "name": "Alexandre Bertrand",
+      "email": "Alexandre84@itcorpo.com"
+    },
+    "service": {
+      "name": "Benefit Culture Plus",
+      "provider": "Culture Benefits Group"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Ecuador",
+    "city": "North Vincenzo side",
+    "monthlyFee": 105,
+    "subscribedAtDate": "2020-12-19",
+    "cancelledAtDate": "2023-11-19"
+  },
+  {
+    "id": "f77adafb-2439-41a1-a192-24485f8fb68b",
+    "beneficiary": {
+      "name": "Eloisa Valles",
+      "email": "elva@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Cayman Islands",
+    "city": "Lake Efrain",
+    "monthlyFee": 120,
+    "subscribedAtDate": "2023-08-17",
+    "cancelledAtDate": "2023-09-17"
+  },
+  {
+    "id": "4d06ad18-1fc6-44d0-8caa-e630e37b18e3",
+    "beneficiary": {
+      "name": "Eloisa Valles",
+      "email": "elva@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Cayman Islands",
+    "city": "Lake Efrain",
+    "monthlyFee": 120,
+    "subscribedAtDate": "2023-09-17",
+    "cancelledAtDate": "2024-03-17"
+  },
+  {
+    "id": "3ccb70ce-1fe4-4e18-b585-474cbab4dea4",
+    "beneficiary": {
+      "name": "Teresa Sobczak",
+      "email": "teso@itcorpo.pl"
+    },
+    "service": {
+      "name": "Calypso Aqua Wellness",
+      "provider": "Calypso Fitness"
+    },
+    "category": "SPORT_WELLNESS",
+    "country": "Switzerland",
+    "city": "East Alexis",
+    "monthlyFee": 40,
+    "subscribedAtDate": "2019-05-31",
+    "cancelledAtDate": "2021-12-31"
+  },
+  {
+    "id": "528e717d-5a80-4fa0-9e27-207431a0ddaa",
+    "beneficiary": {
+      "name": "Darien Rutherford",
+      "email": "daru@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Lithuania",
+    "city": "East Alta port",
+    "monthlyFee": 130,
+    "subscribedAtDate": "2019-08-24",
+    "cancelledAtDate": "2024-11-24"
+  },
+  {
+    "id": "c3814ca2-6c3b-4fa9-80b6-91cabe0c4d5e",
+    "beneficiary": {
+      "name": "Stephan Boehm",
+      "email": "Stephan_Boehm98@itcorpo.us"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Austria",
+    "city": "Metz fort",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2022-12-29",
+    "cancelledAtDate": "2023-01-29"
+  },
+  {
+    "id": "29ae9894-52c6-4b62-b70f-cb9a3accc4c1",
+    "beneficiary": {
+      "name": "Lemuel Kshlerin",
+      "email": "Lemuel.Kshlerin14@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Cuba",
+    "city": "Ratke ville",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2019-04-11",
+    "cancelledAtDate": "2020-06-11"
+  },
+  {
+    "id": "6a44170d-036b-42c7-94e4-094f8e771c6c",
+    "beneficiary": {
+      "name": "Maud Maas",
+      "email": "Maud.Maas85@itcorpo.com"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Cyprus",
+    "city": "Connelly ville",
+    "monthlyFee": 492,
+    "subscribedAtDate": "2022-04-16",
+    "cancelledAtDate": "2022-07-16"
+  },
+  {
+    "id": "9fc7c6c1-871d-411e-9959-7e351a91e4a7",
+    "beneficiary": {
+      "name": "Juana Von",
+      "email": "Juana.Von@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Bouvet Island (Bouvetoya)",
+    "city": "Port Otho stad",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2021-12-29",
+    "cancelledAtDate": "2022-05-29"
+  },
+  {
+    "id": "826e6d80-93b3-4aff-98ea-7b42517d81e9",
+    "beneficiary": {
+      "name": "Juana Von",
+      "email": "Juana.Von@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Bouvet Island (Bouvetoya)",
+    "city": "Port Otho stad",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2022-05-29",
+    "cancelledAtDate": "2022-09-29"
+  },
+  {
+    "id": "5ac850fa-1ca9-4784-b51d-399b183c052d",
+    "beneficiary": {
+      "name": "Aletha Bartoletti",
+      "email": "Aletha92@itcorpo.com"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Cameroon",
+    "city": "North Tess",
+    "monthlyFee": 600,
+    "subscribedAtDate": "2023-02-19"
+  },
+  {
+    "id": "cc5b791c-5d22-42d2-a72c-330951547c7d",
+    "beneficiary": {
+      "name": "Leandra Konow",
+      "email": "leko@itcorpo.de"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Isle of Man",
+    "city": "Kunze fort",
+    "monthlyFee": 495,
+    "subscribedAtDate": "2023-12-06"
+  },
+  {
+    "id": "9840e6e6-4333-4f04-9716-299ceb282127",
+    "beneficiary": {
+      "name": "Konrad Witek",
+      "email": "Konrad.Witek32@itcorpo.pl"
+    },
+    "service": {
+      "name": "Medicover International Care",
+      "provider": "Medicover"
+    },
+    "category": "HEALTHCARE",
+    "country": "India",
+    "city": "New Modesta",
+    "monthlyFee": 200,
+    "subscribedAtDate": "2019-01-11",
+    "cancelledAtDate": "2019-03-11"
+  },
+  {
+    "id": "7dfc7c42-be0b-498d-9024-73052fea3d7d",
+    "beneficiary": {
+      "name": "Konrad Witek",
+      "email": "Konrad.Witek32@itcorpo.pl"
+    },
+    "service": {
+      "name": "Medicover International Care",
+      "provider": "Medicover"
+    },
+    "category": "HEALTHCARE",
+    "country": "India",
+    "city": "New Modesta",
+    "monthlyFee": 200,
+    "subscribedAtDate": "2019-03-11"
+  },
+  {
+    "id": "23339d7a-6b6e-46a6-b54a-1f671071451e",
+    "beneficiary": {
+      "name": "Marta Lis",
+      "email": "Marta_Lis@itcorpo.pl"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Estonia",
+    "city": "Kenny mouth",
+    "monthlyFee": 300,
+    "subscribedAtDate": "2021-09-22",
+    "cancelledAtDate": "2022-04-22"
+  },
+  {
+    "id": "8f96e9ea-aa76-49f7-b65d-f2be6b298876",
+    "beneficiary": {
+      "name": "Giancarlo Caputo",
+      "email": "Giancarlo.Caputo0@itcorpo.com"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Botswana",
+    "city": "Sawayn port",
+    "monthlyFee": 485,
+    "subscribedAtDate": "2019-11-26",
+    "cancelledAtDate": "2022-08-26"
+  },
+  {
+    "id": "0ab50e99-e068-4387-8866-2cd795480c9d",
+    "beneficiary": {
+      "name": "Mateo Cierpinski",
+      "email": "maci@itcorpo.de"
+    },
+    "service": {
+      "name": "Yes2Move Digital Fitness",
+      "provider": "Benefit Systems Digital"
+    },
+    "category": "SPORT_WELLNESS",
+    "country": "Guatemala",
+    "city": "North Gladyce",
+    "monthlyFee": 39,
+    "subscribedAtDate": "2019-02-04",
+    "cancelledAtDate": "2022-08-04"
+  },
+  {
+    "id": "460462fc-b70f-410d-bbd8-09a1c87886b5",
+    "beneficiary": {
+      "name": "Milla Flore",
+      "email": "Milla_Flore@itcorpo.com"
+    },
+    "service": {
+      "name": "Medicover International Care",
+      "provider": "Medicover"
+    },
+    "category": "HEALTHCARE",
+    "country": "Sierra Leone",
+    "city": "Araceli furt",
+    "monthlyFee": 345,
+    "subscribedAtDate": "2020-06-23",
+    "cancelledAtDate": "2024-12-23"
+  },
+  {
+    "id": "197afc21-e12b-4c00-911e-4b18053033d2",
+    "beneficiary": {
+      "name": "Karoline Fischer",
+      "email": "kafi@itcorpo.com"
+    },
+    "service": {
+      "name": "Medicover Local Plus",
+      "provider": "Medicover"
+    },
+    "category": "HEALTHCARE",
+    "country": "Northern Mariana Islands",
+    "city": "Lane ton",
+    "monthlyFee": 215,
+    "subscribedAtDate": "2020-12-14"
+  },
+  {
+    "id": "ec65fe18-4548-4824-8b82-8f79ccddd318",
+    "beneficiary": {
+      "name": "Pierre Schmitt",
+      "email": "Pierre77@itcorpo.com"
+    },
+    "service": {
+      "name": "Medicover International Care",
+      "provider": "Medicover"
+    },
+    "category": "HEALTHCARE",
+    "country": "Mozambique",
+    "city": "Camilla mouth",
+    "monthlyFee": 340,
+    "subscribedAtDate": "2019-01-26",
+    "cancelledAtDate": "2019-11-26"
+  },
+  {
+    "id": "4a5931ed-1966-4c6a-9ed6-bb5c5fc08f5a",
+    "beneficiary": {
+      "name": "Tim Illing",
+      "email": "tiil@itcorpo.de"
+    },
+    "service": {
+      "name": "Up Dejeuner Universal",
+      "provider": "Up Group"
+    },
+    "category": "LUNCH_FOOD",
+    "country": "Saint Pierre and Miquelon",
+    "city": "New Delpha",
+    "monthlyFee": 315,
+    "subscribedAtDate": "2020-10-20",
+    "cancelledAtDate": "2024-08-20"
+  },
+  {
+    "id": "93955296-d10e-4ddf-bbd6-ce7deb08db6a",
+    "beneficiary": {
+      "name": "Neri Ruggiero",
+      "email": "Neri3@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Costa Rica",
+    "city": "Theodora burgh",
+    "monthlyFee": 123,
+    "subscribedAtDate": "2019-10-30",
+    "cancelledAtDate": "2021-08-30"
+  },
+  {
+    "id": "66d148f4-f716-44b9-9be7-f6d893bc2651",
+    "beneficiary": {
+      "name": "Lue Lehner",
+      "email": "Lue23@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Kuwait",
+    "city": "Sydney borough",
+    "monthlyFee": 130,
+    "subscribedAtDate": "2022-03-13",
+    "cancelledAtDate": "2024-01-13"
+  },
+  {
+    "id": "21524499-2aa5-4a30-ae7c-12e28fb52961",
+    "beneficiary": {
+      "name": "Llewellyn Kirlin",
+      "email": "Llewellyn.Kirlin46@itcorpo.us"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Lithuania",
+    "city": "East Sophie town",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2021-01-28",
+    "cancelledAtDate": "2023-12-28"
+  },
+  {
+    "id": "c155d702-54fb-4793-9ec5-8ae13de64f9f",
+    "beneficiary": {
+      "name": "Enrico Stiedemann",
+      "email": "enst@itcorpo.us"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Suriname",
+    "city": "West Ashly",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2022-10-02"
+  },
+  {
+    "id": "7c25a769-3451-4992-a4fd-b8e4988ddedf",
+    "beneficiary": {
+      "name": "Ferdynanda Paluch",
+      "email": "Ferdynanda53@itcorpo.com"
+    },
+    "service": {
+      "name": "LuxMed Gold Family Plan",
+      "provider": "LuxMed"
+    },
+    "category": "HEALTHCARE",
+    "country": "Rwanda",
+    "city": "South Ida town",
+    "monthlyFee": 150,
+    "subscribedAtDate": "2020-08-05",
+    "cancelledAtDate": "2021-01-05"
+  },
+  {
+    "id": "d5d530d7-5243-40a9-9ccc-dee86df6f161",
+    "beneficiary": {
+      "name": "Tanja Bieler",
+      "email": "tabi@itcorpo.com"
+    },
+    "service": {
+      "name": "Benefit Culture Plus",
+      "provider": "Culture Benefits Group"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Tanzania",
+    "city": "Marvin bury",
+    "monthlyFee": 108,
+    "subscribedAtDate": "2019-09-29"
+  },
+  {
+    "id": "f56685ea-a09d-47c8-b30e-45728189ff9a",
+    "beneficiary": {
+      "name": "Henryk Sosnowski",
+      "email": "heso@itcorpo.com"
+    },
+    "service": {
+      "name": "Calypso Aqua Wellness",
+      "provider": "Calypso Fitness"
+    },
+    "category": "SPORT_WELLNESS",
+    "country": "Nigeria",
+    "city": "Port Patrick ton",
+    "monthlyFee": 40,
+    "subscribedAtDate": "2021-02-07",
+    "cancelledAtDate": "2021-04-07"
+  },
+  {
+    "id": "c09322fd-9ac1-4ce5-8abd-5d7cb70de606",
+    "beneficiary": {
+      "name": "Marta Iwański",
+      "email": "Marta67@itcorpo.com"
+    },
+    "service": {
+      "name": "MultiSport Weekend Card",
+      "provider": "Benefit Systems"
+    },
+    "category": "SPORT_WELLNESS",
+    "country": "Heard Island and McDonald Islands",
+    "city": "Swift port",
+    "monthlyFee": 30,
+    "subscribedAtDate": "2019-04-08",
+    "cancelledAtDate": "2024-03-08"
+  },
+  {
+    "id": "3a4d9ad0-de63-414f-aad9-004999709a93",
+    "beneficiary": {
+      "name": "Gerazym Gaweł",
+      "email": "gega@itcorpo.com"
+    },
+    "service": {
+      "name": "MyBenefit Flex Points",
+      "provider": "MyBenefit"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Guinea-Bissau",
+    "city": "Gutmann town",
+    "monthlyFee": 100,
+    "subscribedAtDate": "2022-06-30",
+    "cancelledAtDate": "2022-07-30"
+  },
+  {
+    "id": "e503a698-44c7-444c-ac01-1412b8a93403",
+    "beneficiary": {
+      "name": "Jovan Brekke",
+      "email": "Jovan58@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Lesotho",
+    "city": "Leuschke mouth",
+    "monthlyFee": 130,
+    "subscribedAtDate": "2019-11-03",
+    "cancelledAtDate": "2022-05-03"
+  },
+  {
+    "id": "967e1faa-6a01-4c74-b8c7-c6a4408b734a",
+    "beneficiary": {
+      "name": "Ed McDermott",
+      "email": "edmc@itcorpo.us"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Tuvalu",
+    "city": "Leif ton",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2019-06-16"
+  },
+  {
+    "id": "8026fbff-041b-4c8e-99c0-105c12924f0f",
+    "beneficiary": {
+      "name": "Jan Brouwer",
+      "email": "jabr@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Norfolk Island",
+    "city": "North Dewayne berg",
+    "monthlyFee": 127,
+    "subscribedAtDate": "2020-11-25"
+  },
+  {
+    "id": "20bb8234-7ebc-442b-8f47-776531f545e2",
+    "beneficiary": {
+      "name": "Maud Maas",
+      "email": "mama@itcorpo.com"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Peru",
+    "city": "Annetta chester",
+    "monthlyFee": 492,
+    "subscribedAtDate": "2021-10-11"
+  },
+  {
+    "id": "411c3c54-6a32-4326-80f3-21d2fc31ffe5",
+    "beneficiary": {
+      "name": "Santiago Stamm",
+      "email": "sast@itcorpo.us"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Burkina Faso",
+    "city": "Eichmann land",
+    "monthlyFee": 600,
+    "subscribedAtDate": "2021-02-10",
+    "cancelledAtDate": "2021-07-10"
+  },
+  {
+    "id": "9a07f3c6-d12a-4cae-8389-549e67147f8e",
+    "beneficiary": {
+      "name": "Abraham Kuczyński",
+      "email": "abku@itcorpo.com"
+    },
+    "service": {
+      "name": "Calypso Aqua Wellness",
+      "provider": "Calypso Fitness"
+    },
+    "category": "SPORT_WELLNESS",
+    "country": "Trinidad and Tobago",
+    "city": "Orn view",
+    "monthlyFee": 40,
+    "subscribedAtDate": "2021-08-23",
+    "cancelledAtDate": "2023-05-23"
+  },
+  {
+    "id": "3b199e48-cb22-4580-90de-896f19606774",
+    "beneficiary": {
+      "name": "Wincenty Andrzejczak",
+      "email": "wian@itcorpo.com"
+    },
+    "service": {
+      "name": "Yes2Move Digital Fitness",
+      "provider": "Benefit Systems Digital"
+    },
+    "category": "SPORT_WELLNESS",
+    "country": "Reunion",
+    "city": "Frami borough",
+    "monthlyFee": 20,
+    "subscribedAtDate": "2019-03-23",
+    "cancelledAtDate": "2022-01-23"
+  },
+  {
+    "id": "ae5f2cec-4652-4831-88c6-1415dfe223cb",
+    "beneficiary": {
+      "name": "Alan Rudziński",
+      "email": "alru@itcorpo.pl"
+    },
+    "service": {
+      "name": "LuxMed Silver Individual Plan",
+      "provider": "LuxMed"
+    },
+    "category": "HEALTHCARE",
+    "country": "Bouvet Island (Bouvetoya)",
+    "city": "Hermiston bury",
+    "monthlyFee": 80,
+    "subscribedAtDate": "2021-09-05",
+    "cancelledAtDate": "2022-02-05"
+  },
+  {
+    "id": "07cce428-70cf-4778-bdf8-bdfe08064bfa",
+    "beneficiary": {
+      "name": "Jedediah Kutch",
+      "email": "Jedediah_Kutch@itcorpo.com"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Madagascar",
+    "city": "Aubrey berg",
+    "monthlyFee": 600,
+    "subscribedAtDate": "2019-03-30"
+  },
+  {
+    "id": "3e546a3e-a874-415e-83ab-9d4d0aae4e2a",
+    "beneficiary": {
+      "name": "Arseniusz Frąckowiak",
+      "email": "arfr@itcorpo.pl"
+    },
+    "service": {
+      "name": "Up Dejeuner Universal",
+      "provider": "Up Group"
+    },
+    "category": "LUNCH_FOOD",
+    "country": "France",
+    "city": "Jeanne view",
+    "monthlyFee": 180,
+    "subscribedAtDate": "2020-06-29",
+    "cancelledAtDate": "2020-11-29"
+  },
+  {
+    "id": "ef665d8b-5c46-43e8-9079-cba778158148",
+    "beneficiary": {
+      "name": "Collin Hoeger",
+      "email": "Collin_Hoeger12@itcorpo.uk"
+    },
+    "service": {
+      "name": "Medicover International Care",
+      "provider": "Medicover"
+    },
+    "category": "HEALTHCARE",
+    "country": "Iran",
+    "city": "Powlowski berg",
+    "monthlyFee": 350,
+    "subscribedAtDate": "2019-05-02",
+    "cancelledAtDate": "2019-11-02"
+  },
+  {
+    "id": "ab8b4e17-489b-453f-806f-f67dc26201a3",
+    "beneficiary": {
+      "name": "Collin Hoeger",
+      "email": "Collin_Hoeger12@itcorpo.uk"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Iran",
+    "city": "Powlowski berg",
+    "monthlyFee": 500,
+    "subscribedAtDate": "2021-12-17",
+    "cancelledAtDate": "2024-11-17"
+  },
+  {
+    "id": "72b9d778-ede5-4a9a-8f00-d42b12b2a35f",
+    "beneficiary": {
+      "name": "Rex Abernathy",
+      "email": "reab@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Bhutan",
+    "city": "McCullough mouth",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2023-11-29"
+  },
+  {
+    "id": "27bf50f9-8f31-41ab-8278-ec755a3697fa",
+    "beneficiary": {
+      "name": "Horacio McKenzie",
+      "email": "Horacio_McKenzie26@itcorpo.com"
+    },
+    "service": {
+      "name": "Allianz Global Care Elite",
+      "provider": "Allianz Care"
+    },
+    "category": "HEALTHCARE",
+    "country": "Syrian Arab Republic",
+    "city": "Port Mariela berg",
+    "monthlyFee": 600,
+    "subscribedAtDate": "2019-09-07",
+    "cancelledAtDate": "2022-12-07"
+  },
+  {
+    "id": "7b4282f0-e347-486c-aa02-28abc628dee8",
+    "beneficiary": {
+      "name": "Horacio McKenzie",
+      "email": "Horacio_McKenzie26@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Syrian Arab Republic",
+    "city": "Port Mariela berg",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2021-11-19",
+    "cancelledAtDate": "2022-02-19"
+  },
+  {
+    "id": "064f3e93-0047-4eb8-b1a9-9c49ff08452d",
+    "beneficiary": {
+      "name": "Horacio McKenzie",
+      "email": "Horacio_McKenzie26@itcorpo.com"
+    },
+    "service": {
+      "name": "Ticketmaster Corporate Access",
+      "provider": "Ticketmaster"
+    },
+    "category": "CULTURE_RECREATION",
+    "country": "Syrian Arab Republic",
+    "city": "Port Mariela berg",
+    "monthlyFee": 160,
+    "subscribedAtDate": "2022-02-19"
+  },
+  {
+    "id": "17ee3881-bb94-4ef5-a661-ddd819da2a35",
+    "beneficiary": {
+      "name": "Léa Barbier",
+      "email": "léba@itcorpo.fr"
+    },
+    "service": {
+      "name": "Up Dejeuner Universal",
+      "provider": "Up Group"
+    },
+    "category": "LUNCH_FOOD",
+    "country": "Norway",
+    "city": "Port Linnea ville",
+    "monthlyFee": 310,
+    "subscribedAtDate": "2019-07-06"
+  },
+  {
+    "id": "7c907258-6b3c-4d0e-858c-3ea37d13ba71",
+    "beneficiary": {
+      "name": "Zoe Collet",
+      "email": "zoco@itcorpo.fr"
+    },
+    "service": {
+      "name": "Medicover International Care",
+      "provider": "Medicover"
+    },
+    "category": "HEALTHCARE",
+    "country": "Uruguay",
+    "city": "Ara port",
+    "monthlyFee": 340,
+    "subscribedAtDate": "2019-05-22",
+    "cancelledAtDate": "2021-02-22"
+  },
+  {
+    "id": "a880c70c-029d-431e-9084-884e5272004c",
+    "beneficiary": {
+      "name": "Zoe Collet",
+      "email": "zoco@itcorpo.fr"
+    },
+    "service": {
+      "name": "Sodexo Restaurant Pass Premium",
+      "provider": "Sodexo Benefits and Rewards"
+    },
+    "category": "LUNCH_FOOD",
+    "country": "Uruguay",
+    "city": "Ara port",
+    "monthlyFee": 270,
+    "subscribedAtDate": "2020-06-09",
+    "cancelledAtDate": "2020-08-09"
+  }
+]

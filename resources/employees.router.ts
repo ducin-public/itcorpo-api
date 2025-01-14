@@ -1,8 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { Employee, ErrorResponse, ProjectEmployeeInvolvement } from '../contract-types/data-contracts';
 import { Employees } from '../contract-types/EmployeesRoute';
-import { db } from '../lib/db/db-connection';
-import { processEmployeesSearchCriteria } from './employee-search';
+import { dbConnection } from '../lib/db/db-connection';
+import { filterEmployees } from './employee-filters';
+import { logger } from '../lib/logger';
+import { getErrorGUID } from './core/error';
 
 const router = Router();
 
@@ -17,14 +19,22 @@ router.get('/count', async (
     res: Response<Employees.GetEmployeesCount.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const filteredEmployees = processEmployeesSearchCriteria({
-            employees: db.data.employees,
-            departments: db.data.departments
-        }, req.query);
+        const employeesPromise = dbConnection.employees.findMany();
+        const departmentsPromise = dbConnection.departments.findMany();
+
+        const filteredEmployees = filterEmployees(req.query, {
+            employees: await employeesPromise,
+            departments: await departmentsPromise
+        });
+
         res.json(filteredEmployees.length);
     } catch (error) {
-        res.status(500).json({ message: `Failed to count employees: ${error}` });
+        const errorGUID = getErrorGUID();
+        logger.error(`Failed to count employees: ${error}, errorGUID: ${errorGUID}`);
+        res.status(500).json({ message: `Failed to count employees, errorGUID: ${errorGUID}` });
+        if (error instanceof Error) {
+            logger.error(error.stack);
+        }
     }
 });
 
@@ -39,14 +49,22 @@ router.get('/', async (
     res: Response<Employees.GetEmployees.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        let filteredEmployees = processEmployeesSearchCriteria({
-            employees: db.data.employees,
-            departments: db.data.departments
-        }, req.query);
+        const employeesPromise = dbConnection.employees.findMany();
+        const departmentsPromise = dbConnection.departments.findMany();
+
+        const filteredEmployees = filterEmployees(req.query, {
+            employees: await employeesPromise,
+            departments: await departmentsPromise
+        });
+
         res.json(filteredEmployees);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch employees: ${error}` });
+        const errorGUID = getErrorGUID();
+        logger.error(`Failed to fetch employees: ${error}, errorGUID: ${errorGUID}`);
+        res.status(500).json({ message: `Failed to fetch employees, errorGUID: ${errorGUID}` });
+        if (error instanceof Error) {
+            logger.error(error.stack);
+        }
     }
 });
 
@@ -61,10 +79,8 @@ router.get('/:employeeId', async (
     res: Response<Employees.GetEmployeeById.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
         const employeeId = Number(req.params.employeeId);
-        
-        const employee = db.data.employees.find(e => e.id === employeeId);
+        const employee = await dbConnection.employees.findOne(e => e.id === employeeId);
         
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
@@ -72,7 +88,12 @@ router.get('/:employeeId', async (
         
         res.json(employee);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch employee: ${error}` });
+        const errorGUID = getErrorGUID();
+        logger.error(`Failed to fetch employee: ${error}, errorGUID: ${errorGUID}`);
+        res.status(500).json({ message: `Failed to fetch employee, errorGUID: ${errorGUID}` });
+        if (error instanceof Error) {
+            logger.error(error.stack);
+        }
     }
 });
 
@@ -87,32 +108,37 @@ router.get('/:employeeId/projects', async (
     res: Response<Employees.GetEmployeeProjects.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
         const employeeId = Number(req.params.employeeId);
+        const employee = await dbConnection.employees.findOne(e => e.id === employeeId);
         
-        const employee = db.data.employees.find(e => e.id === employeeId);
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
 
-        const projectInvolvements: ProjectEmployeeInvolvement[] = db.data.projectTeams
-            .filter(assignment => assignment.employeeId === employeeId)
-            .map(assignment => {
-                const project = db.data.projects.find(p => p.id === assignment.projectId)!;
-                return {
-                    employeeId: employee.id,
-                    projectId: project.id,
-                    employeeName: `${employee.firstName} ${employee.lastName}`,
-                    projectName: project.name,
-                    projectStatus: project.status,
-                    engagementLevel: assignment.engagementLevel,
-                    since: assignment.since
-                };
-            });
+        const projectTeams = await dbConnection.projectTeams.findMany(pt => pt.employeeId === employeeId);
+        const projects = await dbConnection.projects.findMany();
+        
+        const projectInvolvements: ProjectEmployeeInvolvement[] = projectTeams.map(assignment => {
+            const project = projects.find(p => p.id === assignment.projectId)!;
+            return {
+                employeeId: employee.id,
+                projectId: project.id,
+                employeeName: `${employee.firstName} ${employee.lastName}`,
+                projectName: project.name,
+                projectStatus: project.status,
+                engagementLevel: assignment.engagementLevel,
+                since: assignment.since
+            };
+        });
 
         res.json(projectInvolvements);
     } catch (error) {
-        res.status(500).json({ message: `Failed to fetch employee projects: ${error}` });
+        const errorGUID = getErrorGUID();
+        logger.error(`Failed to fetch employee projects: ${error}, errorGUID: ${errorGUID}`);
+        res.status(500).json({ message: `Failed to fetch employee projects, errorGUID: ${errorGUID}` });
+        if (error instanceof Error) {
+            logger.error(error.stack);
+        }
     }
 });
 
@@ -127,21 +153,24 @@ router.post('/', async (
     res: Response<Employees.CreateEmployee.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const employeeData = { ...req.body };
+        const employees = await dbConnection.employees.findMany();
+        const newId = Math.max(...employees.map(e => e.id), 0) + 1;
         
-        // const newId = Math.max(...db.data.employees.map(e => e.id), 0) + 1;
-        const newEmployee: Employee = {
-            ...employeeData,
-            id: db.getNextId('employees')
+        const newEmployee = {
+            ...req.body
         };
         
-        db.data.employees.push(newEmployee);
-        await db.write();
+        const newRecord = await dbConnection.employees.insertOne(newEmployee);
+        await dbConnection.employees.flush();
         
-        res.status(201).json(newEmployee);
+        res.status(201).json(newRecord);
     } catch (error) {
-        res.status(500).json({ message: `Failed to create employee: ${error}` });
+        const errorGUID = getErrorGUID();
+        logger.error(`Failed to create employee: ${error}, errorGUID: ${errorGUID}`);
+        res.status(500).json({ message: `Failed to create employee, errorGUID: ${errorGUID}` });
+        if (error instanceof Error) {
+            logger.error(error.stack);
+        }
     }
 });
 
@@ -156,10 +185,8 @@ router.put('/:employeeId', async (
     res: Response<Employees.UpdateEmployee.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
         const employeeId = Number(req.params.employeeId);
-        const employeeData = { ...req.body };
-        const employeeToUpdate = db.data.employees.find(e => e.id === employeeId);
+        const employeeToUpdate = await dbConnection.employees.findOne(e => e.id === employeeId);
         
         if (!employeeToUpdate) {
             return res.status(404).json({ message: 'Employee not found' });
@@ -167,18 +194,21 @@ router.put('/:employeeId', async (
 
         const updatedEmployee: Employee = {
             ...employeeToUpdate,
-            ...employeeData,
+            ...req.body,
             id: employeeId
         };
 
-        db.data.employees = db.data.employees.map(e => 
-            e.id === employeeId ? updatedEmployee : e
-        );
-        await db.write();
+        await dbConnection.employees.replaceOne(e => e.id === employeeId, updatedEmployee);
+        await dbConnection.employees.flush();
         
         res.json(updatedEmployee);
     } catch (error) {
-        res.status(500).json({ message: `Failed to update employee: ${error}` });
+        const errorGUID = getErrorGUID();
+        logger.error(`Failed to update employee: ${error}, errorGUID: ${errorGUID}`);
+        res.status(500).json({ message: `Failed to update employee, errorGUID: ${errorGUID}` });
+        if (error instanceof Error) {
+            logger.error(error.stack);
+        }
     }
 });
 
@@ -193,20 +223,23 @@ router.delete('/:employeeId', async (
     res: Response<Employees.DeleteEmployee.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
         const employeeId = Number(req.params.employeeId);
-        const initialLength = db.data.employees.length;
+        const employeeToDelete = await dbConnection.employees.findOne(e => e.id === employeeId);
         
-        db.data.employees = db.data.employees.filter(e => e.id !== employeeId);
-        
-        if (db.data.employees.length === initialLength) {
+        if (!employeeToDelete) {
             return res.status(404).json({ message: 'Employee not found' });
         }
-        
-        await db.write();
+
+        await dbConnection.employees.deleteOne(e => e.id === employeeId);
+        await dbConnection.employees.flush();
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: `Failed to delete employee: ${error}` });
+        const errorGUID = getErrorGUID();
+        logger.error(`Failed to delete employee: ${error}, errorGUID: ${errorGUID}`);
+        res.status(500).json({ message: `Failed to delete employee, errorGUID: ${errorGUID}` });
+        if (error instanceof Error) {
+            logger.error(error.stack);
+        }
     }
 });
 

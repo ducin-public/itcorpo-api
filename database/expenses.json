@@ -1,0 +1,11 @@
+[
+  {
+    "id": "f1c436a7-d9f5-4214-9be1-79766750b53b",
+    "amount": 10927,
+    "title": "salary",
+    "payerAccount": "DE89 3704 0044 0532 0130 00",
+    "beneficiaryAccount": "PL61 1090 1014 0000 0712 1981 2874",
+    "beneficiaryAddress": "445 Mount Eden Road, Mount Eden, Auckland",
+    "scheduledAt": "2017-02-17T22:01:36.530Z"
+  }
+]

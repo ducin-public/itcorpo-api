@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
 import { BenefitSubscription, ErrorResponse } from '../contract-types/data-contracts';
 import { Benefits } from '../contract-types/BenefitsRoute';
-import { db } from '../lib/db/db-connection';
-import { processBenefitsSearchCriteria } from './benefit-search';
-import { processBenefitChargesSearchCriteria } from './benefit-charges-search';
+import { dbConnection } from '../lib/db/db-connection';
+import { filterBenefits } from './benefit-filters';
+import { filterBenefitCharges } from './benefit-charges-filters';
 
 const router = Router();
 
@@ -18,8 +18,8 @@ router.get('/services', async (
     res: Response<Benefits.GetBenefitServices.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        res.json(db.data.benefitServices);
+        const services = await dbConnection.benefitServices.findMany();
+        res.json(services);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch benefit services: ${error}` });
     }
@@ -36,10 +36,10 @@ router.get('/charges', async (
     res: Response<Benefits.GetBenefitCharges.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const filteredCharges = processBenefitChargesSearchCriteria({
-            benefitCharges: db.data.benefitCharges
-        }, req.query);
+        const filteredCharges = filterBenefitCharges(req.query, {
+            benefitCharges: await dbConnection.benefitCharges.findMany()
+        });
+
         res.json(filteredCharges);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch benefit charges: ${error}` });
@@ -57,11 +57,14 @@ router.get('/count', async (
     res: Response<Benefits.GetBenefitsCount.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const filteredBenefits = processBenefitsSearchCriteria({
-            benefitSubscriptions: db.data.benefitSubscriptions,
-            employees: db.data.employees,
-        }, req.query);
+        const benefitsPromise = dbConnection.benefitSubscriptions.findMany();
+        const employeesPromise = dbConnection.employees.findMany();
+
+        const filteredBenefits = filterBenefits(req.query, {
+            benefitSubscriptions: await benefitsPromise,
+            employees: await employeesPromise
+        });
+
         res.json(filteredBenefits.length);
     } catch (error) {
         res.status(500).json({ message: `Failed to count benefits: ${error}` });
@@ -79,11 +82,14 @@ router.get('/', async (
     res: Response<Benefits.GetBenefitSubscriptions.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const filteredBenefits = processBenefitsSearchCriteria({
-            benefitSubscriptions: db.data.benefitSubscriptions,
-            employees: db.data.employees,
-        }, req.query);
+        const benefitsPromise = dbConnection.benefitSubscriptions.findMany();
+        const employeesPromise = dbConnection.employees.findMany();
+
+        const filteredBenefits = filterBenefits(req.query, {
+            benefitSubscriptions: await benefitsPromise,
+            employees: await employeesPromise
+        });
+
         res.json(filteredBenefits);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch benefits: ${error}` });
@@ -101,10 +107,7 @@ router.get('/:benefitId', async (
     res: Response<Benefits.GetBenefitSubscriptionById.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const benefitId = req.params.benefitId;
-        
-        const benefit = db.data.benefitSubscriptions.find(b => b.id === benefitId);
+        const benefit = await dbConnection.benefitSubscriptions.findOne(b => b.id === req.params.benefitId);
         
         if (!benefit) {
             return res.status(404).json({ message: 'Benefit not found' });
@@ -127,12 +130,10 @@ router.get('/:benefitId/charges', async (
     res: Response<Benefits.GetBenefitSubscriptionCharges.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const searchCriteria = { ...req.query };
+        const filteredCharges = filterBenefitCharges(req.query, {
+            benefitCharges: await dbConnection.benefitCharges.findMany(bc => bc.subscriptionId === req.params.benefitId)
+        });
 
-        const filteredCharges = processBenefitChargesSearchCriteria({
-            benefitCharges: db.data.benefitCharges
-        }, { ...searchCriteria, subscriptionId: req.params.benefitId });
         res.json(filteredCharges);
     } catch (error) {
         res.status(500).json({ message: `Failed to fetch benefit charges: ${error}` });
@@ -150,18 +151,13 @@ router.post('/', async (
     res: Response<Benefits.CreateBenefit.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const benefitData = { ...req.body };
-        
-        // Validate benefit service exists
-        const service = db.data.benefitServices.find(s => s.code === benefitData.service);
+        const service = await dbConnection.benefitServices.findOne(s => s.code === req.body.service);
         if (!service) {
             return res.status(400).json({ message: 'Invalid benefit service' });
         }
         
-        const newBenefit: BenefitSubscription = {
-            id: Math.random().toString(36).substr(2, 9),
-            ...benefitData,
+        const newBenefit = {
+            ...req.body,
             service: {
                 name: service.name,
                 provider: service.provider.name
@@ -169,10 +165,10 @@ router.post('/', async (
             category: service.category
         };
         
-        db.data.benefitSubscriptions.push(newBenefit);
-        await db.write();
+        const newRecord = await dbConnection.benefitSubscriptions.insertOne(newBenefit);
+        await dbConnection.benefitSubscriptions.flush();
         
-        res.status(201).json(newBenefit);
+        res.status(201).json(newRecord);
     } catch (error) {
         res.status(500).json({ message: `Failed to create benefit: ${error}` });
     }
@@ -189,10 +185,7 @@ router.put('/:benefitId', async (
     res: Response<Benefits.UpdateBenefit.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const benefitId = req.params.benefitId;
-        const benefitData = { ...req.body };
-        const benefitToUpdate = db.data.benefitSubscriptions.find(b => b.id === benefitId);
+        const benefitToUpdate = await dbConnection.benefitSubscriptions.findOne(b => b.id === req.params.benefitId);
         
         if (!benefitToUpdate) {
             return res.status(404).json({ message: 'Benefit not found' });
@@ -200,9 +193,8 @@ router.put('/:benefitId', async (
 
         let { service, category } = benefitToUpdate;
 
-        // Validate service exists if changed
-        if (benefitData.service && benefitData.service !== benefitToUpdate.service.name) {
-            const serviceInfo = db.data.benefitServices.find(s => s.code === benefitData.service);
+        if (req.body.service && req.body.service !== benefitToUpdate.service.name) {
+            const serviceInfo = await dbConnection.benefitServices.findOne(s => s.code === req.body.service);
             if (!serviceInfo) {
                 return res.status(400).json({ message: 'Invalid benefit service' });
             }
@@ -215,16 +207,14 @@ router.put('/:benefitId', async (
 
         const updatedBenefit: BenefitSubscription = {
             ...benefitToUpdate,
-            ...benefitData,
+            ...req.body,
             id: req.params.benefitId,
             service,
             category
         };
 
-        db.data.benefitSubscriptions = db.data.benefitSubscriptions.map(b => 
-            b.id === req.params.benefitId ? updatedBenefit : b
-        );
-        await db.write();
+        await dbConnection.benefitSubscriptions.replaceOne(b => b.id === req.params.benefitId, updatedBenefit);
+        await dbConnection.benefitSubscriptions.flush();
         
         res.json(updatedBenefit);
     } catch (error) {
@@ -243,22 +233,16 @@ router.patch('/:benefitId', async (
     res: Response<Benefits.UpdateBenefitSubscriptionStatus.ResponseBody | ErrorResponse>
 ) => {
     try {
-        await db.read();
-        const benefitId = req.params.benefitId;
-        const { operation } = req.body;
-        
-        const existingBenefit = db.data.benefitSubscriptions.find(b => b.id === benefitId);
+        const existingBenefit = await dbConnection.benefitSubscriptions.findOne(b => b.id === req.params.benefitId);
         
         if (!existingBenefit) {
             return res.status(404).json({ message: 'Benefit not found' });
         }
 
-        if (operation === 'CANCEL') {
+        if (req.body.operation === 'CANCEL') {
             // Can't cancel an already cancelled subscription
             if (existingBenefit.cancelledAtDate) {
-                return res.status(422).json({ 
-                    message: 'Cannot cancel an already cancelled subscription' 
-                });
+                return res.status(422).json({ message: 'Cannot cancel an already cancelled subscription' });
             }
 
             // Update the existing benefit with cancellation date
@@ -267,19 +251,14 @@ router.patch('/:benefitId', async (
                 cancelledAtDate: new Date().toISOString().split('T')[0] // YYYY-MM-DD format
             };
 
-            db.data.benefitSubscriptions = db.data.benefitSubscriptions.map(b => 
-                b.id === benefitId ? updatedBenefit : b
-            );
-
-            await db.write();
+            await dbConnection.benefitSubscriptions.replaceOne(b => b.id === req.params.benefitId, updatedBenefit);
+            await dbConnection.benefitSubscriptions.flush();
             return res.json(updatedBenefit);
 
-        } else if (operation === 'RENEW') {
+        } else if (req.body.operation === 'RENEW') {
             // Can't renew an active subscription
             if (!existingBenefit.cancelledAtDate) {
-                return res.status(422).json({ 
-                    message: 'Cannot renew an active subscription' 
-                });
+                return res.status(422).json({ message: 'Cannot renew an active subscription' });
             }
 
             // Create new subscription based on the previous one
@@ -291,14 +270,12 @@ router.patch('/:benefitId', async (
             };
             delete newBenefit.cancelledAtDate; // Remove cancellation date
 
-            db.data.benefitSubscriptions.push(newBenefit);
-            await db.write();
+            await dbConnection.benefitSubscriptions.insertOne(newBenefit);
+            await dbConnection.benefitSubscriptions.flush();
             return res.json(newBenefit);
 
         } else {
-            return res.status(400).json({ 
-                message: 'Invalid operation. Must be either CANCEL or RENEW' 
-            });
+            return res.status(400).json({ message: 'Invalid operation. Must be either CANCEL or RENEW' });
         }
     } catch (error) {
         res.status(500).json({ message: `Failed to update benefit status: ${error}` });

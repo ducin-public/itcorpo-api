@@ -1,0 +1,368 @@
+[
+  {
+    "code": "LUXMED_GOLD_FAMILY",
+    "name": "LuxMed Gold Family Plan",
+    "category": "HEALTHCARE",
+    "provider": {
+      "name": "LuxMed",
+      "website": "https://luxmed.pl",
+      "contactEmail": "corporate@luxmed.pl",
+      "supportPhone": "+48 22 333 44 55",
+      "description": "Leading private healthcare provider in Poland with over 200 clinics nationwide"
+    },
+    "description": "Premium family healthcare package with comprehensive coverage for the whole family",
+    "availableCountries": [
+      "PL",
+      "DE"
+    ],
+    "details": "Features:\n- Unlimited GP and specialist consultations\n- Home visits and teleconsultations 24/7\n- Comprehensive dental care including orthodontics\n- Advanced diagnostics and imaging\n- Rehabilitation and physiotherapy\n- International second opinion\n- Premium hospitals network access\n\nLimitations:\n- 14 days waiting period for new subscribers\n- Pre-existing conditions subject to evaluation\n- Some experimental treatments excluded\n- Annual check-up requirement",
+    "cancellationPolicy": "60 days notice required for early termination"
+  },
+  {
+    "code": "MEDICOVER_INTERNATIONAL",
+    "name": "Medicover International Care",
+    "category": "HEALTHCARE",
+    "provider": {
+      "name": "Medicover",
+      "website": "https://medicover.com",
+      "contactEmail": "global@medicover.com",
+      "supportPhone": "+48 500 900 500",
+      "description": "International healthcare group providing high-quality services across Europe"
+    },
+    "description": "Cross-border healthcare coverage for international employees",
+    "availableCountries": [
+      "PL",
+      "DE",
+      "UK",
+      "FR",
+      "ES",
+      "IT"
+    ],
+    "details": "Features:\n- Access to Medicover facilities across Europe\n- Direct billing in partner clinics\n- 24/7 international assistance\n- Repatriation coverage\n- Translation services\n- Global telemedicine platform\n- Emergency dental care worldwide\n\nLimitations:\n- Standard treatments only in network facilities\n- Emergency coverage worldwide\n- Some treatments require pre-approval\n- Annual limit on certain services",
+    "cancellationPolicy": "90 days notice, minimum 12 months commitment"
+  },
+  {
+    "code": "MULTISPORT_ACTIVE_PLUS",
+    "name": "MultiSport Active Plus Card",
+    "category": "SPORT_WELLNESS",
+    "provider": {
+      "name": "Benefit Systems",
+      "website": "https://benefitsystems.pl",
+      "contactEmail": "corporate@benefitsystems.pl",
+      "supportPhone": "+48 22 242 42 42",
+      "description": "Market leader in employee sports benefits and wellness programs"
+    },
+    "description": "Premium sports card providing access to top fitness facilities and activities",
+    "availableCountries": [
+      "PL",
+      "CZ",
+      "BG",
+      "SK"
+    ],
+    "details": "Features:\n- Unlimited access to 4600+ sports facilities\n- Premium fitness clubs included\n- Swimming pools and aquaparks\n- Squash and tennis courts\n- Personal training sessions\n- Workout classes\n- Sauna and spa access\n\nLimitations:\n- One facility visit per day\n- Some premium locations require surcharge\n- Booking required for certain activities\n- Non-transferable card",
+    "cancellationPolicy": "Monthly renewal, cancel anytime with 30 days notice"
+  },
+  {
+    "code": "SODEXO_RESTAURANT_CHOICE",
+    "name": "Sodexo Restaurant Pass Premium",
+    "category": "LUNCH_FOOD",
+    "provider": {
+      "name": "Sodexo Benefits and Rewards",
+      "website": "https://sodexo.com",
+      "contactEmail": "benefits.pl@sodexo.com",
+      "supportPhone": "+48 22 535 11 11",
+      "description": "Global leader in quality of life services and employee benefit solutions"
+    },
+    "description": "Digital meal card accepted at wide network of restaurants and food delivery services",
+    "availableCountries": [
+      "PL",
+      "FR",
+      "DE",
+      "ES",
+      "IT"
+    ],
+    "details": "Features:\n- Digital and physical card options\n- Mobile app integration\n- Real-time balance tracking\n- Food delivery services included\n- Wide restaurant network\n- Tax-optimized solution\n- Instant top-ups\n\nLimitations:\n- Alcohol purchases excluded\n- Daily spending limit applies\n- Only for food and non-alcoholic beverages\n- Some locations may require minimum purchase",
+    "cancellationPolicy": "Immediate cancellation possible, unused balance refundable"
+  },
+  {
+    "code": "EMPIK_GO_UNLIMITED",
+    "name": "Empik Go Unlimited Pass",
+    "category": "CULTURE_RECREATION",
+    "provider": {
+      "name": "Empik",
+      "website": "https://empik.com",
+      "contactEmail": "b2b@empik.com",
+      "supportPhone": "+48 22 462 72 50",
+      "description": "Poland's largest cultural goods and media retailer"
+    },
+    "description": "Unlimited access to digital books, audiobooks, and podcasts",
+    "availableCountries": [
+      "PL"
+    ],
+    "details": "Features:\n- Unlimited audiobooks and ebooks\n- Exclusive podcasts access\n- Multi-device support\n- Offline download option\n- Family sharing up to 4 accounts\n- New titles every week\n- Personal recommendations\n\nLimitations:\n- Some new releases excluded\n- Simultaneous usage restrictions\n- Internet connection required for sync\n- Some content region-locked",
+    "cancellationPolicy": "30 days notice, annual subscription preferred"
+  },
+  {
+    "code": "LUXMED_SILVER_INDIVIDUAL",
+    "name": "LuxMed Silver Individual Plan",
+    "category": "HEALTHCARE",
+    "provider": {
+      "name": "LuxMed",
+      "website": "https://luxmed.pl",
+      "contactEmail": "corporate@luxmed.pl",
+      "supportPhone": "+48 22 333 44 55",
+      "description": "Leading private healthcare provider in Poland with over 200 clinics nationwide"
+    },
+    "description": "Individual healthcare package with essential medical coverage",
+    "availableCountries": [
+      "PL"
+    ],
+    "details": "Features:\n- Access to general practitioners and specialists\n- Basic diagnostic procedures\n- Preventive healthcare programs\n- Online consultation platform\n- Medical hotline support\n\nLimitations:\n- Limited number of specialist visits per year\n- Dental care not included\n- Some specialized procedures require extra payment\n- Referral required for certain specialists",
+    "cancellationPolicy": "45 days notice required"
+  },
+  {
+    "code": "MEDICOVER_LOCAL_PLUS",
+    "name": "Medicover Local Plus",
+    "category": "HEALTHCARE",
+    "provider": {
+      "name": "Medicover",
+      "website": "https://medicover.com",
+      "contactEmail": "local@medicover.com",
+      "supportPhone": "+48 500 900 500",
+      "description": "International healthcare group providing high-quality services across Europe"
+    },
+    "description": "Enhanced local healthcare coverage with additional specialist care",
+    "availableCountries": [
+      "PL",
+      "DE"
+    ],
+    "details": "Features:\n- Access to local Medicover centers\n- Extended specialist care\n- Advanced diagnostics\n- Preventive care programs\n- Emergency medical assistance\n- Dental check-ups\n\nLimitations:\n- Coverage limited to selected cities\n- Some specialists require referral\n- Annual health assessment mandatory\n- Selected procedures need pre-approval",
+    "cancellationPolicy": "60 days notice required"
+  },
+  {
+    "code": "ALLIANZ_GLOBAL_CARE",
+    "name": "Allianz Global Care Elite",
+    "category": "HEALTHCARE",
+    "provider": {
+      "name": "Allianz Care",
+      "website": "https://allianzcare.com",
+      "contactEmail": "corporate.care@allianz.com",
+      "supportPhone": "+49 89 3800 0",
+      "description": "Global insurance leader providing comprehensive healthcare solutions"
+    },
+    "description": "Premium worldwide healthcare coverage for international professionals",
+    "availableCountries": [
+      "DE",
+      "FR",
+      "UK",
+      "ES",
+      "IT",
+      "PL",
+      "NL",
+      "US"
+    ],
+    "details": "Features:\n- Worldwide medical coverage\n- Private hospitals and clinics\n- Emergency evacuation service\n- Maternity and chronic condition care\n- Mental health support\n- Alternative medicine options\n- Travel health insurance included\n\nLimitations:\n- US coverage limitations apply\n- Pre-existing conditions evaluation\n- Premium hospitals may require pre-approval\n- Certain treatments need medical review",
+    "cancellationPolicy": "90 days notice, annual contract required"
+  },
+  {
+    "code": "MULTISPORT_WEEKEND",
+    "name": "MultiSport Weekend Card",
+    "category": "SPORT_WELLNESS",
+    "provider": {
+      "name": "Benefit Systems",
+      "website": "https://benefitsystems.pl",
+      "contactEmail": "weekend@benefitsystems.pl",
+      "supportPhone": "+48 22 242 42 42",
+      "description": "Market leader in employee sports benefits and wellness programs"
+    },
+    "description": "Weekend-only access to sports and recreational facilities",
+    "availableCountries": [
+      "PL"
+    ],
+    "details": "Features:\n- Access to facilities on weekends\n- Swimming pools included\n- Fitness classes\n- Squash courts availability\n- Sauna access\n- Basic gym equipment\n\nLimitations:\n- Saturday and Sunday access only\n- One entry per day\n- Limited premium locations\n- Standard facilities only",
+    "cancellationPolicy": "30 days notice"
+  },
+  {
+    "code": "FITPROFIT_UNLIMITED",
+    "name": "FitProfit Unlimited Access",
+    "category": "SPORT_WELLNESS",
+    "provider": {
+      "name": "VanityStyle",
+      "website": "https://vanitystyle.pl",
+      "contactEmail": "fitprofit@vanitystyle.pl",
+      "supportPhone": "+48 22 371 50 72",
+      "description": "Leading provider of sports and recreation services in Poland"
+    },
+    "description": "Unlimited access to fitness clubs and sports facilities nationwide",
+    "availableCountries": [
+      "PL"
+    ],
+    "details": "Features:\n- Full access to partner facilities\n- No time restrictions\n- Group fitness classes\n- Swimming pools access\n- Gym and fitness equipment\n- Outdoor activities\n\nLimitations:\n- Partner network only\n- Registration required\n- Some classes need booking\n- Peak hours may be busy",
+    "cancellationPolicy": "45 days notice"
+  },
+  {
+    "code": "YES2MOVE_ONLINE_FITNESS",
+    "name": "Yes2Move Digital Fitness",
+    "category": "SPORT_WELLNESS",
+    "provider": {
+      "name": "Benefit Systems Digital",
+      "website": "https://yes2move.com",
+      "contactEmail": "support@yes2move.com",
+      "supportPhone": "+48 22 242 42 43",
+      "description": "Digital fitness platform offering online workouts and wellness content"
+    },
+    "description": "Digital fitness platform with live and on-demand classes",
+    "availableCountries": [
+      "PL",
+      "DE",
+      "CZ"
+    ],
+    "details": "Features:\n- Live streaming classes\n- On-demand workout library\n- Personal training options\n- Nutrition advice\n- Progress tracking\n- Mobile app access\n\nLimitations:\n- Internet connection required\n- Some features need extra equipment\n- Premium content additional cost\n- Limited offline access",
+    "cancellationPolicy": "Cancel anytime"
+  },
+  {
+    "code": "CALYPSO_AQUA_WELLNESS",
+    "name": "Calypso Aqua Wellness",
+    "category": "SPORT_WELLNESS",
+    "provider": {
+      "name": "Calypso Fitness",
+      "website": "https://calypso.com.pl",
+      "contactEmail": "aqua@calypso.pl",
+      "supportPhone": "+48 22 555 66 77",
+      "description": "Premium fitness and wellness club chain specializing in aqua activities"
+    },
+    "description": "Comprehensive aqua fitness and wellness program",
+    "availableCountries": [
+      "PL"
+    ],
+    "details": "Features:\n- All swimming pools access\n- Aqua fitness classes\n- Wellness zone access\n- Spa facilities\n- Steam rooms and saunas\n- Professional instructors\n\nLimitations:\n- Selected locations only\n- Class booking required\n- Time slot restrictions\n- Seasonal maintenance closures",
+    "cancellationPolicy": "60 days notice"
+  },
+  {
+    "code": "EDENRED_LUNCH_PASS",
+    "name": "Edenred Lunch Pass",
+    "category": "LUNCH_FOOD",
+    "provider": {
+      "name": "Edenred",
+      "website": "https://edenred.pl",
+      "contactEmail": "lunch@edenred.pl",
+      "supportPhone": "+48 22 534 77 77",
+      "description": "Global leader in payment solutions and employee benefits"
+    },
+    "description": "Digital lunch card accepted at restaurants and food outlets",
+    "availableCountries": [
+      "PL",
+      "FR",
+      "ES",
+      "IT"
+    ],
+    "details": "Features:\n- Wide restaurant network\n- Digital payments\n- Mobile app\n- Balance tracking\n- Special offers\n- Tax benefits\n\nLimitations:\n- Lunch hours only\n- Daily limit applies\n- Selected merchants only\n- No alcohol purchases",
+    "cancellationPolicy": "30 days notice"
+  },
+  {
+    "code": "UP_LUNCH_EVERYWHERE",
+    "name": "Up Dejeuner Universal",
+    "category": "LUNCH_FOOD",
+    "provider": {
+      "name": "Up Group",
+      "website": "https://up.coop",
+      "contactEmail": "up@up-group.com",
+      "supportPhone": "+33 1 45 65 20 00",
+      "description": "International provider of employee benefits and social services"
+    },
+    "description": "International lunch voucher system with wide acceptance",
+    "availableCountries": [
+      "FR",
+      "ES",
+      "IT",
+      "DE",
+      "PL"
+    ],
+    "details": "Features:\n- International acceptance\n- Digital and physical cards\n- Restaurant finder app\n- Real-time transactions\n- Cross-border usage\n- Tax optimization\n\nLimitations:\n- Working days only\n- Transaction limits apply\n- Food and non-alcoholic only\n- Country restrictions may apply",
+    "cancellationPolicy": "45 days notice"
+  },
+  {
+    "code": "BONAPPETIT_LOCAL_BISTRO",
+    "name": "BonAppetit Local Dining",
+    "category": "LUNCH_FOOD",
+    "provider": {
+      "name": "BonAppetit Services",
+      "website": "https://bonappetit-services.eu",
+      "contactEmail": "dining@bonappetit.eu",
+      "supportPhone": "+49 30 225 225",
+      "description": "Local restaurant network focusing on authentic dining experiences"
+    },
+    "description": "Access to curated local restaurants and bistros",
+    "availableCountries": [
+      "DE",
+      "AT",
+      "CH"
+    ],
+    "details": "Features:\n- Local restaurant network\n- Authentic cuisine options\n- Digital vouchers\n- Special menu deals\n- Lunch and dinner valid\n- Weekend options\n\nLimitations:\n- Selected cities only\n- Reservation may be needed\n- Prix fixe menu only\n- Partner restaurants only",
+    "cancellationPolicy": "15 days notice"
+  },
+  {
+    "code": "BENEFIT_CULTURE_PLUS",
+    "name": "Benefit Culture Plus",
+    "category": "CULTURE_RECREATION",
+    "provider": {
+      "name": "Culture Benefits Group",
+      "website": "https://culture-benefits.eu",
+      "contactEmail": "culture@benefits.eu",
+      "supportPhone": "+49 30 987 654",
+      "description": "European cultural events and entertainment benefits provider"
+    },
+    "description": "Access to cultural events and entertainment venues",
+    "availableCountries": [
+      "DE",
+      "FR",
+      "PL",
+      "ES"
+    ],
+    "details": "Features:\n- Theater tickets\n- Museum access\n- Concert venues\n- Art galleries\n- Cultural workshops\n- Festival discounts\n\nLimitations:\n- Subject to availability\n- Booking required\n- Selected venues only\n- Some events excluded",
+    "cancellationPolicy": "30 days notice"
+  },
+  {
+    "code": "TICKETMASTER_EVENTS",
+    "name": "Ticketmaster Corporate Access",
+    "category": "CULTURE_RECREATION",
+    "provider": {
+      "name": "Ticketmaster",
+      "website": "https://ticketmaster.com",
+      "contactEmail": "corporate@ticketmaster.com",
+      "supportPhone": "+1 800 653 8000",
+      "description": "World's leading ticket distribution and entertainment company"
+    },
+    "description": "Priority access to concerts, shows, and sporting events",
+    "availableCountries": [
+      "US",
+      "UK",
+      "DE",
+      "FR",
+      "ES",
+      "IT",
+      "PL",
+      "NL"
+    ],
+    "details": "Features:\n- Pre-sale access\n- Priority booking\n- VIP options\n- Event notifications\n- Mobile tickets\n- Exclusive offers\n\nLimitations:\n- Limited ticket allocation\n- Some events excluded\n- Booking fees apply\n- Country restrictions",
+    "cancellationPolicy": "Non-cancellable, annual subscription"
+  },
+  {
+    "code": "MYBENEFIT_FLEXIBLE_POINTS",
+    "name": "MyBenefit Flex Points",
+    "category": "CULTURE_RECREATION",
+    "provider": {
+      "name": "MyBenefit",
+      "website": "https://mybenefit.pl",
+      "contactEmail": "flex@mybenefit.pl",
+      "supportPhone": "+48 71 777 77 77",
+      "description": "Comprehensive employee benefits platform with flexible points system"
+    },
+    "description": "Flexible points system for various benefits and services",
+    "availableCountries": [
+      "PL"
+    ],
+    "details": "Features:\n- Flexible points allocation\n- Wide service catalog\n- Sports activities\n- Cultural events\n- Shopping vouchers\n- Travel options\n- Insurance products\n\nLimitations:\n- Points expire annually\n- Selected partners only\n- Some benefits seasonal\n- Minimum points required",
+    "cancellationPolicy": "Points valid for calendar year"
+  }
+]

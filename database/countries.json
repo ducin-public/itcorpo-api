@@ -1,0 +1,34 @@
+[
+  {
+    "code": "US",
+    "name": "United States of America"
+  },
+  {
+    "code": "UK",
+    "name": "United Kingdom"
+  },
+  {
+    "code": "DE",
+    "name": "Germany"
+  },
+  {
+    "code": "FR",
+    "name": "France"
+  },
+  {
+    "code": "NL",
+    "name": "Netherlands"
+  },
+  {
+    "code": "PL",
+    "name": "Poland"
+  },
+  {
+    "code": "IT",
+    "name": "Italy"
+  },
+  {
+    "code": "ES",
+    "name": "Spain"
+  }
+]

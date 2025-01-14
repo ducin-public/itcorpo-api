@@ -45,6 +45,23 @@
   ) => {
   ```
 
+## Error logging
+
+In express routes, follow this approach to error logging:
+
+```ts
+try {
+  ...
+} catch (e) {
+  const errorGUID = getErrorGUID();
+  logger.error(`Failed to ______: ${error}, errorGUID: ${errorGUID}`);
+  res.status(500).json({ message: `Failed to ______, errorGUID: ${errorGUID}` });
+  if (error instanceof Error) {
+      logger.error(error.stack);
+  }
+}
+```
+
 ## Conventions
 
 - Separate imports from `node_modules` with local imports with a blank line

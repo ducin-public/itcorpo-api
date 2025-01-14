@@ -1,4 +1,5 @@
-import { DBOffice, DBOfficeAmenity, DbSchema } from '../lib/db/db-schema';
+import { DBConnection } from '../lib/db/db-connection';
+import { DBOffice } from '../lib/db/db-zod-schemas/office.schema';
 import { logger } from '../lib/logger';
 
 function getRandomInt(min: number, max: number): number {
@@ -27,14 +28,26 @@ function getOfficeCapacity(country: string): number {
     return getRandomInt(30, 200);
 }
 
-export function migrateOffices(dbContent: DbSchema): DBOffice[] {
-    const offices = dbContent.offices;
-    logger.debug(`Found ${offices.length} offices to process`);
-    return offices.map(({ country, city, address, capacity, monthlyRental, estate, amenities, ...office }) => {
-        return {
-            country, city, address, capacity, monthlyRental, estate,
-            amenities: (amenities as any as DBOfficeAmenity[]).map(a => a.name),
-            ...office,
-        };
-    });
+const updateOffice = (office: DBOffice): DBOffice => {
+    const { country, city, address, capacity, monthlyRental, estate, amenities, ...rest } = office;
+
+    return {
+        country, city, address, capacity, monthlyRental, estate,
+        amenities,
+        ...rest,
+    };
+}
+
+
+export async function migrateOffices(dbConnection: DBConnection) {
+    const allOffices = await dbConnection.offices.findMany();
+    logger.debug(`Found ${allOffices.length} offices to process`);
+
+    const newOffices = allOffices.map(updateOffice);
+    await dbConnection.offices.deleteMany();
+    await dbConnection.offices.insertMany(newOffices);
+    await dbConnection.offices.validateInMemory();
+
+    await dbConnection.offices.flush();
+    logger.info(`Migrated ${allOffices.length} offices`)
 }

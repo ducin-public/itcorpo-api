@@ -60,7 +60,7 @@ router.get('/:expenseId', async (
     res: Response<Expenses.GetExpenseById.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const expense = await dbConnection.expenses.findOne(e => e.id === req.params.expenseId);
+        const expense = await dbConnection.expenses.findOne({ $match: { id: { $eq: req.params.expenseId } } });
         
         if (!expense) {
             return res.status(404).json({ message: 'Expense not found' });
@@ -114,7 +114,7 @@ router.put('/:expenseId', async (
     res: Response<Expenses.UpdateExpense.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const expenseToUpdate = await dbConnection.expenses.findOne(e => e.id === req.params.expenseId);
+        const expenseToUpdate = await dbConnection.expenses.findOne({ $match: { id: { $eq: req.params.expenseId } } });
         
         if (!expenseToUpdate) {
             return res.status(404).json({ message: 'Expense not found' });
@@ -126,7 +126,7 @@ router.put('/:expenseId', async (
             id: req.params.expenseId
         };
 
-        await dbConnection.expenses.replaceOne(e => e.id === req.params.expenseId, updatedExpense);
+        await dbConnection.expenses.replaceOne({ $match: { id: { $eq: req.params.expenseId } } }, updatedExpense);
         await dbConnection.expenses.flush();
         
         res.json(updatedExpense);
@@ -149,13 +149,13 @@ router.delete('/:expenseId', async (
     res: Response<Expenses.DeleteExpense.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const expenseToDelete = await dbConnection.expenses.findOne(e => e.id === req.params.expenseId);
+        const expenseToDelete = await dbConnection.expenses.findOne({ $match: { id: { $eq: req.params.expenseId } } });
         
         if (!expenseToDelete) {
             return res.status(404).json({ message: 'Expense not found' });
         }
 
-        await dbConnection.expenses.deleteOne(e => e.id === req.params.expenseId);
+        await dbConnection.expenses.deleteOne({ $match: { id: { $eq: req.params.expenseId } } });
         await dbConnection.expenses.flush();
         res.status(204).send();
     } catch (error) {

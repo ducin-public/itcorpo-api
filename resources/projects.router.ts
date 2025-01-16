@@ -77,13 +77,13 @@ router.get('/:projectId', async (
     res: Response<Projects.GetProjectById.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const project = await dbConnection.projects.findOne(p => p.id === req.params.projectId);
+        const project = await dbConnection.projects.findOne({ $match: { id: { $eq: req.params.projectId } } });
         
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
         
-        const projectTeams = await dbConnection.projectTeams.findMany((pt) => pt.projectId === project.id);
+        const projectTeams = await dbConnection.projectTeams.findMany({ $match: { projectId: { $eq: project.id } } });
         const projectWithTeam = attachTeamToProject(project, projectTeams);
         res.json(projectWithTeam);
     } catch (error) {
@@ -133,7 +133,7 @@ router.put('/:projectId', async (
     res: Response<Projects.UpdateProject.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const projectToUpdate = await dbConnection.projects.findOne(p => p.id === req.params.projectId);
+        const projectToUpdate = await dbConnection.projects.findOne({ $match: { id: { $eq: req.params.projectId } } });
         
         if (!projectToUpdate) {
             return res.status(404).json({ message: 'Project not found' });
@@ -145,7 +145,7 @@ router.put('/:projectId', async (
             id: req.params.projectId
         };
 
-        await dbConnection.projects.replaceOne(p => p.id === req.params.projectId, updatedProject);
+        await dbConnection.projects.updateOne({ $match: { id: { $eq: req.params.projectId } } }, updatedProject);
         await dbConnection.projects.flush();
         
         res.json(updatedProject);
@@ -168,13 +168,13 @@ router.delete('/:projectId', async (
     res: Response<Projects.DeleteProject.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const projectToDelete = await dbConnection.projects.findOne(p => p.id === req.params.projectId);
+        const projectToDelete = await dbConnection.projects.findOne({ $match: { id: { $eq: req.params.projectId } } });
         
         if (!projectToDelete) {
             return res.status(404).json({ message: 'Project not found' });
         }
 
-        await dbConnection.projects.deleteOne(p => p.id === req.params.projectId);
+        await dbConnection.projects.deleteOne({ $match: { id: { $eq: req.params.projectId } } });
         await dbConnection.projects.flush();
         res.status(204).send();
     } catch (error) {
@@ -196,12 +196,12 @@ router.get('/:projectId/team', async (
     res: Response<Projects.GetProjectTeam.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const project = await dbConnection.projects.findOne(p => p.id === req.params.projectId);
+        const project = await dbConnection.projects.findOne({ $match: { id: { $eq: req.params.projectId } } });
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
 
-        const projectTeams = await dbConnection.projectTeams.findMany(pt => pt.projectId === req.params.projectId);
+        const projectTeams = await dbConnection.projectTeams.findMany({ $match: { projectId: { $eq: req.params.projectId } } });
         const employees = await dbConnection.employees.findMany();
         
         const projectInvolvements: ProjectEmployeeInvolvement[] = projectTeams.map(assignment => {

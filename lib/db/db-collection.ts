@@ -82,7 +82,7 @@ export class DBCollection<TCollection extends object> {
 
         try {
             await measureTime(() => writeFile(
-                config.path, 
+                config.name, 
                 JSON.stringify(this.data, null, 2), 
                 'utf-8'
             ), 'db-write');

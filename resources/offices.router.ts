@@ -122,7 +122,7 @@ router.get('/:officeCode', async (
     res: Response<Offices.GetOfficeByCode.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const officeByCode = await dbConnection.offices.findOne(o => o.code === req.params.officeCode);
+        const officeByCode = await dbConnection.offices.findOne({ $match: { code: { $eq: req.params.officeCode } } });
         
         if (!officeByCode) {
             return res.status(404).json({ message: 'Office not found' });
@@ -148,7 +148,7 @@ router.post('/', async (
     res: Response<Offices.CreateOffice.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const recordWithExistingCode = await dbConnection.offices.findOne(o => o.code === req.body.code);
+        const recordWithExistingCode = await dbConnection.offices.findOne({ $match: { code: { $eq: req.body.code } } });
         
         if (recordWithExistingCode) {
             return res.status(400).json({ message: 'Office with this code already exists' });
@@ -182,7 +182,7 @@ router.put('/:officeCode', async (
     res: Response<Offices.UpdateOffice.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const officeToUpdate = await dbConnection.offices.findOne(o => o.code === req.params.officeCode);
+        const officeToUpdate = await dbConnection.offices.findOne({ $match: { code: { $eq: req.params.officeCode } } });
         
         if (!officeToUpdate) {
             return res.status(404).json({ message: 'Office not found' });
@@ -195,7 +195,7 @@ router.put('/:officeCode', async (
             amenities: req.body.amenities?.map(a => a.code) || officeToUpdate.amenities
         };
 
-        await dbConnection.offices.replaceOne(o => o.code === req.params.officeCode, updatedOffice);
+        await dbConnection.offices.replaceOne({ $match: { code: { $eq: req.params.officeCode } } }, updatedOffice);
         await dbConnection.offices.flush();
         
         res.json(updatedOffice);
@@ -218,13 +218,13 @@ router.delete('/:officeCode', async (
     res: Response<Offices.DeleteOffice.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const officeToDelete = await dbConnection.offices.findOne(o => o.code === req.params.officeCode);
+        const officeToDelete = await dbConnection.offices.findOne({ $match: { code: { $eq: req.params.officeCode } } });
   
         if (!officeToDelete) {
             return res.status(404).json({ message: 'Office not found' });
         }
 
-        await dbConnection.offices.deleteOne(o => o.code === req.params.officeCode);
+        await dbConnection.offices.deleteOne({ $match: { code: { $eq: req.params.officeCode } } });
         await dbConnection.offices.flush();
         res.status(204).send();
     } catch (error) {

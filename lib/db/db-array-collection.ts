@@ -3,7 +3,6 @@ import { randomUUID } from 'crypto';
 
 import { DBCollection } from "./db-collection";
 import { MatchParams, QueryParams, validateQueryParams, createPredicateFromCriteria } from './db-query-params';
-import { all } from '../../resources/core/filtering';
 
 export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]> {
     private nextId: number = 1;
@@ -49,6 +48,7 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
     }
 
     async count(params: MatchParams<TItem> = {}) {
+        validateQueryParams(params);
         const collection = await this.getAll();
 
         if (!params.$match) {

@@ -1,5 +1,6 @@
 import { DBError } from "./db-error";
 import { all } from '../../resources/core/filtering';
+import { logger } from "../logger";
 
 type SingleComparisonOperator = '$eq' | '$ne' | '$gt' | '$gte' | '$lt' | '$lte';
 type MultiComparisonOperator = '$in' | '$nin';
@@ -69,6 +70,7 @@ export const validateQueryParams = (params: QueryParams<any>): void => {
             throw new DBError(`Empty $or array`);
         }
     }
+    logger.debug(`$match criteria: ${JSON.stringify(params)}`);
 }
 
 export const createPredicateFromCriteria = <TItem extends object>($match: MatchCriteria<TItem>): (item: TItem) => boolean => {

@@ -92,7 +92,7 @@ router.get('/:employeeId', async (
     try {
         const employeeId = Number(req.params.employeeId);
         const [employee, departments] = await Promise.all([
-            dbConnection.employees.findOne(e => e.id === employeeId),
+            dbConnection.employees.findOne({ $match: { id: { $eq: employeeId } } }),
             dbConnection.departments.findMany()
         ]);
         
@@ -127,13 +127,13 @@ router.get('/:employeeId/projects', async (
 ) => {
     try {
         const employeeId = Number(req.params.employeeId);
-        const employee = await dbConnection.employees.findOne(e => e.id === employeeId);
+        const employee = await dbConnection.employees.findOne({ $match: { id: { $eq: employeeId } } });
         
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
 
-        const projectTeams = await dbConnection.projectTeams.findMany(pt => pt.employeeId === employeeId);
+        const projectTeams = await dbConnection.projectTeams.findMany({ $match: { employeeId: { $eq: employeeId } } });
         const projects = await dbConnection.projects.findMany();
         
         const projectInvolvements: ProjectEmployeeInvolvement[] = projectTeams.map(assignment => {
@@ -177,7 +177,7 @@ router.post('/', async (
         const created = await dbConnection.employees.insertOne(payload);
         await dbConnection.employees.flush();
 
-        const department = await dbConnection.departments.findOne(d => d.id === payload.departmentId);
+        const department = await dbConnection.departments.findOne({ $match: { id: { $eq: payload.departmentId } } });
         if (!department) {
             throw new Error(`Department not found for ID: ${payload.departmentId}`);
         }
@@ -204,7 +204,7 @@ router.put('/:employeeId', async (
 ) => {
     try {
         const employeeId = Number(req.params.employeeId);
-        const existingEmployee = await dbConnection.employees.findOne(e => e.id === employeeId);
+        const existingEmployee = await dbConnection.employees.findOne({ $match: { id: { $eq: employeeId } } });
 
         if (!existingEmployee) {
             return res.status(404).json({ message: 'Employee not found' });
@@ -215,10 +215,10 @@ router.put('/:employeeId', async (
             id: employeeId
         };
 
-        const replaced = await dbConnection.employees.replaceOne(e => e.id === employeeId, payload);
+        const replaced = await dbConnection.employees.replaceOne({ $match: { id: { $eq: employeeId } } }, payload);
         await dbConnection.employees.flush();
         
-        const department = await dbConnection.departments.findOne(d => d.id === payload.departmentId);
+        const department = await dbConnection.departments.findOne({ $match: { id: { $eq: payload.departmentId } } });
         if (!department) {
             throw new Error(`Department not found for ID: ${payload.departmentId}`);
         }
@@ -245,13 +245,13 @@ router.delete('/:employeeId', async (
 ) => {
     try {
         const employeeId = Number(req.params.employeeId);
-        const employeeToDelete = await dbConnection.employees.findOne(e => e.id === employeeId);
+        const employeeToDelete = await dbConnection.employees.findOne({ $match: { id: { $eq: employeeId } } });
         
         if (!employeeToDelete) {
             return res.status(404).json({ message: 'Employee not found' });
         }
 
-        await dbConnection.employees.deleteOne(e => e.id === employeeId);
+        await dbConnection.employees.deleteOne({ $match: { id: { $eq: employeeId } } });
         await dbConnection.employees.flush();
         res.status(204).send();
     } catch (error) {

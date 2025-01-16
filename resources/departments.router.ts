@@ -61,7 +61,7 @@ router.get('/:departmentId', async (
 ) => {
     try {
         const departmentId = Number(req.params.departmentId);
-        const department = await dbConnection.departments.findOne(d => d.id === departmentId);
+        const department = await dbConnection.departments.findOne({ $match: { id: { $eq: departmentId } } });
         
         if (!department) {
             return res.status(404).json({ message: 'Department not found' });
@@ -116,7 +116,7 @@ router.put('/:departmentId', async (
 ) => {
     try {
         const departmentId = Number(req.params.departmentId);
-        const departmentToUpdate = await dbConnection.departments.findOne(d => d.id === departmentId);
+        const departmentToUpdate = await dbConnection.departments.findOne({ $match: { id: { $eq: departmentId } } });
         
         if (!departmentToUpdate) {
             return res.status(404).json({ message: 'Department not found' });
@@ -128,7 +128,7 @@ router.put('/:departmentId', async (
             id: departmentId
         };
 
-        await dbConnection.departments.replaceOne(d => d.id === departmentId, updatedDepartment);
+        await dbConnection.departments.replaceOne({ $match: { id: { $eq: departmentId } } }, updatedDepartment);
         await dbConnection.departments.flush();
         
         res.json(updatedDepartment);
@@ -152,13 +152,13 @@ router.delete('/:departmentId', async (
 ) => {
     try {
         const departmentId = Number(req.params.departmentId);
-        const departmentToDelete = await dbConnection.departments.findOne(d => d.id === departmentId);
+        const departmentToDelete = await dbConnection.departments.findOne({ $match: { id: { $eq: departmentId } } });
         
         if (!departmentToDelete) {
             return res.status(404).json({ message: 'Department not found' });
         }
 
-        await dbConnection.departments.deleteOne(d => d.id === departmentId);
+        await dbConnection.departments.deleteOne({ $match: { id: { $eq: departmentId } } });
         await dbConnection.departments.flush();
         res.status(204).send();
     } catch (error) {

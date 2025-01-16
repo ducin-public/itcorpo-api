@@ -121,7 +121,7 @@ router.get('/:benefitId', async (
     res: Response<Benefits.GetBenefitSubscriptionById.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const benefit = await dbConnection.benefitSubscriptions.findOne(b => b.id === req.params.benefitId);
+        const benefit = await dbConnection.benefitSubscriptions.findOne({ $match: { id: { $eq: req.params.benefitId } } });
         
         if (!benefit) {
             return res.status(404).json({ message: 'Benefit not found' });
@@ -148,7 +148,7 @@ router.get('/:benefitId/charges', async (
 ) => {
     try {
         const filteredCharges = filterBenefitCharges(req.query, {
-            benefitCharges: await dbConnection.benefitCharges.findMany(bc => bc.subscriptionId === req.params.benefitId)
+            benefitCharges: await dbConnection.benefitCharges.findMany({ $match: { subscriptionId: { $eq: req.params.benefitId } } })
         });
 
         res.json(filteredCharges);
@@ -171,7 +171,7 @@ router.post('/', async (
     res: Response<Benefits.CreateBenefit.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const service = await dbConnection.benefitServices.findOne(s => s.code === req.body.service);
+        const service = await dbConnection.benefitServices.findOne({ $match: { code: { $eq: req.body.service } } });
         if (!service) {
             return res.status(400).json({ message: 'Invalid benefit service' });
         }
@@ -208,7 +208,7 @@ router.put('/:benefitId', async (
     res: Response<Benefits.UpdateBenefit.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const benefitToUpdate = await dbConnection.benefitSubscriptions.findOne(b => b.id === req.params.benefitId);
+        const benefitToUpdate = await dbConnection.benefitSubscriptions.findOne({ $match: { id: { $eq: req.params.benefitId } } });
         
         if (!benefitToUpdate) {
             return res.status(404).json({ message: 'Benefit not found' });
@@ -217,7 +217,7 @@ router.put('/:benefitId', async (
         let { service, category } = benefitToUpdate;
 
         if (req.body.service && req.body.service !== benefitToUpdate.service.name) {
-            const serviceInfo = await dbConnection.benefitServices.findOne(s => s.code === req.body.service);
+            const serviceInfo = await dbConnection.benefitServices.findOne({ $match: { code: { $eq: req.body.service } } });
             if (!serviceInfo) {
                 return res.status(400).json({ message: 'Invalid benefit service' });
             }
@@ -236,7 +236,7 @@ router.put('/:benefitId', async (
             category
         };
 
-        await dbConnection.benefitSubscriptions.replaceOne(b => b.id === req.params.benefitId, updatedBenefit);
+        await dbConnection.benefitSubscriptions.updateOne({ $match: { id: { $eq: req.params.benefitId } } }, updatedBenefit);
         await dbConnection.benefitSubscriptions.flush();
         
         res.json(updatedBenefit);
@@ -259,7 +259,7 @@ router.patch('/:benefitId', async (
     res: Response<Benefits.UpdateBenefitSubscriptionStatus.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const existingBenefit = await dbConnection.benefitSubscriptions.findOne(b => b.id === req.params.benefitId);
+        const existingBenefit = await dbConnection.benefitSubscriptions.findOne({ $match: { id: { $eq: req.params.benefitId } } });
         
         if (!existingBenefit) {
             return res.status(404).json({ message: 'Benefit not found' });
@@ -277,7 +277,7 @@ router.patch('/:benefitId', async (
                 cancelledAtDate: new Date().toISOString().split('T')[0] // YYYY-MM-DD format
             };
 
-            await dbConnection.benefitSubscriptions.replaceOne(b => b.id === req.params.benefitId, updatedBenefit);
+            await dbConnection.benefitSubscriptions.replaceOne({ $match: { id: { $eq: req.params.benefitId } } }, updatedBenefit);
             await dbConnection.benefitSubscriptions.flush();
             return res.json(updatedBenefit);
 

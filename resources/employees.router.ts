@@ -6,6 +6,7 @@ import { filterEmployees } from './employee-filters';
 import { logRouterError } from './core/error';
 import { mergeWithDepartment } from './employees-data-operations';
 import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
+import { randomInt } from 'crypto';
 
 const router = Router();
 
@@ -169,7 +170,8 @@ router.post('/', async (
     res: Response<Employees.CreateEmployee.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const payload = {
+        const payload: DBEmployee = {
+            id: randomInt(100000, 10000000),
             ...req.body
         };
         payload.nationality

@@ -23,8 +23,6 @@ type DBCollectionConfig = {
     name: string;
     accessMode: "R" | "RW"
     __IN_MEMORY__?: any
-    /** whether the object type has id:number property */
-    autoIncrement: boolean;
     collectionSchema: ZodSchema;
 };
 

@@ -5,27 +5,6 @@ import { DBCollection } from "./db-collection";
 import { MatchParams, QueryParams, validateQueryParams, createPredicateFromCriteria } from './db-query-params';
 
 export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]> {
-    private nextId: number = 1;
-
-    private hasIDColumn(){
-        const zodShape = (this.config.collectionSchema as any).shape;
-        return 'id' in zodShape;
-    }
-
-    protected override postReadHook(items: TItem[]) {
-        if (this.config.autoIncrement) {
-            this.nextId = Math.max(...items.map(item => (item as any).id), 0) + 1;
-        }
-    }
-
-    private insertionId() {
-        if (this.config.autoIncrement) {
-            return this.nextId++;
-        } else {
-            return randomUUID();
-        }
-    }
-
     // private assertCollectionData(data: unknown): asserts data is TItem[];
 
     async validateInMemory() {
@@ -112,29 +91,14 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         }
     }
 
-    async insertOne(document: TItem | Omit<TItem, 'id'>) {
+    async insertOne(document: TItem) {
         const collection = await this.getAll();
-
-        let item = document;
-        if (this.hasIDColumn() && !('id' in item)) {
-            Object.assign(item, { id: this.insertionId() });
-        }
-
-        collection.push(item as TItem);
-        return item as TItem;
+        collection.push(document);
+        return document;
     }
 
     async insertMany(documents: TItem[]) {
         const collection = await this.getAll();
-
-        if (this.hasIDColumn()) {
-            for (const doc of documents) {
-                if (!('id' in doc)) {
-                    Object.assign(doc, { id: this.insertionId() });
-                }
-            }
-        }
-
         collection.push(...documents);
     }
 

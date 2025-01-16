@@ -6,6 +6,8 @@ import { filterBenefits } from './benefit-filters';
 import { filterBenefitCharges } from './benefit-charges-filters';
 import { logRouterError } from './core/error';
 import { CORRELATION_ID_HEADER } from '../middlewares/correlation-id';
+import { randomUUID } from 'crypto';
+import { DBBenefitSubscription } from '../lib/db/db-zod-schemas/benefit-subscription.schema';
 
 const router = Router();
 
@@ -176,7 +178,8 @@ router.post('/', async (
             return res.status(400).json({ message: 'Invalid benefit service' });
         }
         
-        const newBenefit = {
+        const newBenefit: DBBenefitSubscription = {
+            id: randomUUID(),
             ...req.body,
             service: {
                 name: service.name,
@@ -290,7 +293,7 @@ router.patch('/:benefitId', async (
             // Create new subscription based on the previous one
             const newBenefit = {
                 ...existingBenefit,
-                id: Math.random().toString(36).substr(2, 9), // Generate new ID
+                id: randomUUID(),
                 subscribedAtDate: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
                 cancelledAtDate: undefined
             };

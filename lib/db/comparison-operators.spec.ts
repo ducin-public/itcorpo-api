@@ -19,7 +19,6 @@ describe('ArrayCollection : Comparison Operators', () => {
             name: 'test',
             accessMode: 'R',
             __IN_MEMORY__: createTestData(),
-            autoIncrement: true,
             collectionSchema: z.object({
                 id: z.number(),
                 name: z.string()

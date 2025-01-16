@@ -1,9 +1,11 @@
 import { Router, Request, Response } from 'express';
 
-import { Department, DepartmentInput, ErrorResponse } from '../contract-types/data-contracts';
+import { Department, ErrorResponse } from '../contract-types/data-contracts';
 import { Departments } from '../contract-types/DepartmentsRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { logRouterError } from './core/error';
+import { randomInt } from 'crypto';
+import { DBDepartment } from '../lib/db/db-zod-schemas/department.schema';
 
 const router = Router();
 
@@ -88,7 +90,8 @@ router.post('/', async (
 ) => {
     try {
         
-        const newDepartment: DepartmentInput = {
+        const newDepartment: DBDepartment = {
+            id: randomInt(100000, 10000000),
             ...req.body,
         };
         

@@ -4,6 +4,8 @@ import { Expense, ErrorResponse } from '../contract-types/data-contracts';
 import { Expenses } from '../contract-types/ExpensesRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { logRouterError } from './core/error';
+import { randomUUID } from 'crypto';
+import { DBExpense } from '../lib/db/db-zod-schemas/expense.schema';
 
 const router = Router();
 
@@ -86,9 +88,9 @@ router.post('/', async (
     res: Response<Expenses.CreateExpense.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const newExpense = {
+        const newExpense: DBExpense = {
+            id: randomUUID(),
             ...req.body,
-            id: Math.random().toString(36).substr(2, 9)
         };
         
         await dbConnection.expenses.insertOne(newExpense);

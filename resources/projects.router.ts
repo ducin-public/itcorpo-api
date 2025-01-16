@@ -6,6 +6,8 @@ import { dbConnection } from '../lib/db/db-connection';
 import { filterProjects } from './project-filters';
 import { attachTeamToProject, attachTeamToAllProjects } from './project-data-operations';
 import { logRouterError } from './core/error';
+import { randomUUID } from 'crypto';
+import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
 
 const router = Router();
 
@@ -105,15 +107,18 @@ router.post('/', async (
     res: Response<Projects.CreateProject.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const newProject: Project = {
+        const newProject: DBProject = {
+            id: randomUUID(),
             ...req.body,
-            id: Math.random().toString(36).substr(2, 9) // Generate random ID
         };
         
-        await dbConnection.projects.insertOne(newProject);
+        const created = await dbConnection.projects.insertOne(newProject);
         await dbConnection.projects.flush();
+
+        const projectTeams = await dbConnection.projectTeams.findMany({ $match: { projectId: { $eq: created.id } } });
+        const projectWithTeam = attachTeamToProject(created, projectTeams);
         
-        res.status(201).json(newProject);
+        res.status(201).json(projectWithTeam);
     } catch (error) {
         logRouterError({
             error, req, res,

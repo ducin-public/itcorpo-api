@@ -1,5 +1,4 @@
-import { DB_FILE } from "../files";
-import { ArrayCollection } from "./db-collection";
+import { ArrayCollection } from "./db-array-collection";
 
 import { zodDatabaseSchemas } from "./db-zod-schemas";
 import { DBBenefitCharge } from "./db-zod-schemas/benefit-charge.schema";
@@ -20,98 +19,84 @@ import { DBTimesheetPeriod } from "./db-zod-schemas/timesheet-period";
 const connect = (accessMode: "RW" | "R" = "RW") => {
     return {
         benefitCharges: new ArrayCollection<DBBenefitCharge>({
-            path: DB_FILE('benefitCharges'),
             name: 'benefitCharges',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBBenefitChargeSchema,
         }),
         benefitServices: new ArrayCollection<DBBenefitService>({
-            path: DB_FILE('benefitServices'),
             name: 'benefitServices',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBBenefitServiceSchema,
         }),
         benefitSubscriptions: new ArrayCollection<DBBenefitSubscription>({
-            path: DB_FILE('benefitSubscriptions'),
             name: 'benefitSubscriptions',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBBenefitSubscriptionSchema,
         }),
         countries: new ArrayCollection<DBCountry>({
-            path: DB_FILE('countries'),
             name: 'countries',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBCountrySchema,
         }),
         departments: new ArrayCollection<DBDepartment>({
-            path: DB_FILE('departments'),
             name: 'departments',
             accessMode,
             autoIncrement: true,
             collectionSchema: zodDatabaseSchemas.DBDepartmentSchema,
         }),
         employees: new ArrayCollection<DBEmployee>({
-            path: DB_FILE('employees'),
             name: 'employees',
             accessMode,
             autoIncrement: true,
             collectionSchema: zodDatabaseSchemas.DBEmployeeSchema,
         }),
         expenses: new ArrayCollection<DBExpense>({
-            path: DB_FILE('expenses'),
             name: 'expenses',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBExpenseSchema,
         }),
         logs: new ArrayCollection<DBLog>({
-            path: DB_FILE('logs'),
             name: 'logs',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBLogEntrySchema,
         }),
         officeAmenities: new ArrayCollection<DBOfficeAmenity>({
-            path: DB_FILE('officeAmenities'),
             name: 'officeAmenities',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBOfficeAmenitySchema,
         }),
         offices: new ArrayCollection<DBOffice>({
-            path: DB_FILE('offices'),
             name: 'offices',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBOfficeSchema,
         }),
         projects: new ArrayCollection<DBProject>({
-            path: DB_FILE('projects'),
             name: 'projects',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBProjectSchema,
         }),
         projectTeams: new ArrayCollection<DBProjectTeam>({
-            path: DB_FILE('projectTeams'),
             name: 'projectTeams',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBProjectTeamSchema,
         }),
         timeEntries: new ArrayCollection<DBTimeEntry>({
-            path: DB_FILE('timeEntries'),
             name: 'timeEntries',
             accessMode,
             autoIncrement: false,
             collectionSchema: zodDatabaseSchemas.DBTimeEntrySchema,
         }),
         timesheetPeriods: new ArrayCollection<DBTimesheetPeriod>({
-            path: DB_FILE('timesheetPeriods'),
             name: 'timesheetPeriods',
             accessMode,
             autoIncrement: false,

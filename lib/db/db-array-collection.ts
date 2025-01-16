@@ -2,7 +2,8 @@ import { DBError } from './db-error';
 import { randomUUID } from 'crypto';
 
 import { DBCollection } from "./db-collection";
-import { QueryParams, validateQueryParams } from './db-query-params';
+import { MatchParams, QueryParams, validateQueryParams, createPredicateFromCriteria } from './db-query-params';
+import { all } from '../../resources/core/filtering';
 
 export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]> {
     private nextId: number = 1;
@@ -40,27 +41,37 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         }
     }
 
-    async count(predicate?: (item: TItem) => unknown) {
+    private getMatchPredicate({ $match }: MatchParams<TItem>) {
+        if (!$match) {
+            return () => true;
+        }
+        return createPredicateFromCriteria($match);
+    }
+
+    async count(params: MatchParams<TItem> = {}) {
         const collection = await this.getAll();
 
-        if (!predicate) {
+        if (!params.$match) {
             return collection.length;
         }
-        return collection.filter(predicate).length;
+        const $matchPredicate = this.getMatchPredicate(params);
+        return collection.filter($matchPredicate).length;
     }
 
-    async findOne(predicate: (item: TItem) => unknown) {
-        const collection = await this.getAll();
-        return collection.find(predicate);
-    }
-
-    async findMany(predicate?: (item: TItem) => unknown, params: Partial<QueryParams> = {}) {
+    async findOne(params: MatchParams<TItem> = {}) {
         validateQueryParams(params);
+        const $matchPredicate = this.getMatchPredicate(params);
+        const collection = await this.getAll();
+        return collection.find($matchPredicate);
+    }
 
+    async findMany(params: QueryParams<TItem> = {}) {
+        validateQueryParams(params);
         let collection = await this.getAll();
-
-        if (predicate) {
-            collection = collection.filter(predicate);
+        
+        if (params.$match) {
+            const $matchPredicate = this.getMatchPredicate(params);
+            collection = collection.filter($matchPredicate);
         }
 
         if (params.$skip) {
@@ -74,10 +85,13 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         return collection;
     }
 
-    async replaceOne(predicate: (item: TItem) => unknown, replaced: TItem) {
-        const collection = await this.getAll();
+    async replaceOne(params: QueryParams<TItem>, replaced: TItem) {
+        validateQueryParams(params);
+        const $matchPredicate = this.getMatchPredicate(params);
 
-        const idx = collection.findIndex(predicate);
+        let collection = await this.getAll();
+
+        const idx = collection.findIndex($matchPredicate);
         if (idx !== -1) {
             collection[idx] = replaced;
             return replaced;
@@ -86,10 +100,13 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         }
     }
 
-    async updateOne(predicate: (item: TItem) => unknown, data: Partial<TItem>) {
-        const collection = await this.getAll();
-        
-        const item = collection.find(predicate);
+    async updateOne(params: QueryParams<TItem>, data: Partial<TItem>) {
+        validateQueryParams(params);
+        const $matchPredicate = this.getMatchPredicate(params);
+
+        let collection = await this.getAll();
+
+        const item = collection.find($matchPredicate);
         if (item) {
             Object.assign(item, data);
         }
@@ -121,10 +138,13 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         collection.push(...documents);
     }
 
-    async deleteOne(predicate: (item: TItem) => unknown) {
-        const collection = await this.getAll();
+    async deleteOne(params: QueryParams<TItem> = {}) {
+        validateQueryParams(params);
+        const $matchPredicate = this.getMatchPredicate(params);
+
+        let collection = await this.getAll();
         
-        const idx = collection.findIndex(predicate);
+        const idx = collection.findIndex($matchPredicate);
         if (idx !== -1) {
             collection.splice(idx, 1);
         } else {
@@ -132,19 +152,23 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         }
     }
 
-    async deleteMany(predicate?: (item: TItem) => unknown) {
-        const collection = await this.getAll();
+    async deleteMany(params: QueryParams<TItem> = {}) {
+        validateQueryParams(params);
+
+        let collection = await this.getAll();
         // clear
-        if (!predicate) {
+        if (!params.$match) {
             collection.splice(0);
             return;
         }
+
+        const $matchPredicate = this.getMatchPredicate(params);
 
         // iterating in reverse order to avoid index shifting
         const items = await this.getAll();
         const size = items.length;
         for (let i = size - 1; i >= 0; i--) {
-            if (predicate(items[i])) {
+            if ($matchPredicate(items[i])) {
                 items.splice(i, 1);
             }
         }

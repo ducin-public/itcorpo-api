@@ -1,7 +1,5 @@
 // todos
 
-- [ ] break database.json into multiple files
-  - [X] test update
 - [ ] in-memory DB run for tests
 - [ ] pagination
 - openapi validation: http://localhost:3000/employees/91720

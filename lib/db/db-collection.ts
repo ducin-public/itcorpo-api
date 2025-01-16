@@ -120,7 +120,7 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
             const result = itemSchema.safeParse(item);
             if (result.error) {
                 const obj = JSON.stringify(item, null, 2);
-                throw new DBError(`Collection validation (${this.config.name}) failed for object (${obj}): ${result.error.errors.map(e => e.message).join('\n- ')}`);
+                throw new DBError(`Collection validation (${this.config.name}) failed for object (${obj}): ${JSON.stringify(result.error.format(), null, 2)}`);
             }
         }
     }
@@ -155,6 +155,7 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         const idx = collection.findIndex(predicate);
         if (idx !== -1) {
             collection[idx] = replaced;
+            return replaced;
         } else {
             throw new DBError(`Item not found in collection ${this.config.name}`);
         }
@@ -173,7 +174,7 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         const collection = await this.getAll();
 
         let item = document;
-        if (this.hasIDColumn()) {
+        if (this.hasIDColumn() && !('id' in item)) {
             Object.assign(item, { id: this.insertionId() });
         }
 
@@ -186,7 +187,9 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
 
         if (this.hasIDColumn()) {
             for (const doc of documents) {
-                Object.assign(doc, { id: this.insertionId() });
+                if (!('id' in doc)) {
+                    Object.assign(doc, { id: this.insertionId() });
+                }
             }
         }
 

@@ -24,7 +24,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "generate:TEMP": "ts-node migrate/profile/run.ts"
   },
   "dependencies": {
     "@redocly/cli": "^1.27.1",

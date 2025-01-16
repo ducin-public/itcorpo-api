@@ -175,7 +175,16 @@ export interface DepartmentInput {
  * Nationality of employee as an ISO 3166-1 alpha-2 country code
  * @example "US"
  */
-export type Nationality = "US" | "UK" | "FR" | "DE" | "NL" | "PL" | "IT" | "ES";
+export type Nationality =
+  | "US"
+  | "UK"
+  | "FR"
+  | "DE"
+  | "NL"
+  | "PL"
+  | "IT"
+  | "ES"
+  | "IN";
 
 /**
  * Type of employment contract
@@ -236,10 +245,17 @@ export interface Employee {
   imgURL?: string;
 }
 
+/** @example {"id":1234,"name":"Hans Schmidt"} */
+export interface EmployeeSearchFeed {
+  /** @example 91720 */
+  id: number;
+  name: string;
+}
+
 export interface EmployeeInput {
   /** Nationality of employee as an ISO 3166-1 alpha-2 country code */
   nationality: Nationality;
-  department: string;
+  departmentId: number;
   keycardId: string;
   account: string;
   /** Monetary value in EUR */

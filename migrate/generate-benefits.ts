@@ -180,7 +180,7 @@ export async function generateBenefits (dbConnection: DBConnection) {
                 : [availableServices[Math.floor(Math.random() * availableServices.length)]]
     
             for (const service of servicesToAssign) {
-                const employeeSubscriptions = generateSubscriptionsOfAnEmployee(employee, service)
+                const employeeSubscriptions = generateSubscriptionsOfAnEmployee(employee as any, service)
                 allSubscriptions.push(...employeeSubscriptions)
     
                 for (const subscription of employeeSubscriptions) {   

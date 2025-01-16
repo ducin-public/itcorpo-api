@@ -1959,6 +1959,7 @@ components:
         - "PL"
         - "IT"
         - "ES"
+        - "IN"
       example: "US"
 
     ContractType:
@@ -2095,11 +2096,26 @@ components:
         bio: "Experienced developer with focus on frontend technologies"
         imgURL: "hans-schmidt-profile.jpg"
 
+    EmployeeSearchFeed:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          example: 91720
+        name:
+          type: string
+      example:
+        id: 1234
+        name: "Hans Schmidt"
+
     EmployeeInput:
       type: object
       required:
         - nationality
-        - department
+        - departmentId
         - keycardId
         - account
         - salary
@@ -2117,8 +2133,8 @@ components:
       properties:
         nationality:
           $ref: '#/components/schemas/Nationality'
-        department:
-          type: string
+        departmentId:
+          type: number
         keycardId:
           type: string
         account:

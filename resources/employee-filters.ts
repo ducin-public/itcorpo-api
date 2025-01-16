@@ -39,9 +39,7 @@ export function filterEmployees(
     // Filter by department if provided
     if (criteria.departmentId) {
         const deptId = Number(criteria.departmentId);
-        result = result.filter(employee => 
-            employee.department === collections.departments.find(d => d.id === deptId)?.name
-        );
+        result = result.filter(employee => employee.departmentId === deptId);
     }
 
     // Filter by skills if provided

@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Management"
+    "name": "Strategic Management"
   },
   {
     "id": 2,
@@ -9,7 +9,7 @@
   },
   {
     "id": 3,
-    "name": "Accounting"
+    "name": "Finance"
   },
   {
     "id": 4,
@@ -21,10 +21,46 @@
   },
   {
     "id": 6,
-    "name": "Development"
+    "name": "Customer Support"
   },
   {
     "id": 7,
-    "name": "Support"
+    "name": "Research & Development"
+  },
+  {
+    "id": 8,
+    "name": "Engineering USA"
+  },
+  {
+    "id": 9,
+    "name": "Engineering Poland"
+  },
+  {
+    "id": 10,
+    "name": "Engineering Germany"
+  },
+  {
+    "id": 11,
+    "name": "Engineering UK"
+  },
+  {
+    "id": 12,
+    "name": "Engineering Netherlands"
+  },
+  {
+    "id": 13,
+    "name": "Engineering Spain"
+  },
+  {
+    "id": 14,
+    "name": "Engineering Italy"
+  },
+  {
+    "id": 15,
+    "name": "Engineering France"
+  },
+  {
+    "id": 16,
+    "name": "Engineering India"
   }
 ]

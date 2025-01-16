@@ -100,7 +100,17 @@ const Department = z
   .strict()
   .passthrough();
 const DepartmentInput = z.object({ name: z.string() }).strict().passthrough();
-const Nationality = z.enum(["US", "UK", "FR", "DE", "NL", "PL", "IT", "ES"]);
+const Nationality = z.enum([
+  "US",
+  "UK",
+  "FR",
+  "DE",
+  "NL",
+  "PL",
+  "IT",
+  "ES",
+  "IN",
+]);
 const ContractType = z.enum(["CONTRACT", "PERMANENT"]);
 const DateString = z.string();
 const Skill = z.string();
@@ -142,7 +152,7 @@ const Employee = z
 const EmployeeInput = z
   .object({
     nationality: Nationality,
-    department: z.string(),
+    departmentId: z.number(),
     keycardId: z.string(),
     account: z.string(),
     salary: Money,

@@ -65,3 +65,4 @@ try {
 ## Conventions
 
 - Separate imports from `node_modules` with local imports with a blank line
+- favor `for..of` loop over `[].forEach`

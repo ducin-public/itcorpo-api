@@ -21,7 +21,7 @@ const migrationSettings: {
     }
 } = {
     employees: {
-        enabled: false,
+        enabled: true,
         processFn: migrateEmployees,
     },
     benefits: {
@@ -29,7 +29,7 @@ const migrationSettings: {
         processFn: generateBenefits,
     },
     offices: {
-        enabled: true,
+        enabled: false,
         processFn: migrateOffices,
     },
     projects: {
@@ -45,28 +45,35 @@ const migrationSettings: {
         processFn: generateTimesheets,
     }
 }
-
-const migrationTargets = Object.entries(migrationSettings).filter(([_, { enabled }]) => enabled).map(([key]) => key)
-if (migrationTargets.length === 0) {
-    logger.warn('No migration targets selected. Exiting...');
-    process.exit(0);
-} else {
-    logger.info(`Migrating: ${migrationTargets.join(', ')}.`);
-}
-
-for (const [collectionName, { processFn }] of  Object.entries(migrationSettings)){
-    try {
-        logger.info(`Migrating ${collectionName}...`);
-        processFn(dbConnection);
-        logger.info(`Migration successfully finished for ${collectionName}.`);
-    } catch (e) {
-        if (e instanceof DBError) {
-            logger.error(`DBError occurred while migrating ${collectionName}:`, e);
-            process.exit(1);
-        }
-        logger.error(`Other error occurred while migrating ${collectionName}:`, e);
+const runMigration = async () => {
+    const migrationTargets = Object.entries(migrationSettings).filter(([_, { enabled }]) => enabled).map(([key]) => key)
+    if (migrationTargets.length === 0) {
+        logger.warn('No migration targets selected. Exiting...');
+        process.exit(0);
+    } else {
+        logger.info(`Migrating: ${migrationTargets.join(', ')}.`);
     }
+
+    for (const [collectionName, { enabled, processFn }] of  Object.entries(migrationSettings)){
+        if (!enabled) {
+            continue;
+        }
+
+        try {
+            logger.info(`Migrating ${collectionName}...`);
+            await processFn(dbConnection);
+            logger.info(`Migration successfully finished for ${collectionName}.`);
+        } catch (e) {
+            if (e instanceof DBError) {
+                logger.error(`DBError occurred while migrating ${collectionName}:`, e);
+                process.exit(1);
+            }
+            logger.error(`Other error occurred while migrating ${collectionName}:`, e);
+        }
+    }
+
+    // check integrity before writing the database file
+    await checkIntegrity(dbConnection);
 }
 
-// check integrity before writing the database file
-checkIntegrity(dbConnection);
+runMigration();

@@ -4,6 +4,8 @@ import { Employees } from '../contract-types/EmployeesRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterEmployees } from './employee-filters';
 import { logRouterError } from './core/error';
+import { mergeWithDepartment } from './employees-data-operations';
+import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
 
 const router = Router();
 
@@ -46,15 +48,29 @@ router.get('/', async (
     res: Response<Employees.GetEmployees.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const employeesPromise = dbConnection.employees.findMany();
-        const departmentsPromise = dbConnection.departments.findMany();
-
-        const filteredEmployees = filterEmployees(req.query, {
-            employees: await employeesPromise,
-            departments: await departmentsPromise
+        const [employees, departments] = await Promise.all([
+            dbConnection.employees.findMany(),
+            dbConnection.departments.findMany()
+        ]);
+        
+        const filteredEmployees = filterEmployees(req.query, { employees, departments });
+        
+        // Transform the filtered employees to include department name instead of ID
+        const employeesWithDepartments = filteredEmployees.map(employee => {
+            const department = departments.find(d => d.id === employee.departmentId);
+            if (!department) {
+                throw new Error(`Department not found for ID: ${employee.departmentId}`);
+            }
+            
+            // Create new object without departmentId
+            const { departmentId, ...employeeWithoutDeptId } = employee;
+            return {
+                ...employeeWithoutDeptId,
+                department: department.name
+            };
         });
 
-        res.json(filteredEmployees);
+        res.json(employeesWithDepartments);
     } catch (error) {
         logRouterError({
             error, req, res,
@@ -75,13 +91,22 @@ router.get('/:employeeId', async (
 ) => {
     try {
         const employeeId = Number(req.params.employeeId);
-        const employee = await dbConnection.employees.findOne(e => e.id === employeeId);
+        const [employee, departments] = await Promise.all([
+            dbConnection.employees.findOne(e => e.id === employeeId),
+            dbConnection.departments.findMany()
+        ]);
         
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
-        
-        res.json(employee);
+
+        const department = departments.find(d => d.id === employee.departmentId);
+        if (!department) {
+            throw new Error(`Department not found for ID: ${employee.departmentId}`);
+        }
+
+        const result = mergeWithDepartment(employee, [department]);
+        res.json(result);
     } catch (error) {
         logRouterError({
             error, req, res,
@@ -144,16 +169,21 @@ router.post('/', async (
     res: Response<Employees.CreateEmployee.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const employees = await dbConnection.employees.findMany();
-        
-        const newEmployee = {
+        const payload = {
             ...req.body
         };
+        payload.nationality
         
-        const newRecord = await dbConnection.employees.insertOne(newEmployee);
+        const created = await dbConnection.employees.insertOne(payload);
         await dbConnection.employees.flush();
-        
-        res.status(201).json(newRecord);
+
+        const department = await dbConnection.departments.findOne(d => d.id === payload.departmentId);
+        if (!department) {
+            throw new Error(`Department not found for ID: ${payload.departmentId}`);
+        }
+
+        const result = mergeWithDepartment(created, [department]);
+        res.status(201).json(result);
     } catch (error) {
         logRouterError({
             error, req, res,
@@ -174,22 +204,27 @@ router.put('/:employeeId', async (
 ) => {
     try {
         const employeeId = Number(req.params.employeeId);
-        const employeeToUpdate = await dbConnection.employees.findOne(e => e.id === employeeId);
-        
-        if (!employeeToUpdate) {
+        const existingEmployee = await dbConnection.employees.findOne(e => e.id === employeeId);
+
+        if (!existingEmployee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
 
-        const updatedEmployee: Employee = {
-            ...employeeToUpdate,
+        const payload: DBEmployee = {
             ...req.body,
             id: employeeId
         };
 
-        await dbConnection.employees.replaceOne(e => e.id === employeeId, updatedEmployee);
+        const replaced = await dbConnection.employees.replaceOne(e => e.id === employeeId, payload);
         await dbConnection.employees.flush();
         
-        res.json(updatedEmployee);
+        const department = await dbConnection.departments.findOne(d => d.id === payload.departmentId);
+        if (!department) {
+            throw new Error(`Department not found for ID: ${payload.departmentId}`);
+        }
+
+        const result = mergeWithDepartment(replaced!, [department]);
+        res.json(result);
     } catch (error) {
         logRouterError({
             error, req, res,

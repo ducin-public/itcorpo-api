@@ -14,11 +14,11 @@ export const checkProjectTeamIntegrity = async (dbConnection: DBConnection) => {
 
     let errors: string[] = [];
     if (missingProjects.length > 0) {
-        errors.push(`Missing projects in project team (${missingProjects.length}): ${missingProjects.join(', ')}`);
+        errors.push(`Missing projects in project team (${missingProjects.length}, showing max 100): ${missingProjects.slice(0,100).join(', ')}`);
     }
 
     if (missingEmployees.length > 0) {
-        errors.push(`Missing employees in project team: (${missingEmployees.length}) ${missingEmployees.join(', ')}`);
+        errors.push(`Missing employees in project team: (${missingEmployees.length}, showing max 100) ${missingEmployees.slice(0,100).join(', ')}`);
     }
 
     return errors;

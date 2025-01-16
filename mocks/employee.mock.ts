@@ -1,9 +1,10 @@
 import { Employee } from "../contract-types/data-contracts";
+import { DBEmployee } from "../lib/db/db-zod-schemas/employee.schema";
 
-const defaultEmployee: Employee = {
+const defaultEmployee: DBEmployee = {
   "id": 91720,
   "nationality": "PL",
-  "department": "Human Resources",
+  "departmentId": 4,
   "keycardId": "52122b5f-2a8b-4506-b880-aac5e86d7d72",
   "account": "PL92 0200 9442 0911 9006 6507 9046",
   "salary": 9628,
@@ -53,7 +54,7 @@ const defaultEmployee: Employee = {
  * @param overrides - partial employee object to override default values
  * @returns Employee
  */
-export const mockEmployee = (overrides: Partial<Employee>): Employee => ({
+export const mockEmployee = (overrides: Partial<DBEmployee>): DBEmployee => ({
   ...defaultEmployee,
   ...overrides
 })

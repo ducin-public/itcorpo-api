@@ -16,11 +16,11 @@ describe('processEmployeesSearchCriteria', () => {
             { id: 2, name: "Sales" }
         ],
         employees: [
-            mockEmployee({ id: 1, firstName: 'John', lastName: 'Doe', department: 'Management', skills: ['java', 'spring'], salary: 5000 }),
-            mockEmployee({ id: 2, firstName: 'Jane', lastName: 'Smith', department: 'Sales', skills: ['javascript', 'react'], salary: 6000 }),
-            mockEmployee({ id: 3, firstName: 'Bob', lastName: 'Wilson', department: 'Management', skills: ['java', 'react', 'spring'], salary: 7000 }),
-            mockEmployee({ id: 4, firstName: 'Alice', lastName: 'Brown', department: 'Sales', skills: ['python', 'django'], salary: 4500 }),
-            mockEmployee({ id: 5, firstName: 'Charlie', lastName: 'Davis', department: 'Sales', skills: ['javascript', 'angular'], salary: 5500 })
+            mockEmployee({ id: 1, firstName: 'John', lastName: 'Doe', departmentId: 1, skills: ['java', 'spring'], salary: 5000 }),
+            mockEmployee({ id: 2, firstName: 'Jane', lastName: 'Smith', departmentId: 2, skills: ['javascript', 'react'], salary: 6000 }),
+            mockEmployee({ id: 3, firstName: 'Bob', lastName: 'Wilson', departmentId: 1, skills: ['java', 'react', 'spring'], salary: 7000 }),
+            mockEmployee({ id: 4, firstName: 'Alice', lastName: 'Brown', departmentId: 2, skills: ['python', 'django'], salary: 4500 }),
+            mockEmployee({ id: 5, firstName: 'Charlie', lastName: 'Davis', departmentId: 2, skills: ['javascript', 'angular'], salary: 5500 })
         ]
     }
 

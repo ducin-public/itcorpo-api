@@ -5,7 +5,7 @@ import { Projects } from '../contract-types/ProjectsRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterProjects } from './project-filters';
 import { attachTeamToProject, attachTeamToAllProjects } from './project-data-operations';
-import { logRouterError } from './core/error';
+import { handleRouterError } from './core/error';
 import { randomUUID } from 'crypto';
 import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
 import { getPaginationValues } from './core/pagination';
@@ -34,7 +34,7 @@ router.get('/count', async (
 
         res.json(filteredProjects.length);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to count projects',
         });
@@ -51,8 +51,8 @@ router.get('/', async (
     >,
     res: Response<Projects.GetProjects.ResponseBody | ErrorResponse>
 ) => {
-    const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
     try {
+        const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
 
         const projectsPromise = dbConnection.projects.findMany();
         const projectTeamsPromise = dbConnection.projectTeams.findMany();
@@ -67,7 +67,7 @@ router.get('/', async (
         const projectsWithTeams = attachTeamToAllProjects(filteredProjects, await projectTeamsPromise);
         res.json(projectsWithTeams);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch projects',
         });
@@ -95,7 +95,7 @@ router.get('/:projectId', async (
         const projectWithTeam = attachTeamToProject(project, projectTeams);
         res.json(projectWithTeam);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch project',
         });
@@ -126,7 +126,7 @@ router.post('/', async (
         
         res.status(201).json(projectWithTeam);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to create project',
         });
@@ -161,7 +161,7 @@ router.put('/:projectId', async (
         
         res.json(updatedProject);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to update project',
         });
@@ -189,7 +189,7 @@ router.delete('/:projectId', async (
         await dbConnection.projects.flush();
         res.status(204).send();
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to delete project',
         });
@@ -230,7 +230,7 @@ router.get('/:projectId/team', async (
 
         res.json(projectInvolvements);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch project team',
         });

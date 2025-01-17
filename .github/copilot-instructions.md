@@ -53,7 +53,7 @@ In express routes, follow this approach to error logging:
 try {
   ...
 } catch (error) {
-  logRouterError({
+  handleRouterError({
     error, req, res,
     publicError: 'Failed to ________',
   });

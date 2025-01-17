@@ -1702,6 +1702,9 @@ components:
         message:
           type: string
           description: Text description of the error that has occurred
+        errorGUID:
+          type: string
+          description: unique identifier of the error
       required:
         - message
 

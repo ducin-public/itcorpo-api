@@ -3,7 +3,7 @@ import { Router, Request, Response } from 'express';
 import { ErrorResponse } from '../contract-types/data-contracts';
 import { Geo } from '../contract-types/GeoRoute';
 import { dbConnection } from '../lib/db/db-connection';
-import { logRouterError } from './core/error';
+import { handleRouterError } from './core/error';
 
 const router = Router();
 
@@ -26,7 +26,7 @@ router.get('/', async (
             }, {} as Geo.GetGeo.ResponseBody);
         res.json(geoResult);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch geo data',
         });

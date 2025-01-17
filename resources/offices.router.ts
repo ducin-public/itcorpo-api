@@ -4,7 +4,7 @@ import { Office, ErrorResponse } from '../contract-types/data-contracts';
 import { Offices } from '../contract-types/OfficesRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterOffices } from './offices-filters';
-import { logRouterError } from './core/error';
+import { handleRouterError } from './core/error';
 import { O } from 'vitest/dist/chunks/environment.LoooBwUu';
 
 const router = Router();
@@ -23,7 +23,7 @@ router.get('/amenities/count', async (
         const count = await dbConnection.officeAmenities.count();
         res.json(count);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to count office amenities',
         });
@@ -44,7 +44,7 @@ router.get('/amenities', async (
         const offices = await dbConnection.officeAmenities.findMany();
         res.json(offices);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch office amenities',
         });
@@ -74,7 +74,7 @@ router.get('/count', async (
 
         res.json(filteredOffices.length);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to count offices',
         });
@@ -104,7 +104,7 @@ router.get('/', async (
 
         res.json(filteredOffices);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch offices',
         });
@@ -130,7 +130,7 @@ router.get('/:officeCode', async (
         
         res.json(officeByCode);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch office',
         });
@@ -164,7 +164,7 @@ router.post('/', async (
         
         res.status(201).json(newOffice);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to create office',
         });
@@ -200,7 +200,7 @@ router.put('/:officeCode', async (
         
         res.json(updatedOffice);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to update office',
         });
@@ -228,7 +228,7 @@ router.delete('/:officeCode', async (
         await dbConnection.offices.flush();
         res.status(204).send();
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to delete office',
         });

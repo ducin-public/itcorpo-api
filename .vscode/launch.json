@@ -9,7 +9,7 @@
       "type": "node",
       "request": "launch",
       "name": "server.ts",
-      "program": "${workspaceFolder}/scripts/server.ts",
+      "program": "${workspaceFolder}/scripts/run-server.ts",
       "preLaunchTask": "tsc: build - tsconfig.json",
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
       "sourceMaps": true,

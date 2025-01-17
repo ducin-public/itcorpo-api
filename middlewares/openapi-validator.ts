@@ -11,7 +11,7 @@ export const openapiValidator = () => {
     return OpenApiValidator.middleware({
         apiSpec: FILES.CONTRACT_FILE,
         validateRequests: true,
-        validateResponses: false,
+        validateResponses: true,
         ignorePaths: (path: string) => {
             return [
             path === '/favicon.ico',

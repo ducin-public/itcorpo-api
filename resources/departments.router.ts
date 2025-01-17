@@ -3,7 +3,7 @@ import { Router, Request, Response } from 'express';
 import { Department, ErrorResponse } from '../contract-types/data-contracts';
 import { Departments } from '../contract-types/DepartmentsRoute';
 import { dbConnection } from '../lib/db/db-connection';
-import { logRouterError } from './core/error';
+import { handleRouterError } from './core/error';
 import { randomInt } from 'crypto';
 import { DBDepartment } from '../lib/db/db-zod-schemas/department.schema';
 
@@ -23,7 +23,7 @@ router.get('/', async (
         const departments = await dbConnection.departments.findMany();
         res.json(departments);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch departments',
         });
@@ -44,7 +44,7 @@ router.get('/count', async (
         const count = await dbConnection.departments.count();
         res.json(count);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to count departments',
         });
@@ -71,7 +71,7 @@ router.get('/:departmentId', async (
         
         res.json(department);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch department',
         });
@@ -100,7 +100,7 @@ router.post('/', async (
         
         res.status(201).json(newRecord);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to create department',
         });
@@ -136,7 +136,7 @@ router.put('/:departmentId', async (
         
         res.json(updatedDepartment);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to update department',
         });
@@ -165,7 +165,7 @@ router.delete('/:departmentId', async (
         await dbConnection.departments.flush();
         res.status(204).send();
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to delete department',
         });

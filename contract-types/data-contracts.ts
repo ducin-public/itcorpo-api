@@ -32,6 +32,8 @@ export interface ErrorResponse {
   code?: string;
   /** Text description of the error that has occurred */
   message: string;
+  /** unique identifier of the error */
+  errorGUID?: string;
 }
 
 export interface HealthStatus {

@@ -4,7 +4,7 @@ import { Benefits } from '../contract-types/BenefitsRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterBenefits } from './benefit-filters';
 import { filterBenefitCharges } from './benefit-charges-filters';
-import { logRouterError } from './core/error';
+import { handleRouterError } from './core/error';
 import { randomUUID } from 'crypto';
 import { DBBenefitSubscription } from '../lib/db/db-zod-schemas/benefit-subscription.schema';
 import { getPaginationValues } from './core/pagination';
@@ -26,7 +26,7 @@ router.get('/services', async (
         const services = await dbConnection.benefitServices.findMany();
         res.json(services);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch benefit services',
         });
@@ -43,8 +43,9 @@ router.get('/charges', async (
     >,
     res: Response<Benefits.GetBenefitCharges.ResponseBody | ErrorResponse>
 ) => {
-    const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
     try {
+        const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
+
         let filteredCharges = filterBenefitCharges(req.query, {
             benefitCharges: await dbConnection.benefitCharges.findMany()
         });
@@ -52,7 +53,7 @@ router.get('/charges', async (
 
         res.json(filteredCharges);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch benefit charges',
         });
@@ -80,7 +81,7 @@ router.get('/count', async (
 
         res.json(filteredBenefits.length);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to count benefit subscriptions',
         });
@@ -97,8 +98,9 @@ router.get('/', async (
     >,
     res: Response<Benefits.GetBenefitSubscriptions.ResponseBody | ErrorResponse>
 ) => {
-    const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
     try {
+        const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
+
         const benefitsPromise = dbConnection.benefitSubscriptions.findMany();
         const employeesPromise = dbConnection.employees.findMany();
 
@@ -110,7 +112,7 @@ router.get('/', async (
 
         res.json(filteredBenefits);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch benefit subscriptions',
         });
@@ -136,7 +138,7 @@ router.get('/:benefitId', async (
         
         res.json(benefit);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch benefit subscription',
         });
@@ -160,7 +162,7 @@ router.get('/:benefitId/charges', async (
 
         res.json(filteredCharges);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch benefit charges',
         });
@@ -198,7 +200,7 @@ router.post('/', async (
         
         res.status(201).json(newRecord);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to create benefit',
         });
@@ -249,7 +251,7 @@ router.put('/:benefitId', async (
         
         res.json(updatedBenefit);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to update benefit',
         });
@@ -312,7 +314,7 @@ router.patch('/:benefitId', async (
             return res.status(400).json({ message: 'Invalid operation. Must be either CANCEL or RENEW' });
         }
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to update benefit subscription status',
         });

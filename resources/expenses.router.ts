@@ -3,7 +3,7 @@ import { Router, Request, Response } from 'express';
 import { Expense, ErrorResponse } from '../contract-types/data-contracts';
 import { Expenses } from '../contract-types/ExpensesRoute';
 import { dbConnection } from '../lib/db/db-connection';
-import { logRouterError } from './core/error';
+import { handleRouterError } from './core/error';
 import { randomUUID } from 'crypto';
 import { DBExpense } from '../lib/db/db-zod-schemas/expense.schema';
 import { getPaginationValues } from './core/pagination';
@@ -25,7 +25,7 @@ router.get('/count', async (
         const expenses = await dbConnection.expenses.findMany();
         res.json(expenses.length);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to count expenses',
         });
@@ -42,15 +42,16 @@ router.get('/', async (
     >,
     res: Response<Expenses.GetExpenses.ResponseBody | ErrorResponse>
 ) => {
-    const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
     try {
+        const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
+
         let expenses = await dbConnection.expenses.findMany();
 
         expenses = expenses.slice((page - 1) * pageSize, page * pageSize);
 
         res.json(expenses);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch expenses',
         });
@@ -76,7 +77,7 @@ router.get('/:expenseId', async (
         
         res.json(expense);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch expense',
         });
@@ -104,7 +105,7 @@ router.post('/', async (
         
         res.status(201).json(newExpense);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to create expense',
         });
@@ -139,7 +140,7 @@ router.put('/:expenseId', async (
         
         res.json(updatedExpense);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to update expense',
         });
@@ -167,7 +168,7 @@ router.delete('/:expenseId', async (
         await dbConnection.expenses.flush();
         res.status(204).send();
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to delete expense',
         });

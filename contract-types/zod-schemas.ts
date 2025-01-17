@@ -1,7 +1,11 @@
 import { z } from "zod";
 
 const ErrorResponse = z
-  .object({ code: z.string().optional(), message: z.string() })
+  .object({
+    code: z.string().optional(),
+    message: z.string(),
+    errorGUID: z.string().optional(),
+  })
   .strict()
   .passthrough();
 const HealthStatus = z.record(z.string());

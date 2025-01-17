@@ -11,7 +11,6 @@ import jsonServer from 'json-server';
 
 import { delayingMiddleware } from '../middlewares/delaying';
 import { tenantMiddleware } from '../middlewares/tenant';
-import { pagingMiddleware } from '../middlewares/paging';
 import { logsMiddleware } from '../middlewares/logs';
 import { authMiddleware } from '../middlewares/auth';
 import { ChaosConfig, chaosMiddleware } from '../middlewares/chaos';
@@ -92,7 +91,6 @@ export const createServer = (serverConfig: ServerConfig) => {
   }
 
   app.use(authMiddleware(serverConfig.jwtAuth));
-  app.use(pagingMiddleware(50, { excludePatterns: ['/log'] }));
   app.use(maintenanceMiddleware());
 
   app.use('/benefits', benefitsRouter);

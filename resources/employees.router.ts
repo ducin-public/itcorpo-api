@@ -3,7 +3,7 @@ import { ErrorResponse, ProjectEmployeeInvolvement } from '../contract-types/dat
 import { Employees } from '../contract-types/EmployeesRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterEmployees } from './employee-filters';
-import { logRouterError } from './core/error';
+import { handleRouterError } from './core/error';
 import { mergeWithDepartment } from './employees-data-operations';
 import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
 import { randomInt } from 'crypto';
@@ -33,7 +33,7 @@ router.get('/count', async (
 
         res.json(filteredEmployees.length);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to count employees',
         });
@@ -50,8 +50,8 @@ router.get('/', async (
     >,
     res: Response<Employees.GetEmployees.ResponseBody | ErrorResponse>
 ) => {
-    const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
     try {
+        const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
 
         const [employees, departments] = await Promise.all([
             dbConnection.employees.findMany(),
@@ -78,7 +78,7 @@ router.get('/', async (
 
         res.json(employeesWithDepartments);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch employees',
         });
@@ -114,7 +114,7 @@ router.get('/:employeeId', async (
         const result = mergeWithDepartment(employee, [department]);
         res.json(result);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch employee'
         });
@@ -157,7 +157,7 @@ router.get('/:employeeId/projects', async (
 
         res.json(projectInvolvements);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch employee projects'
         });
@@ -192,7 +192,7 @@ router.post('/', async (
         const result = mergeWithDepartment(created, [department]);
         res.status(201).json(result);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to create employee',
         });
@@ -233,7 +233,7 @@ router.put('/:employeeId', async (
         const result = mergeWithDepartment(replaced!, [department]);
         res.json(result);
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to update employee',
         });
@@ -262,7 +262,7 @@ router.delete('/:employeeId', async (
         await dbConnection.employees.flush();
         res.status(204).send();
     } catch (error) {
-        logRouterError({
+        handleRouterError({
             error, req, res,
             publicError: 'Failed to delete employee',
         });

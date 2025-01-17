@@ -45,8 +45,6 @@ export class DBCollection<TCollection extends object> {
         }
     }
 
-    protected postReadHook(collection: TCollection) {}
-
     private async getContent(): Promise<TCollection> {
         const config = this.config
         if (config.accessMode === 'RW') {
@@ -62,7 +60,6 @@ export class DBCollection<TCollection extends object> {
             const parsed = await this.getContent();
             this.data = parsed;
             logger.debug(`Collection ${this.config.name} loaded`);
-            this.postReadHook(parsed);
         } catch (error) {
             const message = `Failed to read collection ${this.config.name}: ${error}`;
             logger.error(message);
@@ -80,7 +77,7 @@ export class DBCollection<TCollection extends object> {
 
         try {
             await measureTime(() => writeFile(
-                config.name, 
+                DB_FILE(config.name), 
                 JSON.stringify(this.data, null, 2), 
                 'utf-8'
             ), 'db-write');

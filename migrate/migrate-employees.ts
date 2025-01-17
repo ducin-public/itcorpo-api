@@ -3,10 +3,14 @@ import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
 import { logger } from '../lib/logger'
 
 const updateEmployee = (employee: DBEmployee): DBEmployee => {
-    const { id, nationality, contractType, departmentId, ...rest } = employee;
-    return {
-      id, nationality, contractType, departmentId, ...rest
-    }
+    // const { id, nationality, contractType, departmentId, ...rest } = employee;
+    // return {
+    //   id, nationality, contractType, departmentId, ...rest
+    // }
+    employee.expiresAt = new Date(employee.expiresAt).toISOString();
+    employee.hiredAt = new Date(employee.hiredAt).toISOString();
+    employee.personalInfo.dateOfBirth = new Date(employee.personalInfo.dateOfBirth).toISOString();
+    return employee
 }
 
 export async function migrateEmployees (dbConnection: DBConnection) {

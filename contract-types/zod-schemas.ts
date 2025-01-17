@@ -427,6 +427,11 @@ export const contractEndpoints: ContractEndpoint[] = [
         type: "Query",
         schema: z.number().optional(),
       },
+      {
+        name: "_pageSize",
+        type: "Query",
+        schema: z.number().gte(1).lte(50).optional(),
+      },
     ],
     response: {
       type: "ZOD_SCHEMA",
@@ -653,6 +658,11 @@ export const contractEndpoints: ContractEndpoint[] = [
         type: "Query",
         schema: z.number().optional(),
       },
+      {
+        name: "_pageSize",
+        type: "Query",
+        schema: z.number().gte(1).lte(50).optional(),
+      },
     ],
     response: {
       type: "ZOD_SCHEMA",
@@ -723,6 +733,11 @@ export const contractEndpoints: ContractEndpoint[] = [
         name: "_page",
         type: "Query",
         schema: z.number().optional(),
+      },
+      {
+        name: "_pageSize",
+        type: "Query",
+        schema: z.number().gte(1).lte(50).optional(),
       },
     ],
     response: {
@@ -1073,6 +1088,11 @@ export const contractEndpoints: ContractEndpoint[] = [
         type: "Query",
         schema: z.number().optional(),
       },
+      {
+        name: "_pageSize",
+        type: "Query",
+        schema: z.number().gte(1).lte(50).optional(),
+      },
     ],
     response: {
       type: "ZOD_SCHEMA",
@@ -1376,6 +1396,11 @@ export const contractEndpoints: ContractEndpoint[] = [
         name: "_page",
         type: "Query",
         schema: z.number().optional(),
+      },
+      {
+        name: "_pageSize",
+        type: "Query",
+        schema: z.number().gte(1).lte(50).optional(),
       },
     ],
     response: {
@@ -2020,6 +2045,11 @@ export const contractEndpoints: ContractEndpoint[] = [
         name: "_page",
         type: "Query",
         schema: z.number().optional(),
+      },
+      {
+        name: "_pageSize",
+        type: "Query",
+        schema: z.number().gte(1).lte(50).optional(),
       },
     ],
     response: {

@@ -68,6 +68,13 @@ export namespace Projects {
        * @example 1
        */
       _page?: number;
+      /**
+       * Number of elements per page
+       * @min 1
+       * @max 50
+       * @example 1
+       */
+      _pageSize?: number;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};

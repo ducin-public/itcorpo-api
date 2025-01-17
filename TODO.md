@@ -1,5 +1,6 @@
 // todos
 
+- [ ] osobno error id i osobno correlation id
 - [ ] in-memory DB run for tests
 - [ ] pagination
 - openapi validation: http://localhost:3000/employees/91720

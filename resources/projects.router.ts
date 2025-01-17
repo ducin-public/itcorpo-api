@@ -8,8 +8,10 @@ import { attachTeamToProject, attachTeamToAllProjects } from './project-data-ope
 import { logRouterError } from './core/error';
 import { randomUUID } from 'crypto';
 import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
+import { getPaginationValues } from './core/pagination';
 
 const router = Router();
+const MAX_PAGE_SIZE = 20;
 
 // GET /projects/count
 router.get('/count', async (
@@ -49,14 +51,18 @@ router.get('/', async (
     >,
     res: Response<Projects.GetProjects.ResponseBody | ErrorResponse>
 ) => {
+    const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
     try {
+
         const projectsPromise = dbConnection.projects.findMany();
         const projectTeamsPromise = dbConnection.projectTeams.findMany();
 
-        const filteredProjects = filterProjects(req.query, {
+        let filteredProjects = filterProjects(req.query, {
             projects: await projectsPromise,
             projectTeams: await projectTeamsPromise,
         });
+
+        filteredProjects = filteredProjects.slice((page - 1) * pageSize, page * pageSize);
 
         const projectsWithTeams = attachTeamToAllProjects(filteredProjects, await projectTeamsPromise);
         res.json(projectsWithTeams);

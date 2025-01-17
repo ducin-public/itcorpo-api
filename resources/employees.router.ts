@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { Employee, ErrorResponse, ProjectEmployeeInvolvement } from '../contract-types/data-contracts';
+import { ErrorResponse, ProjectEmployeeInvolvement } from '../contract-types/data-contracts';
 import { Employees } from '../contract-types/EmployeesRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterEmployees } from './employee-filters';
@@ -7,8 +7,10 @@ import { logRouterError } from './core/error';
 import { mergeWithDepartment } from './employees-data-operations';
 import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
 import { randomInt } from 'crypto';
+import { getPaginationValues } from './core/pagination';
 
 const router = Router();
+const MAX_PAGE_SIZE = 50;
 
 // GET /employees/count
 router.get('/count', async (
@@ -48,13 +50,16 @@ router.get('/', async (
     >,
     res: Response<Employees.GetEmployees.ResponseBody | ErrorResponse>
 ) => {
+    const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
     try {
+
         const [employees, departments] = await Promise.all([
             dbConnection.employees.findMany(),
             dbConnection.departments.findMany()
         ]);
         
-        const filteredEmployees = filterEmployees(req.query, { employees, departments });
+        let filteredEmployees = filterEmployees(req.query, { employees, departments });
+        filteredEmployees = filteredEmployees.slice((page - 1) * pageSize, page * pageSize);
         
         // Transform the filtered employees to include department name instead of ID
         const employeesWithDepartments = filteredEmployees.map(employee => {

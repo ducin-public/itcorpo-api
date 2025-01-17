@@ -6,8 +6,10 @@ import { dbConnection } from '../lib/db/db-connection';
 import { logRouterError } from './core/error';
 import { randomUUID } from 'crypto';
 import { DBExpense } from '../lib/db/db-zod-schemas/expense.schema';
+import { getPaginationValues } from './core/pagination';
 
 const router = Router();
+const MAX_PAGE_SIZE = 50;
 
 // GET /expenses/count
 router.get('/count', async (
@@ -40,8 +42,12 @@ router.get('/', async (
     >,
     res: Response<Expenses.GetExpenses.ResponseBody | ErrorResponse>
 ) => {
+    const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
     try {
-        const expenses = await dbConnection.expenses.findMany();
+        let expenses = await dbConnection.expenses.findMany();
+
+        expenses = expenses.slice((page - 1) * pageSize, page * pageSize);
+
         res.json(expenses);
     } catch (error) {
         logRouterError({

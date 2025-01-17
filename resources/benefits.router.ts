@@ -5,11 +5,12 @@ import { dbConnection } from '../lib/db/db-connection';
 import { filterBenefits } from './benefit-filters';
 import { filterBenefitCharges } from './benefit-charges-filters';
 import { logRouterError } from './core/error';
-import { CORRELATION_ID_HEADER } from '../middlewares/correlation-id';
 import { randomUUID } from 'crypto';
 import { DBBenefitSubscription } from '../lib/db/db-zod-schemas/benefit-subscription.schema';
+import { getPaginationValues } from './core/pagination';
 
 const router = Router();
+const MAX_PAGE_SIZE = 50;
 
 // GET /benefits/services
 router.get('/services', async (
@@ -42,10 +43,12 @@ router.get('/charges', async (
     >,
     res: Response<Benefits.GetBenefitCharges.ResponseBody | ErrorResponse>
 ) => {
+    const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
     try {
-        const filteredCharges = filterBenefitCharges(req.query, {
+        let filteredCharges = filterBenefitCharges(req.query, {
             benefitCharges: await dbConnection.benefitCharges.findMany()
         });
+        filteredCharges = filteredCharges.slice((page - 1) * pageSize, page * pageSize);
 
         res.json(filteredCharges);
     } catch (error) {
@@ -94,14 +97,16 @@ router.get('/', async (
     >,
     res: Response<Benefits.GetBenefitSubscriptions.ResponseBody | ErrorResponse>
 ) => {
+    const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
     try {
         const benefitsPromise = dbConnection.benefitSubscriptions.findMany();
         const employeesPromise = dbConnection.employees.findMany();
 
-        const filteredBenefits = filterBenefits(req.query, {
+        let filteredBenefits = filterBenefits(req.query, {
             benefitSubscriptions: await benefitsPromise,
             employees: await employeesPromise
         });
+        filteredBenefits = filteredBenefits.slice((page - 1) * pageSize, page * pageSize);
 
         res.json(filteredBenefits);
     } catch (error) {

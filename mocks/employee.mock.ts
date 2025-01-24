@@ -26,7 +26,7 @@ const defaultEmployee: DBEmployee = {
     "contractType": "CONTRACT",
     "currentSalary": 9628,
     "startDate": "2007-08-14",
-    "endDate": "2018-06-20"
+    "endDate": "2030-06-20"
   },
   "personalInfo": {
     "phone": "1-390-798-9734 x32319",

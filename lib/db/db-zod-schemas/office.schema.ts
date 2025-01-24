@@ -6,10 +6,18 @@ export const DBOfficeSchema = z
     country: z.string(),
     city: z.string(),
     address: z.string(),
+    coordinates: z.object({
+      lat: z.number(),
+      lng: z.number()
+    }).strict(),
     capacity: z.number().int(),
     monthlyRental: z.number().int(),
-    estate: z
-      .object({ owner: z.string(), phone: z.string(), account: z.string() })
+    estateOwner: z
+      .object({
+        name: z.string(),
+        phone: z.string(),
+        account: z.string()
+      })
       .strict(),
     amenities: z.array(z.string()),
     imgURL: z.string().optional(),

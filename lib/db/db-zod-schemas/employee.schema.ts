@@ -16,18 +16,22 @@ export const DBEmployeeSchema = z
     departmentId: z.number(),
     keycardId: z.string(),
     account: z.string(),
-    salary: z.number().int(),
-    office: z.array(z.string()).min(2).max(2),
+    officeCode: z.string(),
     firstName: z.string(),
     lastName: z.string(),
-    title: z.string(),
-    contractType: DBContractTypeSchema,
+    position: z.string(),
     email: z.string().email(),
-    hiredAt: DateString,
-    expiresAt: DateString,
+    skills: z.array(z.string()),
+    bio: z.string(),
+    imgURL: z.string().optional(),
+    employment: z.object({
+      contractType: DBContractTypeSchema,
+      currentSalary: z.number().int(),
+      startDate: DateString,
+      endDate: DateString.optional(),
+    }),
     personalInfo: z
       .object({
-        age: z.number().int().gte(0),
         phone: z.string(),
         email: z.string().email(),
         dateOfBirth: DateString,
@@ -36,9 +40,6 @@ export const DBEmployeeSchema = z
           .strict(),
       })
       .strict(),
-    skills: z.array(z.string()),
-    bio: z.string(),
-    imgURL: z.string().optional(),
   })
   .strict();
 

@@ -1,11 +1,13 @@
 import { v4 as uuid } from 'uuid'
 import { addMonths, parseISO, format, startOfMonth, endOfMonth, isSameMonth } from 'date-fns'
 
-import { BenefitService, BenefitCharge, BenefitChargeStatus, BenefitSubscription, Employee } from '../contract-types/data-contracts'
+import { BenefitService, BenefitCharge, BenefitChargeStatus, BenefitSubscription } from '../contract-types/data-contracts'
 import { logger } from '../lib/logger'
 import { benefitServices, PRICE_RANGES } from './benefit-services'
 import { randomInt } from './lib/random'
 import { DBConnection } from '../lib/db/db-connection'
+import { DBBenefitService } from '../lib/db/db-zod-schemas/benefit-service.schema'
+import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema'
 
 const PROBABILITIES = {
   EMPLOYEE: {
@@ -60,8 +62,8 @@ const generateRandomDate = (start: Date, end: Date) => {
 }
 
 const generateSingleSubscription = (
-    employee: Employee,
-    service: BenefitService,
+    employee: DBEmployee,
+    service: DBBenefitService,
     startDate: Date,
     lengthInMonths: number
 ): BenefitSubscription => {
@@ -90,8 +92,8 @@ const generateSingleSubscription = (
 }
 
 const generateSubscriptionsOfAnEmployee = (
-    employee: Employee, 
-    service: BenefitService,
+    employee: DBEmployee, 
+    service: DBBenefitService,
 ): BenefitSubscription[] => {
     const subscriptions: BenefitSubscription[] = [];
     let currentDate = generateRandomDate(

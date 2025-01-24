@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: IT Corpo API
+  title: ITCorpo API
   version: 2.0.0
   description: >
     API for managing IT corporation resources.
@@ -1992,18 +1992,14 @@ components:
         - department
         - keycardId
         - account
-        - salary
         - office
-        - firstName
-        - lastName
-        - title
-        - contractType
+        - name
+        - position
         - email
-        - hiredAt
-        - expiresAt
-        - personalInfo
         - skills
         - bio
+        - employment
+        - personalInfo
       properties:
         id:
           type: integer
@@ -2014,37 +2010,37 @@ components:
           type: string
         keycardId:
           type: string
+        office:
+          type: string
+        name:
+          type: string
+        position:
+          type: string
         account:
           type: string
-        salary:
-          $ref: '#/components/schemas/Money'
-        office:
-          type: array
-          minItems: 2
-          maxItems: 2
-          items:
-            type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        title:
-          type: string
-        contractType:
-          $ref: '#/components/schemas/ContractType'
         email:
           $ref: '#/components/schemas/Email'
-        hiredAt:
-          $ref: '#/components/schemas/DateString'
-        expiresAt:
-          $ref: '#/components/schemas/DateString'
+        employment:
+          type: object
+          required:
+            - contractType
+            - currentSalary
+            - startDate
+          properties:
+            contractType:
+              $ref: '#/components/schemas/ContractType'
+            currentSalary:
+              $ref: '#/components/schemas/Money'
+            startDate:
+              $ref: "#/components/schemas/DateString"
+            endDate:
+              $ref: "#/components/schemas/DateString"
         personalInfo:
           type: object
           required:
             - age
             - phone
             - email
-            - dateOfBirth
             - address
           properties:
             age:
@@ -2054,8 +2050,6 @@ components:
               $ref: '#/components/schemas/Phone'
             email:
               $ref: '#/components/schemas/Email'
-            dateOfBirth:
-              $ref: '#/components/schemas/DateString'
             address:
               type: object
               required:
@@ -2081,17 +2075,20 @@ components:
         id: 1234
         nationality: "DE"
         department: Marketing
+        officeCode: "de-berlin"
         keycardId: "KC-9876"
         account: "DE89 3704 0044 0532 0130 00"
-        salary: 75000
-        office: ["Berlin", "HQ"]
-        firstName: "Hans"
-        lastName: "Schmidt"
-        title: "Senior Developer"
-        contractType: "PERMANENT"
+        name: "Hans Schmidt"
+        position: "Senior Developer"
         email: "hans.schmidt@itcorpo.com"
-        hiredAt: "2020-01-15T00:00:00.000Z"
-        expiresAt: "2025-01-14T23:59:59.999Z"
+        skills: ["JavaScript", "TypeScript", "React"]
+        bio: "Experienced developer with focus on frontend technologies"
+        imgURL: "hans-schmidt-profile.jpg"
+        employment:
+          contractType: "PERMANENT"
+          currentSalary: 75000
+          startDate: "2020-01-15"
+          endDate: "2025-01-14"
         personalInfo:
           age: 35
           phone: "+49 123 456789"
@@ -2101,9 +2098,6 @@ components:
             street: "Alexanderplatz 1"
             city: "Berlin"
             country: "Germany"
-        skills: ["JavaScript", "TypeScript", "React"]
-        bio: "Experienced developer with focus on frontend technologies"
-        imgURL: "hans-schmidt-profile.jpg"
 
     EmployeeSearchFeed:
       type: object
@@ -2127,18 +2121,15 @@ components:
         - departmentId
         - keycardId
         - account
-        - salary
-        - office
+        - officeCode
         - firstName
         - lastName
-        - title
-        - contractType
+        - position
         - email
-        - hiredAt
-        - expiresAt
-        - personalInfo
         - skills
         - bio
+        - employment
+        - personalInfo
       properties:
         nationality:
           $ref: '#/components/schemas/Nationality'
@@ -2148,40 +2139,39 @@ components:
           type: string
         account:
           type: string
-        salary:
-          $ref: '#/components/schemas/Money'
-        office:
-          type: array
-          minItems: 2
-          maxItems: 2
-          items:
-            type: string
+        officeCode:
+          type: string
         firstName:
           type: string
         lastName:
           type: string
-        title:
+        position:
           type: string
-        contractType:
-          $ref: '#/components/schemas/ContractType'
         email:
           $ref: '#/components/schemas/Email'
-        hiredAt:
-          $ref: '#/components/schemas/DateString'
-        expiresAt:
-          $ref: '#/components/schemas/DateString'
+        employment:
+          type: object
+          required:
+            - contractType
+            - currentSalary
+            - startDate
+          properties:
+            contractType:
+              $ref: '#/components/schemas/ContractType'
+            currentSalary:
+              $ref: '#/components/schemas/Money'
+            startDate:
+              $ref: "#/components/schemas/DateString"
+            endDate:
+              $ref: "#/components/schemas/DateString"
         personalInfo:
           type: object
           required:
-            - age
             - phone
             - email
             - dateOfBirth
             - address
           properties:
-            age:
-              type: integer
-              minimum: 0
             phone:
               $ref: '#/components/schemas/Phone'
             email:
@@ -2278,6 +2268,20 @@ components:
         "UK": "United Kingdom"
         "DE": "Germany"
 
+    Coordinates:
+      type: object
+      required:
+        - latitude
+        - longitude
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
+      example:
+        latitude: 52.5200
+        longitude: 13.4050
+
     OfficeAmenity:
       type: object
       required:
@@ -2302,7 +2306,7 @@ components:
         - city
         - address
         - capacity
-        - estate
+        - estateOwner
         - amenities
         - monthlyRental
       properties:
@@ -2319,14 +2323,14 @@ components:
           minimum: 1
         monthlyRental:
           $ref: '#/components/schemas/Money'
-        estate:
+        estateOwner:
           type: object
           required:
-            - owner
+            - name
             - phone
             - account
           properties:
-            owner:
+            name:
               type: string
             phone:
               type: string
@@ -2362,8 +2366,9 @@ components:
         - country
         - city
         - address
+        - coordinates
         - capacity
-        - estate
+        - estateOwner
         - amenities
         - monthlyRental
       properties:
@@ -2375,19 +2380,21 @@ components:
           type: string
         address:
           type: string
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
         capacity:
           type: integer
           minimum: 1
         monthlyRental:
           $ref: '#/components/schemas/Money'
-        estate:
+        estateOwner:
           type: object
           required:
-            - owner
+            - name
             - phone
             - account
           properties:
-            owner:
+            name:
               type: string
             phone:
               type: string

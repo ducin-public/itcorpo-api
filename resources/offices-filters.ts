@@ -67,7 +67,7 @@ export function filterOffices(
                 office.country,
                 office.city,
                 office.address,
-                office.estate.owner
+                office.estateOwner.name
             ].join(' ').toLowerCase();
             
             return searchableText.includes(searchPhrase);

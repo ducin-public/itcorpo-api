@@ -29,10 +29,10 @@ function getOfficeCapacity(country: string): number {
 }
 
 const updateOffice = (office: DBOffice): DBOffice => {
-    const { country, city, address, capacity, monthlyRental, estate, amenities, ...rest } = office;
+    const { country, city, address, capacity, monthlyRental, estateOwner, amenities, ...rest } = office;
 
     return {
-        country, city, address, capacity, monthlyRental, estate,
+        country, city, address, capacity, monthlyRental, estateOwner,
         amenities,
         ...rest,
     };

@@ -56,11 +56,11 @@ export function filterEmployees(
     // Filter by salary range if provided
     if (criteria.salaryFrom) {
         const minSalary = Number(criteria.salaryFrom);
-        result = result.filter(employee => employee.salary >= minSalary);
+        result = result.filter(employee => employee.employment.currentSalary >= minSalary);
     }
     if (criteria.salaryTo) {
         const maxSalary = Number(criteria.salaryTo);
-        result = result.filter(employee => employee.salary <= maxSalary);
+        result = result.filter(employee => employee.employment.currentSalary <= maxSalary);
     }
 
     return result;

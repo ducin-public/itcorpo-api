@@ -200,7 +200,7 @@ export type ContractType = "CONTRACT" | "PERMANENT";
  */
 export type Skill = string;
 
-/** @example {"id":1234,"nationality":"DE","department":"Marketing","keycardId":"KC-9876","account":"DE89 3704 0044 0532 0130 00","salary":75000,"office":["Berlin","HQ"],"firstName":"Hans","lastName":"Schmidt","title":"Senior Developer","contractType":"PERMANENT","email":"hans.schmidt@itcorpo.com","hiredAt":"2020-01-15T00:00:00.000Z","expiresAt":"2025-01-14T23:59:59.999Z","personalInfo":{"age":35,"phone":"+49 123 456789","email":"hans.schmidt@gmail.com","dateOfBirth":"1988-05-20T00:00:00.000Z","address":{"street":"Alexanderplatz 1","city":"Berlin","country":"Germany"}},"skills":["JavaScript","TypeScript","React"],"bio":"Experienced developer with focus on frontend technologies","imgURL":"hans-schmidt-profile.jpg"} */
+/** @example {"id":1234,"nationality":"DE","department":"Marketing","officeCode":"de-berlin","keycardId":"KC-9876","account":"DE89 3704 0044 0532 0130 00","name":"Hans Schmidt","position":"Senior Developer","email":"hans.schmidt@itcorpo.com","skills":["JavaScript","TypeScript","React"],"bio":"Experienced developer with focus on frontend technologies","imgURL":"hans-schmidt-profile.jpg","employment":{"contractType":"PERMANENT","currentSalary":75000,"startDate":"2020-01-15","endDate":"2025-01-14"},"personalInfo":{"age":35,"phone":"+49 123 456789","email":"hans.schmidt@gmail.com","dateOfBirth":"1988-05-20T00:00:00.000Z","address":{"street":"Alexanderplatz 1","city":"Berlin","country":"Germany"}}} */
 export interface Employee {
   /** @example 91720 */
   id: number;
@@ -208,25 +208,22 @@ export interface Employee {
   nationality: Nationality;
   department: string;
   keycardId: string;
+  office: string;
+  name: string;
+  position: string;
   account: string;
-  /** Monetary value in EUR */
-  salary: Money;
-  /**
-   * @maxItems 2
-   * @minItems 2
-   */
-  office: string[];
-  firstName: string;
-  lastName: string;
-  title: string;
-  /** Type of employment contract */
-  contractType: ContractType;
   /** Email address string */
   email: Email;
-  /** ISO 8601 date-time string */
-  hiredAt: DateString;
-  /** ISO 8601 date-time string */
-  expiresAt: DateString;
+  employment: {
+    /** Type of employment contract */
+    contractType: ContractType;
+    /** Monetary value in EUR */
+    currentSalary: Money;
+    /** ISO 8601 date-time string */
+    startDate: DateString;
+    /** ISO 8601 date-time string */
+    endDate?: DateString;
+  };
   personalInfo: {
     /** @min 0 */
     age: number;
@@ -234,8 +231,6 @@ export interface Employee {
     phone: Phone;
     /** Email address string */
     email: Email;
-    /** ISO 8601 date-time string */
-    dateOfBirth: DateString;
     address: {
       street: string;
       city: string;
@@ -260,27 +255,23 @@ export interface EmployeeInput {
   departmentId: number;
   keycardId: string;
   account: string;
-  /** Monetary value in EUR */
-  salary: Money;
-  /**
-   * @maxItems 2
-   * @minItems 2
-   */
-  office: string[];
+  officeCode: string;
   firstName: string;
   lastName: string;
-  title: string;
-  /** Type of employment contract */
-  contractType: ContractType;
+  position: string;
   /** Email address string */
   email: Email;
-  /** ISO 8601 date-time string */
-  hiredAt: DateString;
-  /** ISO 8601 date-time string */
-  expiresAt: DateString;
+  employment: {
+    /** Type of employment contract */
+    contractType: ContractType;
+    /** Monetary value in EUR */
+    currentSalary: Money;
+    /** ISO 8601 date-time string */
+    startDate: DateString;
+    /** ISO 8601 date-time string */
+    endDate?: DateString;
+  };
   personalInfo: {
-    /** @min 0 */
-    age: number;
     /** Phone number string */
     phone: Phone;
     /** Email address string */
@@ -325,6 +316,12 @@ export interface ExpenseInput {
 /** @example {"US":"United States","UK":"United Kingdom","DE":"Germany"} */
 export type Geo = Record<string, string>;
 
+/** @example {"latitude":52.52,"longitude":13.405} */
+export interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
 /** @example {"code":"parking","name":"PARKING"} */
 export interface OfficeAmenity {
   /** Unique code identifier of the amenity */
@@ -343,8 +340,8 @@ export interface Office {
   capacity: number;
   /** Monetary value in EUR */
   monthlyRental: Money;
-  estate: {
-    owner: string;
+  estateOwner: {
+    name: string;
     phone: string;
     account: string;
   };
@@ -357,12 +354,13 @@ export interface OfficeInput {
   country: string;
   city: string;
   address: string;
+  coordinates: Coordinates;
   /** @min 1 */
   capacity: number;
   /** Monetary value in EUR */
   monthlyRental: Money;
-  estate: {
-    owner: string;
+  estateOwner: {
+    name: string;
     phone: string;
     account: string;
   };

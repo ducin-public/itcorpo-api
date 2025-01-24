@@ -124,22 +124,25 @@ const Employee = z
     nationality: Nationality,
     department: z.string(),
     keycardId: z.string(),
+    office: z.string(),
+    name: z.string(),
+    position: z.string(),
     account: z.string(),
-    salary: Money,
-    office: z.array(z.string()).min(2).max(2),
-    firstName: z.string(),
-    lastName: z.string(),
-    title: z.string(),
-    contractType: ContractType,
     email: Email.email(),
-    hiredAt: DateString.datetime({ offset: true }),
-    expiresAt: DateString.datetime({ offset: true }),
+    employment: z
+      .object({
+        contractType: ContractType,
+        currentSalary: Money,
+        startDate: DateString.datetime({ offset: true }),
+        endDate: DateString.datetime({ offset: true }).optional(),
+      })
+      .strict()
+      .passthrough(),
     personalInfo: z
       .object({
         age: z.number().int().gte(0),
         phone: Phone,
         email: Email.email(),
-        dateOfBirth: DateString.datetime({ offset: true }),
         address: z
           .object({ street: z.string(), city: z.string(), country: z.string() })
           .strict()
@@ -159,18 +162,22 @@ const EmployeeInput = z
     departmentId: z.number(),
     keycardId: z.string(),
     account: z.string(),
-    salary: Money,
-    office: z.array(z.string()).min(2).max(2),
+    officeCode: z.string(),
     firstName: z.string(),
     lastName: z.string(),
-    title: z.string(),
-    contractType: ContractType,
+    position: z.string(),
     email: Email.email(),
-    hiredAt: DateString.datetime({ offset: true }),
-    expiresAt: DateString.datetime({ offset: true }),
+    employment: z
+      .object({
+        contractType: ContractType,
+        currentSalary: Money,
+        startDate: DateString.datetime({ offset: true }),
+        endDate: DateString.datetime({ offset: true }).optional(),
+      })
+      .strict()
+      .passthrough(),
     personalInfo: z
       .object({
-        age: z.number().int().gte(0),
         phone: Phone,
         email: Email.email(),
         dateOfBirth: DateString.datetime({ offset: true }),
@@ -242,13 +249,17 @@ const Office = z
     address: z.string(),
     capacity: z.number().int().gte(1),
     monthlyRental: Money,
-    estate: z
-      .object({ owner: z.string(), phone: z.string(), account: z.string() })
+    estateOwner: z
+      .object({ name: z.string(), phone: z.string(), account: z.string() })
       .strict()
       .passthrough(),
     amenities: z.array(z.string()),
     imgURL: z.string().optional(),
   })
+  .strict()
+  .passthrough();
+const Coordinates = z
+  .object({ latitude: z.number(), longitude: z.number() })
   .strict()
   .passthrough();
 const OfficeInput = z
@@ -257,10 +268,11 @@ const OfficeInput = z
     country: z.string(),
     city: z.string(),
     address: z.string(),
+    coordinates: Coordinates,
     capacity: z.number().int().gte(1),
     monthlyRental: Money,
-    estate: z
-      .object({ owner: z.string(), phone: z.string(), account: z.string() })
+    estateOwner: z
+      .object({ name: z.string(), phone: z.string(), account: z.string() })
       .strict()
       .passthrough(),
     amenities: z.array(OfficeAmenity),
@@ -335,6 +347,7 @@ export const contractSchemas = {
   Geo,
   OfficeAmenity,
   Office,
+  Coordinates,
   OfficeInput,
   Project,
   ProjectInput,

@@ -4,10 +4,14 @@
     "country": "Italy",
     "city": "Torino",
     "address": "Via Giuseppe Garibaldi 151",
+    "coordinates": {
+      "lat": 45.0711,
+      "lng": 7.6866
+    },
     "capacity": 120,
     "monthlyRental": 15000,
-    "estate": {
-      "owner": "Immobiliare Piemonte S.p.A.",
+    "estateOwner": {
+      "name": "Immobiliare Piemonte S.p.A.",
       "phone": "+39 011 234 5678",
       "account": "IT68 X070 0696 5127 414L 0118 380"
     },
@@ -33,10 +37,14 @@
     "country": "Poland",
     "city": "Warszawa",
     "address": "ul. Marszałkowska 130",
+    "coordinates": {
+      "lat": 52.2297,
+      "lng": 21.0122
+    },
     "capacity": 140,
     "monthlyRental": 11000,
-    "estate": {
-      "owner": "Warszawskie Nieruchomości Sp. z o.o.",
+    "estateOwner": {
+      "name": "Warszawskie Nieruchomości Sp. z o.o.",
       "phone": "22 123 45 67",
       "account": "PL43 0926 5994 1051 3200 0501 5166"
     },
@@ -61,10 +69,14 @@
     "country": "Germany",
     "city": "Frankfurt am Main",
     "address": "Kaiserstraße 138",
+    "coordinates": {
+      "lat": 50.1109,
+      "lng": 8.6821
+    },
     "capacity": 200,
     "monthlyRental": 19000,
-    "estate": {
-      "owner": "Frankfurter Immobilien GmbH",
+    "estateOwner": {
+      "name": "Frankfurter Immobilien GmbH",
       "phone": "069 12345678",
       "account": "DE15 5009 0090 8040 1721 38"
     },
@@ -91,10 +103,14 @@
     "country": "United States of America",
     "city": "Dallas",
     "address": "McKinney Avenue 197",
+    "coordinates": {
+      "lat": 32.7851,
+      "lng": -96.8037
+    },
     "capacity": 30,
     "monthlyRental": 34000,
-    "estate": {
-      "owner": "Texas Commercial Properties LLC",
+    "estateOwner": {
+      "name": "Texas Commercial Properties LLC",
       "phone": "(214) 555-0123",
       "account": "US95 4352 0017 8858 3002 7387"
     },
@@ -130,10 +146,14 @@
     "country": "France",
     "city": "Brest",
     "address": "Rue de Siam 37",
+    "coordinates": {
+      "lat": 48.3904,
+      "lng": -4.4861
+    },
     "capacity": 170,
     "monthlyRental": 11000,
-    "estate": {
-      "owner": "SCI Bretagne Immobilier",
+    "estateOwner": {
+      "name": "SCI Bretagne Immobilier",
       "phone": "02 98 12 34 56",
       "account": "FR04 0934 0060 3301 08G4 2112 953"
     },
@@ -155,10 +175,14 @@
     "country": "France",
     "city": "Paris",
     "address": "Rue de Rivoli 185",
+    "coordinates": {
+      "lat": 48.8584,
+      "lng": 2.3488
+    },
     "capacity": 190,
     "monthlyRental": 18000,
-    "estate": {
-      "owner": "Société Immobilière de Paris SA",
+    "estateOwner": {
+      "name": "Société Immobilière de Paris SA",
       "phone": "01 42 12 34 56",
       "account": "FR56 0361 8300 6013 3249 2NY6 447"
     },
@@ -183,10 +207,14 @@
     "country": "United Kingdom",
     "city": "Plymouth",
     "address": "Armada Way 169",
+    "coordinates": {
+      "lat": 50.3755,
+      "lng": -4.1427
+    },
     "capacity": 130,
     "monthlyRental": 16000,
-    "estate": {
-      "owner": "Devon Property Holdings Ltd",
+    "estateOwner": {
+      "name": "Devon Property Holdings Ltd",
       "phone": "01752 123456",
       "account": "GB96 VISP 0546 6201 0089 49"
     },
@@ -205,10 +233,14 @@
     "country": "Spain",
     "city": "Madrid",
     "address": "Calle Gran Vía 147",
+    "coordinates": {
+      "lat": 40.4197,
+      "lng": -3.7038
+    },
     "capacity": 80,
     "monthlyRental": 11000,
-    "estate": {
-      "owner": "Inmobiliaria Madrileña S.L.",
+    "estateOwner": {
+      "name": "Inmobiliaria Madrileña S.L.",
       "phone": "910 234 567",
       "account": "ES81 0190 4200 4891 0053 7822"
     },
@@ -232,10 +264,14 @@
     "country": "United Kingdom",
     "city": "London",
     "address": "Oxford Street 70",
+    "coordinates": {
+      "lat": 51.5154,
+      "lng": -0.1416
+    },
     "capacity": 90,
     "monthlyRental": 53000,
-    "estate": {
-      "owner": "London Commercial Properties Ltd",
+    "estateOwner": {
+      "name": "London Commercial Properties Ltd",
       "phone": "020 7123 4567",
       "account": "GB58 IPES 1004 4740 0400 89"
     },
@@ -251,10 +287,14 @@
     "country": "United Kingdom",
     "city": "Bracknell",
     "address": "High Street 42",
+    "coordinates": {
+      "lat": 51.4154,
+      "lng": -0.7499
+    },
     "capacity": 50,
     "monthlyRental": 26000,
-    "estate": {
-      "owner": "Best-Of-Breed People Estates Inc",
+    "estateOwner": {
+      "name": "Best-Of-Breed People Estates Inc",
       "phone": "0924 810 4060",
       "account": "GB58 LZTJ 6100 7380 3590 04"
     },
@@ -270,10 +310,14 @@
     "country": "Spain",
     "city": "Granada",
     "address": "Calle Reyes Católicos 72",
+    "coordinates": {
+      "lat": 37.1773,
+      "lng": -3.5986
+    },
     "capacity": 90,
     "monthlyRental": 6000,
-    "estate": {
-      "owner": "Inmobiliaria Andaluza S.L.",
+    "estateOwner": {
+      "name": "Inmobiliaria Andaluza S.L.",
       "phone": "958 123 456",
       "account": "ES54 0300 7005 0364 6902 0608"
     },
@@ -293,10 +337,14 @@
     "country": "Poland",
     "city": "Radom",
     "address": "ul. Żeromskiego 33",
+    "coordinates": {
+      "lat": 51.4027,
+      "lng": 21.1471
+    },
     "capacity": 90,
     "monthlyRental": 6000,
-    "estate": {
-      "owner": "Radomskie Nieruchomości Sp. z o.o.",
+    "estateOwner": {
+      "name": "Radomskie Nieruchomości Sp. z o.o.",
       "phone": "48 321 45 67",
       "account": "PL52 0194 6605 9400 8802 2769 0091"
     },
@@ -313,10 +361,14 @@
     "country": "United Kingdom",
     "city": "Reading",
     "address": "Broad Street 159",
+    "coordinates": {
+      "lat": 51.4543,
+      "lng": -0.9781
+    },
     "capacity": 100,
     "monthlyRental": 23000,
-    "estate": {
-      "owner": "World-Class Estates Inc",
+    "estateOwner": {
+      "name": "World-Class Estates Inc",
       "phone": "0500 550507",
       "account": "GB90 BOFA 4006 7627 0051 08"
     },
@@ -330,10 +382,14 @@
     "country": "France",
     "city": "Rennes",
     "address": "Rue de la Monnaie 39",
+    "coordinates": {
+      "lat": 48.1117,
+      "lng": -1.6800
+    },
     "capacity": 160,
     "monthlyRental": 14000,
-    "estate": {
-      "owner": "Minor-Class Estates LLC",
+    "estateOwner": {
+      "name": "Minor-Class Estates LLC",
       "phone": "0370364123",
       "account": "FR83 4091 5609 69O9 6360 F425 438"
     },
@@ -355,10 +411,14 @@
     "country": "Netherlands",
     "city": "Den Haag",
     "address": "Lange Voorhout 79",
+    "coordinates": {
+      "lat": 52.0842,
+      "lng": 4.3137
+    },
     "capacity": 50,
     "monthlyRental": 13000,
-    "estate": {
-      "owner": "Haagse Vastgoed B.V.",
+    "estateOwner": {
+      "name": "Haagse Vastgoed B.V.",
       "phone": "070 123 4567",
       "account": "NL32 PZXG 0100 4892 79"
     },
@@ -382,10 +442,14 @@
     "country": "Poland",
     "city": "Łódź",
     "address": "ul. Piotrkowska 101",
+    "coordinates": {
+      "lat": 51.7687,
+      "lng": 19.4569
+    },
     "capacity": 180,
     "monthlyRental": 20000,
-    "estate": {
-      "owner": "Łódzkie Centrum Nieruchomości Sp. z o.o.",
+    "estateOwner": {
+      "name": "Łódzkie Centrum Nieruchomości Sp. z o.o.",
       "phone": "42 123 45 67",
       "account": "PL60 4940 0146 0008 9635 6005 9462"
     },
@@ -405,10 +469,14 @@
     "country": "Poland",
     "city": "Wrocław",
     "address": "ul. Świdnicka 71",
+    "coordinates": {
+      "lat": 51.1079,
+      "lng": 17.0385
+    },
     "capacity": 190,
     "monthlyRental": 13000,
-    "estate": {
-      "owner": "Frictionless Estates LLC",
+    "estateOwner": {
+      "name": "Frictionless Estates LLC",
       "phone": "43-591-70-09",
       "account": "PL04 2500 1249 1006 1764 8022 0032"
     },
@@ -426,10 +494,14 @@
     "country": "Netherlands",
     "city": "Utrecht",
     "address": "Oudegracht 61",
+    "coordinates": {
+      "lat": 52.0907,
+      "lng": 5.1214
+    },
     "capacity": 130,
     "monthlyRental": 19000,
-    "estate": {
-      "owner": "Utrecht Vastgoed B.V.",
+    "estateOwner": {
+      "name": "Utrecht Vastgoed B.V.",
       "phone": "030 234 5678",
       "account": "NL16 HTLT 5101 0300 76"
     },
@@ -447,10 +519,14 @@
     "country": "Poland",
     "city": "Lublin",
     "address": "ul. Krakowskie Przedmieście 193",
+    "coordinates": {
+      "lat": 51.2465,
+      "lng": 22.5684
+    },
     "capacity": 40,
     "monthlyRental": 17000,
-    "estate": {
-      "owner": "Lubelskie Nieruchomości Sp. z o.o.",
+    "estateOwner": {
+      "name": "Lubelskie Nieruchomości Sp. z o.o.",
       "phone": "81 234 56 78",
       "account": "PL17 4020 9002 8045 4307 0003 2097"
     },
@@ -467,10 +543,14 @@
     "country": "Poland",
     "city": "Gdańsk",
     "address": "ul. Długa 62",
+    "coordinates": {
+      "lat": 54.3489,
+      "lng": 18.6570
+    },
     "capacity": 70,
     "monthlyRental": 9000,
-    "estate": {
-      "owner": "User-Centric Estates Group",
+    "estateOwner": {
+      "name": "User-Centric Estates Group",
       "phone": "54-599-64-97",
       "account": "PL79 0011 0048 3805 5289 5507 8559"
     },
@@ -486,10 +566,14 @@
     "country": "Germany",
     "city": "Darmstadt",
     "address": "Wilhelminenstraße 196",
+    "coordinates": {
+      "lat": 49.8728,
+      "lng": 8.6512
+    },
     "capacity": 60,
     "monthlyRental": 20000,
-    "estate": {
-      "owner": "Darmstadt Immobilien GmbH",
+    "estateOwner": {
+      "name": "Darmstadt Immobilien GmbH",
       "phone": "06151 123456",
       "account": "DE57 7030 2238 0400 5997 60"
     },
@@ -505,10 +589,14 @@
     "country": "United Kingdom",
     "city": "Manchester",
     "address": "Deansgate 46",
+    "coordinates": {
+      "lat": 53.4808,
+      "lng": -2.2426
+    },
     "capacity": 60,
     "monthlyRental": 18000,
-    "estate": {
-      "owner": "B2B Estates Group",
+    "estateOwner": {
+      "name": "B2B Estates Group",
       "phone": "0800 043 8564",
       "account": "GB65 FVIB 0051 3930 0708 44"
     },
@@ -524,10 +612,14 @@
     "country": "France",
     "city": "Lille",
     "address": "Rue Faidherbe 10",
+    "coordinates": {
+      "lat": 50.6366,
+      "lng": 3.0635
+    },
     "capacity": 150,
     "monthlyRental": 11000,
-    "estate": {
-      "owner": "Viral Estates Group",
+    "estateOwner": {
+      "name": "Viral Estates Group",
       "phone": "+33 433348418",
       "account": "FR29 3008 5208 1633 D179 1461 361"
     },
@@ -541,10 +633,14 @@
     "country": "Netherlands",
     "city": "Amsterdam",
     "address": "Damrak 81",
+    "coordinates": {
+      "lat": 52.3738,
+      "lng": 4.8944
+    },
     "capacity": 150,
     "monthlyRental": 10000,
-    "estate": {
-      "owner": "B2C Estates and Sons",
+    "estateOwner": {
+      "name": "B2C Estates and Sons",
       "phone": "(7364) 079343",
       "account": "NL86 AMUJ 9303 4156 60"
     },
@@ -562,10 +658,14 @@
     "country": "Germany",
     "city": "München",
     "address": "Kaufingerstraße 20",
+    "coordinates": {
+      "lat": 48.1371,
+      "lng": 11.5754
+    },
     "capacity": 110,
     "monthlyRental": 46000,
-    "estate": {
-      "owner": "Münchener Immobilien GmbH",
+    "estateOwner": {
+      "name": "Münchener Immobilien GmbH",
       "phone": "089 123456",
       "account": "DE37 0031 8915 5320 9040 01"
     },
@@ -592,10 +692,14 @@
     "country": "United States of America",
     "city": "Milpitas",
     "address": "Great Mall Parkway 142",
+    "coordinates": {
+      "lat": 37.4154,
+      "lng": -121.9008
+    },
     "capacity": 50,
     "monthlyRental": 18000,
-    "estate": {
-      "owner": "Bay Area Properties LLC",
+    "estateOwner": {
+      "name": "Bay Area Properties LLC",
       "phone": "(408) 555-0123",
       "account": "US13 9006 0700 2500 3933 2082"
     },
@@ -617,10 +721,14 @@
     "country": "United States of America",
     "city": "San Francisco",
     "address": "Market Street 75",
+    "coordinates": {
+      "lat": 37.7937,
+      "lng": -122.3988
+    },
     "capacity": 80,
     "monthlyRental": 17000,
-    "estate": {
-      "owner": "SF Commercial Real Estate LLC",
+    "estateOwner": {
+      "name": "SF Commercial Real Estate LLC",
       "phone": "(415) 555-0123",
       "account": "US76 5650 4372 7100 9904 2698"
     },
@@ -640,10 +748,14 @@
     "country": "Italy",
     "city": "Roma",
     "address": "Via del Corso 55",
+    "coordinates": {
+      "lat": 41.9027,
+      "lng": 12.4800
+    },
     "capacity": 140,
     "monthlyRental": 10000,
-    "estate": {
-      "owner": "Immobiliare Roma Centro S.r.l.",
+    "estateOwner": {
+      "name": "Immobiliare Roma Centro S.r.l.",
       "phone": "+39 06 123 4567",
       "account": "IT28 Z000 0617 909U 3691 M617 0JA"
     },
@@ -655,5 +767,53 @@
       "Conference rooms"
     ],
     "imgURL": "roma-bsuq-q7zW-DIqc-dpDJ-f0OC.jpg"
+  },
+  {
+    "code": "in-bangalore",
+    "country": "India",
+    "city": "Bengaluru",
+    "address": "Outer Ring Road 241, Bellandur",
+    "coordinates": {
+      "lat": 12.9259,
+      "lng": 77.6229
+    },
+    "capacity": 320,
+    "monthlyRental": 8000,
+    "estateOwner": {
+      "name": "Bangalore Tech Parks Ltd",
+      "phone": "+91 80 4123 5678",
+      "account": "IN91 HDFC 0002 0012 3456 7890"
+    },
+    "amenities": [
+      "Wi-Fi",
+      "Air conditioning",
+      "IT support",
+      "Water cooler"
+    ],
+    "imgURL": "bangalore-KpWx-vR4n-2mLs-tY9q-H3Jd.jpg"
+  },
+  {
+    "code": "in-hyderabad",
+    "country": "India",
+    "city": "Hyderabad",
+    "address": "Hitec City Road 127, Madhapur",
+    "coordinates": {
+      "lat": 17.4435,
+      "lng": 78.3772
+    },
+    "capacity": 280,
+    "monthlyRental": 7000,
+    "estateOwner": {
+      "name": "Hyderabad Office Solutions Pvt Ltd",
+      "phone": "+91 40 3456 7890",
+      "account": "IN63 ICIC 0001 0023 4567 8901"
+    },
+    "amenities": [
+      "Wi-Fi",
+      "Air conditioning",
+      "IT support",
+      "Water cooler"
+    ],
+    "imgURL": "hyderabad-9dKm-tL2p-5nWx-vB8j-R4Yz.jpg"
   }
 ]

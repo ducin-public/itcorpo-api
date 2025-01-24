@@ -6,6 +6,8 @@ import { dbConnection } from '../lib/db/db-connection';
 import { filterOffices } from './offices-filters';
 import { handleRouterError } from './core/error';
 import { O } from 'vitest/dist/chunks/environment.LoooBwUu';
+import { DBOffice } from '../lib/db/db-zod-schemas/office.schema';
+import { stripOfficeCoordinates } from './office-data-operations';
 
 const router = Router();
 
@@ -96,13 +98,13 @@ router.get('/', async (
         const amenitiesPromise = dbConnection.officeAmenities.findMany();
         const countriesPromise = dbConnection.countries.findMany();
 
-        const filteredOffices = await filterOffices(req.query, {
+        const resultOffices = await filterOffices(req.query, {
             offices: await officesPromise,
             officeAmenities: await amenitiesPromise,
             countries: await countriesPromise
-        });
+        }).map(office => stripOfficeCoordinates(office))
 
-        res.json(filteredOffices);
+        res.json(resultOffices);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -127,8 +129,10 @@ router.get('/:officeCode', async (
         if (!officeByCode) {
             return res.status(404).json({ message: 'Office not found' });
         }
+
+        const resultOffice = stripOfficeCoordinates(officeByCode);
         
-        res.json(officeByCode);
+        res.json(resultOffice);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -154,15 +158,21 @@ router.post('/', async (
             return res.status(400).json({ message: 'Office with this code already exists' });
         }
         
-        const newOffice: Office = {
+        const newOffice: DBOffice = {
             ...req.body,
+            coordinates: {
+                lat: req.body.coordinates.latitude,
+                lng: req.body.coordinates.longitude
+            },
             amenities: req.body.amenities?.map(a => a.code) || []
         };
         
         await dbConnection.offices.insertOne(newOffice);
         await dbConnection.offices.flush();
+
+        const resultOffice = stripOfficeCoordinates(newOffice);
         
-        res.status(201).json(newOffice);
+        res.status(201).json(resultOffice);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -188,17 +198,23 @@ router.put('/:officeCode', async (
             return res.status(404).json({ message: 'Office not found' });
         }
 
-        const updatedOffice: Office = {
+        const updatedOffice: DBOffice = {
             ...officeToUpdate,
             ...req.body,
+            coordinates: {
+                lat: req.body.coordinates.latitude,
+                lng: req.body.coordinates.longitude
+            },
             code: req.params.officeCode,
             amenities: req.body.amenities?.map(a => a.code) || officeToUpdate.amenities
         };
 
         await dbConnection.offices.replaceOne({ $match: { code: { $eq: req.params.officeCode } } }, updatedOffice);
         await dbConnection.offices.flush();
+
+        const resultOffice = stripOfficeCoordinates(updatedOffice);
         
-        res.json(updatedOffice);
+        res.json(resultOffice);
     } catch (error) {
         handleRouterError({
             error, req, res,

@@ -1,12 +1,13 @@
 import { Router, Request, Response } from 'express';
+import { randomInt } from 'crypto';
+
 import { ErrorResponse, ProjectEmployeeInvolvement } from '../contract-types/data-contracts';
 import { Employees } from '../contract-types/EmployeesRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterEmployees } from './employee-filters';
 import { handleRouterError } from './core/error';
-import { mergeWithDepartment } from './employees-data-operations';
+import { employeeDTOFactory } from './employees-data-operations';
 import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
-import { randomInt } from 'crypto';
 import { getPaginationValues } from './core/pagination';
 
 const router = Router();
@@ -53,30 +54,19 @@ router.get('/', async (
     try {
         const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
 
-        const [employees, departments] = await Promise.all([
+        const [employees, departments, offices] = await Promise.all([
             dbConnection.employees.findMany(),
-            dbConnection.departments.findMany()
+            dbConnection.departments.findMany(),
+            dbConnection.offices.findMany(),
         ]);
         
         let filteredEmployees = filterEmployees(req.query, { employees, departments });
         filteredEmployees = filteredEmployees.slice((page - 1) * pageSize, page * pageSize);
         
-        // Transform the filtered employees to include department name instead of ID
-        const employeesWithDepartments = filteredEmployees.map(employee => {
-            const department = departments.find(d => d.id === employee.departmentId);
-            if (!department) {
-                throw new Error(`Department not found for ID: ${employee.departmentId}`);
-            }
-            
-            // Create new object without departmentId
-            const { departmentId, ...employeeWithoutDeptId } = employee;
-            return {
-                ...employeeWithoutDeptId,
-                department: department.name
-            };
-        });
+        const createEmployeeDTO = employeeDTOFactory({ departments, offices });
+        const result = filteredEmployees.map(createEmployeeDTO);
 
-        res.json(employeesWithDepartments);
+        res.json(result);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -97,21 +87,19 @@ router.get('/:employeeId', async (
 ) => {
     try {
         const employeeId = Number(req.params.employeeId);
-        const [employee, departments] = await Promise.all([
+        const [employee, departments, offices] = await Promise.all([
             dbConnection.employees.findOne({ $match: { id: { $eq: employeeId } } }),
-            dbConnection.departments.findMany()
+            dbConnection.departments.findMany(),
+            dbConnection.offices.findMany(),
         ]);
         
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
 
-        const department = departments.find(d => d.id === employee.departmentId);
-        if (!department) {
-            throw new Error(`Department not found for ID: ${employee.departmentId}`);
-        }
+        const createEmployeeDTO = employeeDTOFactory({ departments, offices });
+        const result = createEmployeeDTO(employee);
 
-        const result = mergeWithDepartment(employee, [department]);
         res.json(result);
     } catch (error) {
         handleRouterError({
@@ -179,17 +167,17 @@ router.post('/', async (
             id: randomInt(100000, 10000000),
             ...req.body
         };
-        payload.nationality
         
         const created = await dbConnection.employees.insertOne(payload);
         await dbConnection.employees.flush();
 
-        const department = await dbConnection.departments.findOne({ $match: { id: { $eq: payload.departmentId } } });
-        if (!department) {
-            throw new Error(`Department not found for ID: ${payload.departmentId}`);
-        }
-
-        const result = mergeWithDepartment(created, [department]);
+        const [departments, offices] = await Promise.all([
+            dbConnection.departments.findMany(),
+            dbConnection.offices.findMany(),
+        ])
+        const createEmployeeDTO = employeeDTOFactory({ departments, offices });
+        const result = createEmployeeDTO(created);
+        
         res.status(201).json(result);
     } catch (error) {
         handleRouterError({
@@ -225,12 +213,13 @@ router.put('/:employeeId', async (
         const replaced = await dbConnection.employees.replaceOne({ $match: { id: { $eq: employeeId } } }, payload);
         await dbConnection.employees.flush();
         
-        const department = await dbConnection.departments.findOne({ $match: { id: { $eq: payload.departmentId } } });
-        if (!department) {
-            throw new Error(`Department not found for ID: ${payload.departmentId}`);
-        }
-
-        const result = mergeWithDepartment(replaced!, [department]);
+        const [departments, offices] = await Promise.all([
+            dbConnection.departments.findMany(),
+            dbConnection.offices.findMany(),
+        ])
+        const createEmployeeDTO = employeeDTOFactory({ departments, offices });
+        const result = createEmployeeDTO(replaced!);
+        
         res.json(result);
     } catch (error) {
         handleRouterError({

@@ -16,7 +16,6 @@ export const mergeWithDepartment = (employee: DBEmployee, departments: DBDepartm
     };
 }
 
-
 export const mergeWithOffice = (employee: DBEmployee, offices: DBOffice[]) => {
     const office = offices.find(o => o.code === employee.officeCode);
     if (!office) {

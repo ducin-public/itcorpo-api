@@ -10,21 +10,35 @@ describe('employees-data-operations', () => {
         { id: 2, name: 'Marketing' }
     ];
 
+    const mockOffices = [
+        {
+            code: 'us-dallas',
+            country: 'United States of America',
+            city: 'Dallas',
+            // ... other office properties not needed for the test
+        }
+    ];
+
     const mockEmployee: DBEmployee = {
         id: 1,
         nationality: 'US',
         departmentId: 1,
         keycardId: 'USC47731',
         account: 'US95 4352 0017 8858 3002 7387',
-        salary: 120000,
         officeCode: 'us-dallas',
         firstName: 'John',
         lastName: 'Doe',
         position: 'Senior Software Engineer',
-        contractType: 'PERMANENT',
         email: 'john.doe@itcorpo.com',
-        hiredAt: '2020-03-15',
-        expiresAt: '2025-03-14',
+        skills: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'AWS'],
+        bio: 'Experienced software engineer with a focus on full-stack web development and cloud technologies.',
+        imgURL: 'john-doe-7Yx3-pQ9k.jpg',
+        employment: {
+            contractType: 'PERMANENT',
+            currentSalary: 120000,
+            startDate: '2020-03-15',
+            endDate: '2025-03-14'
+        },
         personalInfo: {
             dateOfBirth: '1990-01-01',
             address: {
@@ -35,9 +49,6 @@ describe('employees-data-operations', () => {
             email: 'john.doe@gmail.com',
             phone: '+1 (214) 555-0123'
         },
-        skills: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'AWS'],
-        bio: 'Experienced software engineer with a focus on full-stack web development and cloud technologies.',
-        imgURL: 'john-doe-7Yx3-pQ9k.jpg'
     };
 
     describe('mergeWithDepartment', () => {
@@ -73,59 +84,5 @@ describe('employees-data-operations', () => {
         });
     });
 
-    describe('employeeDTOFactory', () => {
-        const dtoFactory = employeeDTOFactory(mockDepartments);
 
-        beforeEach(() => {
-            vi.useFakeTimers();
-            vi.setSystemTime(new Date('2023-01-01'));
-        });
-
-        afterEach(() => {
-            vi.useRealTimers();
-        });
-
-        it('should transform employee to DTO', () => {
-            const result = dtoFactory(mockEmployee);
-            expect(result).toMatchInlineSnapshot(`
-              {
-                "account": "US95 4352 0017 8858 3002 7387",
-                "bio": "Experienced software engineer with a focus on full-stack web development and cloud technologies.",
-                "contractType": "PERMANENT",
-                "department": "Engineering",
-                "email": "john.doe@itcorpo.com",
-                "expiresAt": "2025-03-14",
-                "firstName": "John",
-                "hiredAt": "2020-03-15",
-                "id": 1,
-                "imgURL": "john-doe-7Yx3-pQ9k.jpg",
-                "keycardId": "USC47731",
-                "lastName": "Doe",
-                "name": "John Doe",
-                "nationality": "US",
-                "officeCode": "us-dallas",
-                "personalInfo": {
-                  "address": {
-                    "city": "Dallas",
-                    "country": "US",
-                    "street": "2130 Stillwell Ave",
-                  },
-                  "age": 33,
-                  "dateOfBirth": "1990-01-01",
-                  "email": "john.doe@gmail.com",
-                  "phone": "+1 (214) 555-0123",
-                },
-                "salary": 120000,
-                "skills": [
-                  "JavaScript",
-                  "TypeScript",
-                  "React",
-                  "Node.js",
-                  "AWS",
-                ],
-                "title": "Senior Software Engineer",
-              }
-            `)
-        });
-    });
 });

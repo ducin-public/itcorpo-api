@@ -32,6 +32,17 @@ export namespace Employees {
     export type RequestParams = {};
     export type RequestQuery = {
       /**
+       * Filter employees by special groups
+       * @default "ACTIVE"
+       */
+      group?:
+        | "ACTIVE"
+        | "INVOLVED"
+        | "JOBLESS"
+        | "DEPARTING"
+        | "NEWHIRES"
+        | "PAST";
+      /**
        * Filter employees by name
        * @example "John Doe"
        */
@@ -115,6 +126,17 @@ export namespace Employees {
   export namespace GetEmployeesCount {
     export type RequestParams = {};
     export type RequestQuery = {
+      /**
+       * Filter employees by special groups
+       * @default "ACTIVE"
+       */
+      group?:
+        | "ACTIVE"
+        | "INVOLVED"
+        | "JOBLESS"
+        | "DEPARTING"
+        | "NEWHIRES"
+        | "PAST";
       /**
        * Filter employees by name
        * @example "John Doe"
@@ -221,16 +243,32 @@ export namespace Employees {
   }
 
   /**
-   * @description Returns a list of projects that the employee is assigned to.
-   * @tags Employees
-   * @name GetEmployeeProjects
-   * @summary Get projects which employee is assigned to
-   * @request GET:/employees/{employeeId}/projects
-   * @response `200` `(ProjectEmployeeInvolvement)[]` Successful operation
-   * @response `404` `ErrorResponse` Employee not found
-   * @response `500` `ErrorResponse`
-   * @response `503` `ErrorResponse`
-   */
+ * @description Returns a list of projects that the employee is assigned to.
+ * @tags Employees
+ * @name GetEmployeeProjects
+ * @summary Get projects which employee is assigned to
+ * @request GET:/employees/{employeeId}/projects
+ * @response `200` `{
+    employee: {
+  \** @example 91720 *\
+    id: number,
+  \** @example "John Doe" *\
+    name: string,
+  \** @example "Software Developer" *\
+    position: string,
+  \** @example "Marketing" *\
+    department: string,
+  \** @example "https://placekitten.com/200/200" *\
+    imgURL?: string,
+
+},
+    projects: (ProjectEmployeeInvolvement)[],
+
+}` Successful operation
+ * @response `404` `ErrorResponse` Employee not found
+ * @response `500` `ErrorResponse`
+ * @response `503` `ErrorResponse`
+*/
   export namespace GetEmployeeProjects {
     export type RequestParams = {
       /** @example 91720 */
@@ -239,6 +277,20 @@ export namespace Employees {
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = ProjectEmployeeInvolvement[];
+    export type ResponseBody = {
+      employee: {
+        /** @example 91720 */
+        id: number;
+        /** @example "John Doe" */
+        name: string;
+        /** @example "Software Developer" */
+        position: string;
+        /** @example "Marketing" */
+        department: string;
+        /** @example "https://placekitten.com/200/200" */
+        imgURL?: string;
+      };
+      projects: ProjectEmployeeInvolvement[];
+    };
   }
 }

@@ -18,6 +18,12 @@ export type Money = number;
  */
 export type DateString = string;
 
+export interface Duration {
+  years: number;
+  months: number;
+  days: number;
+}
+
 /**
  * Email address string
  * @format email
@@ -200,7 +206,7 @@ export type ContractType = "CONTRACT" | "PERMANENT";
  */
 export type Skill = string;
 
-/** @example {"id":1234,"nationality":"DE","department":"Marketing","officeCode":"de-berlin","keycardId":"KC-9876","account":"DE89 3704 0044 0532 0130 00","name":"Hans Schmidt","position":"Senior Developer","email":"hans.schmidt@itcorpo.com","skills":["JavaScript","TypeScript","React"],"bio":"Experienced developer with focus on frontend technologies","imgURL":"hans-schmidt-profile.jpg","employment":{"contractType":"PERMANENT","currentSalary":75000,"startDate":"2020-01-15","endDate":"2025-01-14"},"personalInfo":{"age":35,"phone":"+49 123 456789","email":"hans.schmidt@gmail.com","dateOfBirth":"1988-05-20T00:00:00.000Z","address":{"street":"Alexanderplatz 1","city":"Berlin","country":"Germany"}}} */
+/** @example {"id":1234,"nationality":"DE","department":"Marketing","officeCode":"de-berlin","keycardId":"KC-9876","account":"DE89 3704 0044 0532 0130 00","name":"Hans Schmidt","position":"Senior Developer","email":"hans.schmidt@itcorpo.com","skills":["JavaScript","TypeScript","React"],"bio":"Experienced developer with focus on frontend technologies","imgURL":"hans-schmidt-profile.jpg","employment":{"contractType":"PERMANENT","currentSalary":75000,"startDate":"2020-01-15","endDate":"2025-01-14","employedFor":{"years":5,"months":0,"days":0}},"personalInfo":{"age":35,"phone":"+49 123 456789","email":"hans.schmidt@gmail.com","dateOfBirth":"1988-05-20T00:00:00.000Z","address":{"street":"Alexanderplatz 1","city":"Berlin","country":"Germany"}}} */
 export interface Employee {
   /** @example 91720 */
   id: number;
@@ -223,6 +229,7 @@ export interface Employee {
     startDate: DateString;
     /** ISO 8601 date-time string */
     endDate?: DateString;
+    employedFor: Duration;
   };
   personalInfo: {
     /** @min 0 */
@@ -432,6 +439,9 @@ export interface ProjectEmployeeInvolvement {
   projectStatus: ProjectStatus;
   /** Level of employee engagement in the project */
   engagementLevel: EngagementLevel;
-  /** @format date */
-  since: string;
+  /** ISO 8601 date-time string */
+  startDate: DateString;
+  /** ISO 8601 date-time string */
+  endDate?: DateString;
+  duration: Duration;
 }

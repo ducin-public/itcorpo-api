@@ -1,12 +1,14 @@
 import { Employees } from '../contract-types/EmployeesRoute';
 import { DBDepartment } from '../lib/db/db-zod-schemas/department.schema';
 import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
+import { DBProjectTeam } from '../lib/db/db-zod-schemas/project-team.schema';
 
 /**
  * Filters employees based on provided criteria
  *
  * @param criteria - Search criteria for filtering employees
  *   @see {@link Employees.GetEmployees.RequestQuery}
+ *   - group: Filter by employee group
  *   - employeeName: Filter by employee name (case-insensitive partial match)
  *   - departmentId: Filter by department ID
  *   - skills: Filter by required skills (comma-separated)
@@ -24,6 +26,7 @@ export function filterEmployees(
     collections: {
         departments: DBDepartment[];
         employees: DBEmployee[];
+        projectTeams: DBProjectTeam[];
     }
 ): DBEmployee[] {
     let result = [...collections.employees];
@@ -61,6 +64,47 @@ export function filterEmployees(
     if (criteria.salaryTo) {
         const maxSalary = Number(criteria.salaryTo);
         result = result.filter(employee => employee.employment.currentSalary <= maxSalary);
+    }
+
+    // Filter by employee group if provided
+    const group = (criteria.group || 'ACTIVE');
+    type Group = typeof group;
+    const UCGroup = group.toUpperCase() as Group;
+
+    // ACTIVE", "INVOLVED", "JOBLESS", "DEPARTING", "NEWHIRES", "PAST
+
+    switch (UCGroup) {
+        case 'ACTIVE':
+            result = result.filter(employee => {
+                return !employee.employment.endDate || new Date(employee.employment.endDate) >= new Date();
+            });
+            break;
+        case "PAST":
+            result = result.filter(employee => {
+                return employee.employment.endDate && new Date(employee.employment.endDate) < new Date();
+            });
+            break;
+        case "DEPARTING":
+            result = result.filter(employee => {
+                return employee.employment.endDate && new Date(employee.employment.endDate) >= new Date();
+            });
+            break;
+        case "NEWHIRES":
+            result = result.filter(employee => {
+                return employee.employment.startDate && new Date(employee.employment.startDate) > new Date();
+            });
+            break;
+        case "JOBLESS":
+            const employeeIdsWithProjects = new Set(collections.projectTeams.map(pt => pt.employeeId));
+            result = result.filter(employee => !employeeIdsWithProjects.has(employee.id));
+            break;
+        case "INVOLVED":
+            const employeeIdsWithProjects_ = new Set(collections.projectTeams.map(pt => pt.employeeId));
+            result = result.filter(employee => employeeIdsWithProjects_.has(employee.id));
+            break;
+        default:
+            let n: never = UCGroup;
+            throw new Error(`Invalid group: ${UCGroup}`);
     }
 
     return result;

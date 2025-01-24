@@ -2,6 +2,7 @@ import { Employee } from "../contract-types/data-contracts";
 import { DBDepartment } from "../lib/db/db-zod-schemas/department.schema";
 import { DBEmployee } from "../lib/db/db-zod-schemas/employee.schema";
 import { DBOffice } from "../lib/db/db-zod-schemas/office.schema";
+import { getDuration } from "./core/time";
 
 export const mergeWithDepartment = (employee: DBEmployee, departments: DBDepartment[]) => {
     const department = departments.find(d => d.id === employee.departmentId);
@@ -39,10 +40,26 @@ export const employeeName = (employee: DBEmployee) => {
     return name;
 }
 
+export const employeeEmployedFor = (employee: DBEmployee) => {
+  return getDuration({
+    startDate: new Date(employee.employment.startDate),
+    endDate: employee.employment.endDate ? new Date(employee.employment.endDate) : new Date()
+  })
+}
+
+export const reorderPersonalInfo = (personalInfo: Employee['personalInfo']) => {
+  const { email, phone, age, address, ...rest } = personalInfo;
+  return { email, phone, age, address, ...rest };
+}
+  
+const reorderProperties = (employee: Employee): Employee => {
+  const { id, nationality, department, office, keycardId, name, position, email, personalInfo, ...rest } = employee;
+  return { id, nationality, department, office, keycardId, name, position, email, ...rest, personalInfo: reorderPersonalInfo(personalInfo) };
+}
 
 type FactoryParams = {
-    departments: DBDepartment[];
-    offices: DBOffice[];
+  departments: DBDepartment[];
+  offices: DBOffice[];
 }
 export const employeeDTOFactory = ({ departments, offices }: FactoryParams) =>
     (employee: DBEmployee): Employee => {
@@ -61,17 +78,24 @@ export const employeeDTOFactory = ({ departments, offices }: FactoryParams) =>
         const {
             officeCode, departmentId, firstName, lastName,
             personalInfo: { dateOfBirth, ...personalInfoRest},
+            employment,
             ...employeeRest
         } = employee;
 
-        return {
-            ...employee,
+        const result = {
+            ...employeeRest,
             department: department.name,
             office: `${office.city}, ${office.country}`,
             name: employeeName(employee),
+            employment: {
+                ...employment,
+                employedFor: employeeEmployedFor(employee)
+            },
             personalInfo: {
                 ...personalInfoRest,
                 age: employeeAge(employee)
             }
         } satisfies Employee;
+
+        return reorderProperties(result);
     }

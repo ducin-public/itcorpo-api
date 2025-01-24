@@ -9,6 +9,7 @@ import { handleRouterError } from './core/error';
 import { randomUUID } from 'crypto';
 import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
 import { getPaginationValues } from './core/pagination';
+import { getDuration } from './core/time';
 
 const router = Router();
 const MAX_PAGE_SIZE = 20;
@@ -215,16 +216,21 @@ router.get('/:projectId/team', async (
         const projectTeams = await dbConnection.projectTeams.findMany({ $match: { projectId: { $eq: req.params.projectId } } });
         const employees = await dbConnection.employees.findMany();
         
-        const projectInvolvements: ProjectEmployeeInvolvement[] = projectTeams.map(assignment => {
-            const employee = employees.find(e => e.id === assignment.employeeId)!;
+        const projectInvolvements: ProjectEmployeeInvolvement[] = projectTeams.map(involvement => {
+            const employee = employees.find(e => e.id === involvement.employeeId)!;
             return {
                 employeeId: employee.id,
                 projectId: project.id,
                 employeeName: `${employee.firstName} ${employee.lastName}`,
                 projectName: project.name,
                 projectStatus: project.status,
-                engagementLevel: assignment.engagementLevel,
-                since: assignment.since
+                engagementLevel: involvement.engagementLevel,
+                startDate: involvement.startDate,
+                endDate: involvement.endDate,
+                duration: getDuration({
+                    startDate: new Date(involvement.startDate),
+                    endDate: involvement.endDate ? new Date(involvement.endDate) : new Date()
+                })
             };
         });
 

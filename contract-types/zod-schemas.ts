@@ -117,6 +117,14 @@ const Nationality = z.enum([
 ]);
 const ContractType = z.enum(["CONTRACT", "PERMANENT"]);
 const DateString = z.string();
+const Duration = z
+  .object({
+    years: z.number().int(),
+    months: z.number().int(),
+    days: z.number().int(),
+  })
+  .strict()
+  .passthrough();
 const Skill = z.string();
 const Employee = z
   .object({
@@ -135,6 +143,7 @@ const Employee = z
         currentSalary: Money,
         startDate: DateString.datetime({ offset: true }),
         endDate: DateString.datetime({ offset: true }).optional(),
+        employedFor: Duration,
       })
       .strict()
       .passthrough(),
@@ -209,7 +218,9 @@ const ProjectEmployeeInvolvement = z
     projectName: z.string(),
     projectStatus: ProjectStatus,
     engagementLevel: EngagementLevel,
-    since: z.string(),
+    startDate: DateString.datetime({ offset: true }),
+    endDate: DateString.datetime({ offset: true }).optional(),
+    duration: Duration,
   })
   .strict()
   .passthrough();
@@ -336,6 +347,7 @@ export const contractSchemas = {
   Nationality,
   ContractType,
   DateString,
+  Duration,
   Skill,
   Employee,
   EmployeeInput,
@@ -1071,6 +1083,21 @@ export const contractEndpoints: ContractEndpoint[] = [
     requestFormat: "json",
     parameters: [
       {
+        name: "group",
+        type: "Query",
+        schema: z
+          .enum([
+            "ACTIVE",
+            "INVOLVED",
+            "JOBLESS",
+            "DEPARTING",
+            "NEWHIRES",
+            "PAST",
+          ])
+          .optional()
+          .default("ACTIVE"),
+      },
+      {
         name: "employeeName",
         type: "Query",
         schema: z.string().optional(),
@@ -1323,7 +1350,22 @@ export const contractEndpoints: ContractEndpoint[] = [
     ],
     response: {
       type: "ZOD_SCHEMA",
-      schema: z.array(ProjectEmployeeInvolvement),
+      schema: z
+        .object({
+          employee: z
+            .object({
+              id: z.number(),
+              name: z.string(),
+              position: z.string(),
+              department: z.string(),
+              imgURL: z.string().optional(),
+            })
+            .strict()
+            .passthrough(),
+          projects: z.array(ProjectEmployeeInvolvement),
+        })
+        .strict()
+        .passthrough(),
     },
     errors: [
       {
@@ -1349,6 +1391,21 @@ export const contractEndpoints: ContractEndpoint[] = [
     alias: "getEmployeesCount",
     requestFormat: "json",
     parameters: [
+      {
+        name: "group",
+        type: "Query",
+        schema: z
+          .enum([
+            "ACTIVE",
+            "INVOLVED",
+            "JOBLESS",
+            "DEPARTING",
+            "NEWHIRES",
+            "PAST",
+          ])
+          .optional()
+          .default("ACTIVE"),
+      },
       {
         name: "employeeName",
         type: "Query",

@@ -1,7 +1,12 @@
 # todos
 
+                duration: getDuration({
+                    startDate: new Date(assignment.since),
+                    endDate: new Date() // FIXME: use actual end date
+                })
+
+
 - [ ] osobno error id i osobno correlation id
-- [ ] employee age ma byc dynamicznie obliczane
 - openapi validation: http://localhost:3000/employees/91720
 - .hbs files
 - rewrite router

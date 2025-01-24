@@ -83,6 +83,4 @@ describe('employees-data-operations', () => {
             expect(result).toBe(43);
         });
     });
-
-
 });

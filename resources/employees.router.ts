@@ -9,6 +9,7 @@ import { handleRouterError } from './core/error';
 import { employeeDTOFactory } from './employees-data-operations';
 import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
 import { getPaginationValues } from './core/pagination';
+import { getDuration } from './core/time';
 
 const router = Router();
 const MAX_PAGE_SIZE = 50;
@@ -26,10 +27,12 @@ router.get('/count', async (
     try {
         const employeesPromise = dbConnection.employees.findMany();
         const departmentsPromise = dbConnection.departments.findMany();
+        const projectTeamsPromise = dbConnection.projectTeams.findMany();
 
         const filteredEmployees = filterEmployees(req.query, {
             employees: await employeesPromise,
-            departments: await departmentsPromise
+            departments: await departmentsPromise,
+            projectTeams: await projectTeamsPromise,
         });
 
         res.json(filteredEmployees.length);
@@ -54,13 +57,14 @@ router.get('/', async (
     try {
         const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
 
-        const [employees, departments, offices] = await Promise.all([
+        const [employees, departments, offices, projectTeams] = await Promise.all([
             dbConnection.employees.findMany(),
             dbConnection.departments.findMany(),
             dbConnection.offices.findMany(),
+            dbConnection.projectTeams.findMany(),
         ]);
         
-        let filteredEmployees = filterEmployees(req.query, { employees, departments });
+        let filteredEmployees = filterEmployees(req.query, { employees, departments, projectTeams });
         filteredEmployees = filteredEmployees.slice((page - 1) * pageSize, page * pageSize);
         
         const createEmployeeDTO = employeeDTOFactory({ departments, offices });
@@ -130,20 +134,41 @@ router.get('/:employeeId/projects', async (
         const projectTeams = await dbConnection.projectTeams.findMany({ $match: { employeeId: { $eq: employeeId } } });
         const projects = await dbConnection.projects.findMany();
         
-        const projectInvolvements: ProjectEmployeeInvolvement[] = projectTeams.map(assignment => {
-            const project = projects.find(p => p.id === assignment.projectId)!;
+        const projectInvolvements: ProjectEmployeeInvolvement[] = projectTeams.map(involvement => {
+            const project = projects.find(p => p.id === involvement.projectId)!;
             return {
                 employeeId: employee.id,
                 projectId: project.id,
                 employeeName: `${employee.firstName} ${employee.lastName}`,
                 projectName: project.name,
                 projectStatus: project.status,
-                engagementLevel: assignment.engagementLevel,
-                since: assignment.since
+                engagementLevel: involvement.engagementLevel,
+                startDate: involvement.startDate,
+                endDate: involvement.endDate,
+                duration: getDuration({
+                    startDate: new Date(involvement.startDate),
+                    endDate: involvement.endDate ? new Date(involvement.endDate) : new Date()
+                })
             };
         });
 
-        res.json(projectInvolvements);
+        const department = await dbConnection.departments.findOne({ $match: { id: { $eq: employee.departmentId } }});
+        if (!department) {
+            throw new Error('Department not found');
+        }
+
+        const result = {
+            employee: {
+                id: employee.id,
+                name: `${employee.firstName} ${employee.lastName}`,
+                position: employee.position,
+                department: department.name,
+                imgURL: employee.imgURL,
+            },
+            projects: projectInvolvements
+        }
+
+        res.json(result);
     } catch (error) {
         handleRouterError({
             error, req, res,

@@ -8,7 +8,8 @@ export const DBProjectTeamSchema = z.object({
     employeeName: z.string(),
     projectName: z.string(),
     engagementLevel: z.enum(ENGAGEMENT_LEVELS),
-    since: z.string()
-});
+    startDate: z.string(),
+    endDate: z.string().optional(),
+}).strict();
 
 export type DBProjectTeam = z.infer<typeof DBProjectTeamSchema>;

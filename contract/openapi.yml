@@ -659,6 +659,7 @@ paths:
         - Pagination
         - Search
       parameters:
+        - $ref: '#/components/parameters/EmployeeGroup'
         - $ref: '#/components/parameters/EmployeeName'
         - $ref: '#/components/parameters/EmployeeDepartmentId'
         - $ref: '#/components/parameters/EmployeeSkills'
@@ -739,6 +740,7 @@ paths:
         - Employees
         - Search
       parameters:
+        - $ref: '#/components/parameters/EmployeeGroup'
         - $ref: '#/components/parameters/EmployeeName'
         - $ref: '#/components/parameters/EmployeeDepartmentId'
         - $ref: '#/components/parameters/EmployeeSkills'
@@ -903,9 +905,39 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProjectEmployeeInvolvement'
+                type: object
+                required:
+                  - employee
+                  - projects
+                properties:
+                  employee:
+                    type: object
+                    required:
+                      - id
+                      - name
+                      - position
+                      - department
+                    properties:
+                      id:
+                        type: number
+                        example: 91720
+                      name:
+                        type: string
+                        example: "John Doe"
+                      position:
+                        type: string
+                        example: "Software Developer"
+                      department:
+                        type: string
+                        example: "Marketing"
+                      imgURL:
+                        type: string
+                        example: "https://placekitten.com/200/200"
+                  projects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectEmployeeInvolvement'
+                  
         '404':
           description: Employee not found
           content:
@@ -1684,6 +1716,20 @@ components:
       format: date-time
       description: ISO 8601 date-time string
     
+    Duration:
+      type: object
+      required:
+        - years
+        - months
+        - days
+      properties:
+        years:
+          type: integer
+        months:
+          type: integer
+        days:
+          type: integer
+    
     Email:
       type: string
       format: email
@@ -2026,6 +2072,7 @@ components:
             - contractType
             - currentSalary
             - startDate
+            - employedFor
           properties:
             contractType:
               $ref: '#/components/schemas/ContractType'
@@ -2035,6 +2082,8 @@ components:
               $ref: "#/components/schemas/DateString"
             endDate:
               $ref: "#/components/schemas/DateString"
+            employedFor:
+              $ref: "#/components/schemas/Duration"
         personalInfo:
           type: object
           required:
@@ -2089,6 +2138,10 @@ components:
           currentSalary: 75000
           startDate: "2020-01-15"
           endDate: "2025-01-14"
+          employedFor:
+            years: 5
+            months: 0
+            days: 0
         personalInfo:
           age: 35
           phone: "+49 123 456789"
@@ -2533,7 +2586,8 @@ components:
         - projectName
         - projectStatus
         - engagementLevel
-        - since
+        - startDate
+        - duration
       properties:
         employeeId:
           type: integer
@@ -2547,9 +2601,12 @@ components:
           $ref: '#/components/schemas/ProjectStatus'
         engagementLevel:
           $ref: '#/components/schemas/EngagementLevel'
-        since:
-          type: string
-          format: date
+        startDate:
+          $ref: "#/components/schemas/DateString"
+        endDate:
+          $ref: "#/components/schemas/DateString"
+        duration:
+          $ref: '#/components/schemas/Duration'
 
   parameters:
 
@@ -2693,6 +2750,16 @@ components:
         example: "2023-12-31"
 
     # Employee parameters
+
+    EmployeeGroup:
+      name: group
+      in: query
+      required: false
+      description: Filter employees by special groups
+      schema:
+        type: string
+        enum: ["ACTIVE", "INVOLVED", "JOBLESS", "DEPARTING", "NEWHIRES", "PAST"]
+        default: "ACTIVE"
 
     EmployeeName:
       name: employeeName

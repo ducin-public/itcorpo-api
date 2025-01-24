@@ -40,7 +40,7 @@ export namespace Employees {
         | "INVOLVED"
         | "JOBLESS"
         | "DEPARTING"
-        | "NEWHIRES"
+        | "NEW_HIRES"
         | "PAST";
       /**
        * Filter employees by name
@@ -135,7 +135,7 @@ export namespace Employees {
         | "INVOLVED"
         | "JOBLESS"
         | "DEPARTING"
-        | "NEWHIRES"
+        | "NEW_HIRES"
         | "PAST";
       /**
        * Filter employees by name

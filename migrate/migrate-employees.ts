@@ -2,6 +2,7 @@ import e from 'express';
 import { DBConnection } from '../lib/db/db-connection';
 import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
 import { logger } from '../lib/logger';
+import { adjustBirthDate, updateEmploymentDates } from './profile/profile-dates';
 
 const formatDates = (employee: DBEmployee): DBEmployee => {
   employee.employment.startDate = new Date(employee.employment.startDate).toISOString();
@@ -23,18 +24,10 @@ const reorderProperties = (employee: DBEmployee): DBEmployee => {
 }
 
 const updateEmployee = (employee: DBEmployee): DBEmployee => {
-  const employment = {
-    contractType: (employee as any).contractType,
-    currentSalary: (employee as any).salary,
-    startDate: (employee as any).hiredAt,
-    endDate: (employee as any).expiresAt
-  }
-  employee.employment = employment;
-  delete (employee as any).contractType;
-  delete (employee as any).salary;
-  delete (employee as any).hiredAt;
-  delete (employee as any).expiresAt;
-  return employee
+    return {
+        ...employee,
+        employment: updateEmploymentDates(employee.employment)
+    };
 };
 
 export async function migrateEmployees(dbConnection: DBConnection) {

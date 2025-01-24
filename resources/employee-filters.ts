@@ -71,34 +71,40 @@ export function filterEmployees(
     type Group = typeof group;
     const UCGroup = group.toUpperCase() as Group;
 
-    // ACTIVE", "INVOLVED", "JOBLESS", "DEPARTING", "NEWHIRES", "PAST
+    console.log({ group, UCGroup }, result.length);
 
     switch (UCGroup) {
         case 'ACTIVE':
+            console.log('ACTIVE');
             result = result.filter(employee => {
                 return !employee.employment.endDate || new Date(employee.employment.endDate) >= new Date();
             });
             break;
         case "PAST":
+            console.log('PAST');
             result = result.filter(employee => {
                 return employee.employment.endDate && new Date(employee.employment.endDate) < new Date();
             });
             break;
         case "DEPARTING":
+            console.log('DEPARTING');
             result = result.filter(employee => {
                 return employee.employment.endDate && new Date(employee.employment.endDate) >= new Date();
             });
             break;
-        case "NEWHIRES":
+        case "NEW_HIRES":
+            console.log('NEW_HIRES');
             result = result.filter(employee => {
                 return employee.employment.startDate && new Date(employee.employment.startDate) > new Date();
             });
             break;
         case "JOBLESS":
+            console.log('JOBLESS');
             const employeeIdsWithProjects = new Set(collections.projectTeams.map(pt => pt.employeeId));
             result = result.filter(employee => !employeeIdsWithProjects.has(employee.id));
             break;
         case "INVOLVED":
+            console.log('INVOLVED');
             const employeeIdsWithProjects_ = new Set(collections.projectTeams.map(pt => pt.employeeId));
             result = result.filter(employee => employeeIdsWithProjects_.has(employee.id));
             break;
@@ -106,6 +112,8 @@ export function filterEmployees(
             let n: never = UCGroup;
             throw new Error(`Invalid group: ${UCGroup}`);
     }
+
+    console.log('after', result.length);
 
     return result;
 }

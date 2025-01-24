@@ -2758,7 +2758,7 @@ components:
       description: Filter employees by special groups
       schema:
         type: string
-        enum: ["ACTIVE", "INVOLVED", "JOBLESS", "DEPARTING", "NEWHIRES", "PAST"]
+        enum: ["ACTIVE", "INVOLVED", "JOBLESS", "DEPARTING", "NEW_HIRES", "PAST"]
         default: "ACTIVE"
 
     EmployeeName:

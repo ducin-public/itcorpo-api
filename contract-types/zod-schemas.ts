@@ -1091,7 +1091,7 @@ export const contractEndpoints: ContractEndpoint[] = [
             "INVOLVED",
             "JOBLESS",
             "DEPARTING",
-            "NEWHIRES",
+            "NEW_HIRES",
             "PAST",
           ])
           .optional()
@@ -1400,7 +1400,7 @@ export const contractEndpoints: ContractEndpoint[] = [
             "INVOLVED",
             "JOBLESS",
             "DEPARTING",
-            "NEWHIRES",
+            "NEW_HIRES",
             "PAST",
           ])
           .optional()

@@ -1,12 +1,5 @@
 # todos
 
-                duration: getDuration({
-                    startDate: new Date(assignment.since),
-                    endDate: new Date() // FIXME: use actual end date
-                })
-
-
-- [ ] osobno error id i osobno correlation id
 - openapi validation: http://localhost:3000/employees/91720
 - .hbs files
 - rewrite router
@@ -17,16 +10,8 @@
 export interface EmployeesSearchCriteria {
   mode?: "STANDARD" | "SEARCH_FEED";
 }
-        mode:
-          type: string
-          enum: ["STANDARD", "SEARCH_FEED"]
-if (req.query.mode === 'SEARCH_FEED'){
-    filteredEmployees = filteredEmployees.map( e => id,name)
-}
 
-------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------
 
 type ContractEndpoint = {
   method: 'get' | 'post' | 'put' | 'patch' | 'delete';

@@ -67,14 +67,26 @@ export namespace Projects {
        * Page number to retrieve
        * @example 1
        */
-      _page?: number;
+      page?: number;
       /**
        * Number of elements per page
        * @min 1
        * @max 50
        * @example 1
        */
-      _pageSize?: number;
+      pageSize?: number;
+      /**
+       * Sort projects by field
+       * @default "startDate"
+       * @example "startDate"
+       */
+      sortBy?: "name" | "status" | "startDate" | "endDate" | "teamSize";
+      /**
+       * Sort order
+       * @default "asc"
+       * @example "asc"
+       */
+      sortOrder?: "asc" | "desc";
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -221,16 +233,20 @@ export namespace Projects {
   }
 
   /**
-   * @description Returns a list of employees that are assigned to the project.
-   * @tags Projects
-   * @name GetProjectTeam
-   * @summary Get project team (employees assigned to the project)
-   * @request GET:/projects/{projectId}/team
-   * @response `200` `(ProjectEmployeeInvolvement)[]` Successful operation
-   * @response `404` `ErrorResponse` Employee not found
-   * @response `500` `ErrorResponse`
-   * @response `503` `ErrorResponse`
-   */
+ * @description Returns a list of employees that are assigned to the project.
+ * @tags Projects
+ * @name GetProjectTeam
+ * @summary Get project team (employees assigned to the project)
+ * @request GET:/projects/{projectId}/team
+ * @response `200` `{
+    project: Project,
+    team: (ProjectEmployeeInvolvement)[],
+
+}` Successful operation
+ * @response `404` `ErrorResponse` Employee not found
+ * @response `500` `ErrorResponse`
+ * @response `503` `ErrorResponse`
+*/
   export namespace GetProjectTeam {
     export type RequestParams = {
       /** @example "579ef28f-c539-41ff-abe2-e4f6b1c1afed" */
@@ -239,6 +255,9 @@ export namespace Projects {
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = ProjectEmployeeInvolvement[];
+    export type ResponseBody = {
+      project: Project;
+      team: ProjectEmployeeInvolvement[];
+    };
   }
 }

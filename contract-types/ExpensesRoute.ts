@@ -29,14 +29,14 @@ export namespace Expenses {
        * Page number to retrieve
        * @example 1
        */
-      _page?: number;
+      page?: number;
       /**
        * Number of elements per page
        * @min 1
        * @max 50
        * @example 1
        */
-      _pageSize?: number;
+      pageSize?: number;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};

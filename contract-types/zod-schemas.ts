@@ -203,6 +203,10 @@ const EmployeeInput = z
   })
   .strict()
   .passthrough();
+const EmployeeSearchFeed = z
+  .object({ id: z.number().int(), name: z.string() })
+  .strict()
+  .passthrough();
 const ProjectStatus = z.enum(["PLANNING", "ACTIVE", "COMPLETED", "ON_HOLD"]);
 const EngagementLevel = z.enum([
   "FULL_TIME",
@@ -215,6 +219,8 @@ const ProjectEmployeeInvolvement = z
     employeeId: z.number().int(),
     projectId: z.string(),
     employeeName: z.string(),
+    employeePosition: z.string(),
+    employeeURL: z.string().optional(),
     projectName: z.string(),
     projectStatus: ProjectStatus,
     engagementLevel: EngagementLevel,
@@ -299,12 +305,6 @@ const Project = z
     budget: Money,
     startDate: z.string(),
     endDate: z.string().optional(),
-    team: z.array(
-      z
-        .object({ id: z.number().int(), name: z.string() })
-        .strict()
-        .passthrough()
-    ),
     manager: z.number().int(),
     description: z.string(),
   })
@@ -351,6 +351,7 @@ export const contractSchemas = {
   Skill,
   Employee,
   EmployeeInput,
+  EmployeeSearchFeed,
   ProjectStatus,
   EngagementLevel,
   ProjectEmployeeInvolvement,
@@ -452,12 +453,12 @@ export const contractEndpoints: ContractEndpoint[] = [
         schema: z.enum(["ALL", "ACTIVE", "CANCELLED"]).optional(),
       },
       {
-        name: "_page",
+        name: "page",
         type: "Query",
         schema: z.number().optional(),
       },
       {
-        name: "_pageSize",
+        name: "pageSize",
         type: "Query",
         schema: z.number().gte(1).lte(50).optional(),
       },
@@ -683,12 +684,12 @@ export const contractEndpoints: ContractEndpoint[] = [
         schema: z.string().optional(),
       },
       {
-        name: "_page",
+        name: "page",
         type: "Query",
         schema: z.number().optional(),
       },
       {
-        name: "_pageSize",
+        name: "pageSize",
         type: "Query",
         schema: z.number().gte(1).lte(50).optional(),
       },
@@ -759,12 +760,12 @@ export const contractEndpoints: ContractEndpoint[] = [
         schema: z.string().optional(),
       },
       {
-        name: "_page",
+        name: "page",
         type: "Query",
         schema: z.number().optional(),
       },
       {
-        name: "_pageSize",
+        name: "pageSize",
         type: "Query",
         schema: z.number().gte(1).lte(50).optional(),
       },
@@ -1128,12 +1129,12 @@ export const contractEndpoints: ContractEndpoint[] = [
         schema: z.string().optional(),
       },
       {
-        name: "_page",
+        name: "page",
         type: "Query",
         schema: z.number().optional(),
       },
       {
-        name: "_pageSize",
+        name: "pageSize",
         type: "Query",
         schema: z.number().gte(1).lte(50).optional(),
       },
@@ -1462,17 +1463,52 @@ export const contractEndpoints: ContractEndpoint[] = [
   },
   {
     method: "get",
+    path: "/employees/search-feed",
+    alias: "getEmployeesSearchFeed",
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "employeeName",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+    ],
+    response: {
+      type: "ZOD_SCHEMA",
+      schema: z.array(EmployeeSearchFeed),
+    },
+    errors: [
+      {
+        status: 400,
+        description: `Invalid employees search criteria
+`,
+        schema: ErrorResponse,
+      },
+      {
+        status: 500,
+        description: `An internal server error occurred.`,
+        schema: ErrorResponse,
+      },
+      {
+        status: 503,
+        description: `The service is temporarily unavailable. Maybe there is maintenance?`,
+        schema: ErrorResponse,
+      },
+    ],
+  },
+  {
+    method: "get",
     path: "/expenses",
     alias: "getExpenses",
     requestFormat: "json",
     parameters: [
       {
-        name: "_page",
+        name: "page",
         type: "Query",
         schema: z.number().optional(),
       },
       {
-        name: "_pageSize",
+        name: "pageSize",
         type: "Query",
         schema: z.number().gte(1).lte(50).optional(),
       },
@@ -2116,14 +2152,27 @@ export const contractEndpoints: ContractEndpoint[] = [
         schema: z.string().optional(),
       },
       {
-        name: "_page",
+        name: "page",
         type: "Query",
         schema: z.number().optional(),
       },
       {
-        name: "_pageSize",
+        name: "pageSize",
         type: "Query",
         schema: z.number().gte(1).lte(50).optional(),
+      },
+      {
+        name: "sortBy",
+        type: "Query",
+        schema: z
+          .enum(["name", "status", "startDate", "endDate", "teamSize"])
+          .optional()
+          .default("startDate"),
+      },
+      {
+        name: "sortOrder",
+        type: "Query",
+        schema: z.enum(["asc", "desc"]).optional().default("asc"),
       },
     ],
     response: {
@@ -2337,7 +2386,10 @@ export const contractEndpoints: ContractEndpoint[] = [
     ],
     response: {
       type: "ZOD_SCHEMA",
-      schema: z.array(ProjectEmployeeInvolvement),
+      schema: z
+        .object({ project: Project, team: z.array(ProjectEmployeeInvolvement) })
+        .strict()
+        .passthrough(),
     },
     errors: [
       {

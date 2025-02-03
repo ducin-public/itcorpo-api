@@ -6,7 +6,7 @@ import { Employees } from '../contract-types/EmployeesRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterEmployees } from './employee-filters';
 import { handleRouterError } from './core/error';
-import { employeeDTOFactory } from './employees-data-operations';
+import { employeeDTOFactory, employeeSearchFeedDTOFactory } from './employees-data-operations';
 import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
 import { getPaginationValues } from './core/pagination';
 import { getDuration } from './core/time';
@@ -25,15 +25,34 @@ router.get('/count', async (
     res: Response<Employees.GetEmployeesCount.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const employeesPromise = dbConnection.employees.findMany();
-        const departmentsPromise = dbConnection.departments.findMany();
-        const projectTeamsPromise = dbConnection.projectTeams.findMany();
-
-        const filteredEmployees = filterEmployees(req.query, {
-            employees: await employeesPromise,
-            departments: await departmentsPromise,
-            projectTeams: await projectTeamsPromise,
-        });
+        const employeesData = await dbConnection.employees.aggregate([
+            {
+                $lookup: {
+                    from: 'departments',
+                    localField: 'departmentId',
+                    foreignField: 'id',
+                    as: '_department'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'offices',
+                    localField: 'officeCode',
+                    foreignField: 'code',
+                    as: '_office'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'projectTeams',
+                    localField: 'id',
+                    foreignField: 'employeeId',
+                    as: '_projectTeams'
+                }
+            }
+        ]);
+        
+        let filteredEmployees = filterEmployees(req.query, employeesData);
 
         res.json(filteredEmployees.length);
     } catch (error) {
@@ -57,24 +76,72 @@ router.get('/', async (
     try {
         const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
 
-        const [employees, departments, offices, projectTeams] = await Promise.all([
-            dbConnection.employees.findMany(),
-            dbConnection.departments.findMany(),
-            dbConnection.offices.findMany(),
-            dbConnection.projectTeams.findMany(),
+        const employeesData = await dbConnection.employees.aggregate([
+            {
+                $lookup: {
+                    from: 'departments',
+                    localField: 'departmentId',
+                    foreignField: 'id',
+                    as: '_department'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'offices',
+                    localField: 'officeCode',
+                    foreignField: 'code',
+                    as: '_office'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'projectTeams',
+                    localField: 'id',
+                    foreignField: 'employeeId',
+                    as: '_projectTeams'
+                }
+            }
         ]);
         
-        let filteredEmployees = filterEmployees(req.query, { employees, departments, projectTeams });
+        let filteredEmployees = filterEmployees(req.query, employeesData);
         filteredEmployees = filteredEmployees.slice((page - 1) * pageSize, page * pageSize);
         
-        const createEmployeeDTO = employeeDTOFactory({ departments, offices });
-        const result = filteredEmployees.map(createEmployeeDTO);
-
+        const result = filteredEmployees.map(employeeDTOFactory);
         res.json(result);
     } catch (error) {
         handleRouterError({
             error, req, res,
             publicError: 'Failed to fetch employees',
+        });
+    }
+});
+
+// GET /employees/search-feed
+router.get('/search-feed', async (
+    req: Request<
+        Employees.GetEmployeesSearchFeed.RequestParams,
+        Employees.GetEmployeesSearchFeed.ResponseBody,
+        Employees.GetEmployeesSearchFeed.RequestBody,
+        Employees.GetEmployeesSearchFeed.RequestQuery
+    >,
+    res: Response<Employees.GetEmployeesSearchFeed.ResponseBody | ErrorResponse>
+) => {
+    try {
+        const searchName = req.query.employeeName?.toLowerCase();
+        const filteredFeed = await dbConnection.employees.findMany({
+            $match: {
+                $where: (employee: DBEmployee) => {
+                    return !searchName || `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(searchName);
+                }
+            }
+        });
+        
+        const result = filteredFeed.map(employeeSearchFeedDTOFactory);
+        res.json(result);
+    } catch (error) {
+        handleRouterError({
+            error, req, res,
+            publicError: 'Failed to fetch employees search feed',
         });
     }
 });
@@ -91,20 +158,35 @@ router.get('/:employeeId', async (
 ) => {
     try {
         const employeeId = Number(req.params.employeeId);
-        const [employee, departments, offices] = await Promise.all([
-            dbConnection.employees.findOne({ $match: { id: { $eq: employeeId } } }),
-            dbConnection.departments.findMany(),
-            dbConnection.offices.findMany(),
+
+        const [employee] = await dbConnection.employees.aggregate([
+            {
+                $match: { id: { $eq: employeeId } }
+            },
+            {
+                $lookup: {
+                    from: 'departments',
+                    localField: 'departmentId',
+                    foreignField: 'id',
+                    as: '_department'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'offices',
+                    localField: 'officeCode',
+                    foreignField: 'code',
+                    as: '_office'
+                }
+            }
         ]);
         
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
 
-        const createEmployeeDTO = employeeDTOFactory({ departments, offices });
-        const result = createEmployeeDTO(employee);
-
-        res.json(result);
+        const employeeDTO = employeeDTOFactory(employee);
+        res.json(employeeDTO);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -140,6 +222,7 @@ router.get('/:employeeId/projects', async (
                 employeeId: employee.id,
                 projectId: project.id,
                 employeeName: `${employee.firstName} ${employee.lastName}`,
+                employeePosition: employee.position,
                 projectName: project.name,
                 projectStatus: project.status,
                 engagementLevel: involvement.engagementLevel,
@@ -196,14 +279,30 @@ router.post('/', async (
         const created = await dbConnection.employees.insertOne(payload);
         await dbConnection.employees.flush();
 
-        const [departments, offices] = await Promise.all([
-            dbConnection.departments.findMany(),
-            dbConnection.offices.findMany(),
-        ])
-        const createEmployeeDTO = employeeDTOFactory({ departments, offices });
-        const result = createEmployeeDTO(created);
-        
-        res.status(201).json(result);
+        const [employee] = await dbConnection.employees.aggregate([
+            {
+                $match: { id: { $eq: created.id } }
+            },
+            {
+                $lookup: {
+                    from: 'departments',
+                    localField: 'departmentId',
+                    foreignField: 'id',
+                    as: '_department'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'offices',
+                    localField: 'officeCode',
+                    foreignField: 'code',
+                    as: '_office'
+                }
+            }
+        ]);
+
+        const employeeDTO = employeeDTOFactory(employee);
+        res.status(201).json(employeeDTO);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -237,15 +336,31 @@ router.put('/:employeeId', async (
 
         const replaced = await dbConnection.employees.replaceOne({ $match: { id: { $eq: employeeId } } }, payload);
         await dbConnection.employees.flush();
-        
-        const [departments, offices] = await Promise.all([
-            dbConnection.departments.findMany(),
-            dbConnection.offices.findMany(),
-        ])
-        const createEmployeeDTO = employeeDTOFactory({ departments, offices });
-        const result = createEmployeeDTO(replaced!);
-        
-        res.json(result);
+
+        const [employee] = await dbConnection.employees.aggregate([
+            {
+                $match: { id: { $eq: replaced.id } }
+            },
+            {
+                $lookup: {
+                    from: 'departments',
+                    localField: 'departmentId',
+                    foreignField: 'id',
+                    as: '_department'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'offices',
+                    localField: 'officeCode',
+                    foreignField: 'code',
+                    as: '_office'
+                }
+            }
+        ]);
+
+        const employeeDTO = employeeDTOFactory(employee);
+        res.json(employeeDTO);
     } catch (error) {
         handleRouterError({
             error, req, res,

@@ -12,6 +12,7 @@
 import {
   Employee,
   EmployeeInput,
+  EmployeeSearchFeed,
   Money,
   ProjectEmployeeInvolvement,
 } from "./data-contracts";
@@ -77,14 +78,14 @@ export namespace Employees {
        * Page number to retrieve
        * @example 1
        */
-      _page?: number;
+      page?: number;
       /**
        * Number of elements per page
        * @min 1
        * @max 50
        * @example 1
        */
-      _pageSize?: number;
+      pageSize?: number;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -110,6 +111,31 @@ export namespace Employees {
     export type RequestBody = EmployeeInput;
     export type RequestHeaders = {};
     export type ResponseBody = Employee;
+  }
+
+  /**
+   * No description
+   * @tags Employees, Search
+   * @name GetEmployeesSearchFeed
+   * @summary Get search feed for employees
+   * @request GET:/employees/search-feed
+   * @response `200` `(EmployeeSearchFeed)[]` Successful operation
+   * @response `400` `ErrorResponse` Invalid employees search criteria
+   * @response `500` `ErrorResponse`
+   * @response `503` `ErrorResponse`
+   */
+  export namespace GetEmployeesSearchFeed {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * Filter employees by name
+       * @example "John Doe"
+       */
+      employeeName?: string;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = EmployeeSearchFeed[];
   }
 
   /**

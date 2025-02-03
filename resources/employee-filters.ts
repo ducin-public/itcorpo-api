@@ -3,6 +3,11 @@ import { DBDepartment } from '../lib/db/db-zod-schemas/department.schema';
 import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
 import { DBProjectTeam } from '../lib/db/db-zod-schemas/project-team.schema';
 
+type EmployeeWithDepartmentAndProjectTeams = DBEmployee & {
+    _department: DBDepartment[];
+    _projectTeams: DBProjectTeam[];
+};
+
 /**
  * Filters employees based on provided criteria
  *
@@ -16,20 +21,14 @@ import { DBProjectTeam } from '../lib/db/db-zod-schemas/project-team.schema';
  *   - salaryFrom: Filter by minimum salary
  *   - salaryTo: Filter by maximum salary
  * 
- * @param collections - Collection of data required for filtering
- * 
+ * @param employees - Array of employees with their departments and project teams
  * @returns Filtered array of employees matching the criteria
- *   @see {@link DBEmployee}
  */
-export function filterEmployees(
+export function filterEmployees<TItem extends EmployeeWithDepartmentAndProjectTeams>(
     criteria: Employees.GetEmployees.RequestQuery,
-    collections: {
-        departments: DBDepartment[];
-        employees: DBEmployee[];
-        projectTeams: DBProjectTeam[];
-    }
-): DBEmployee[] {
-    let result = [...collections.employees];
+    employees: TItem[]
+): TItem[] {
+    let result = [...employees];
 
     // Filter by employee name if provided
     if (criteria.employeeName) {
@@ -42,7 +41,9 @@ export function filterEmployees(
     // Filter by department if provided
     if (criteria.departmentId) {
         const deptId = Number(criteria.departmentId);
-        result = result.filter(employee => employee.departmentId === deptId);
+        result = result.filter(employee => 
+            employee._department.some(d => d.id === deptId)
+        );
     }
 
     // Filter by skills if provided
@@ -71,49 +72,37 @@ export function filterEmployees(
     type Group = typeof group;
     const UCGroup = group.toUpperCase() as Group;
 
-    console.log({ group, UCGroup }, result.length);
-
     switch (UCGroup) {
         case 'ACTIVE':
-            console.log('ACTIVE');
             result = result.filter(employee => {
                 return !employee.employment.endDate || new Date(employee.employment.endDate) >= new Date();
             });
             break;
         case "PAST":
-            console.log('PAST');
             result = result.filter(employee => {
                 return employee.employment.endDate && new Date(employee.employment.endDate) < new Date();
             });
             break;
         case "DEPARTING":
-            console.log('DEPARTING');
             result = result.filter(employee => {
                 return employee.employment.endDate && new Date(employee.employment.endDate) >= new Date();
             });
             break;
         case "NEW_HIRES":
-            console.log('NEW_HIRES');
             result = result.filter(employee => {
                 return employee.employment.startDate && new Date(employee.employment.startDate) > new Date();
             });
             break;
         case "JOBLESS":
-            console.log('JOBLESS');
-            const employeeIdsWithProjects = new Set(collections.projectTeams.map(pt => pt.employeeId));
-            result = result.filter(employee => !employeeIdsWithProjects.has(employee.id));
+            result = result.filter(employee => employee._projectTeams.length === 0);
             break;
         case "INVOLVED":
-            console.log('INVOLVED');
-            const employeeIdsWithProjects_ = new Set(collections.projectTeams.map(pt => pt.employeeId));
-            result = result.filter(employee => employeeIdsWithProjects_.has(employee.id));
+            result = result.filter(employee => employee._projectTeams.length > 0);
             break;
         default:
             let n: never = UCGroup;
             throw new Error(`Invalid group: ${UCGroup}`);
     }
-
-    console.log('after', result.length);
 
     return result;
 }

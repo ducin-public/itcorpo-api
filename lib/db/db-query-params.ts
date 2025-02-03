@@ -1,49 +1,7 @@
 import { DBError } from "./db-error";
 import { all } from '../../resources/core/filtering';
 import { logger } from "../logger";
-
-type SingleComparisonOperator = '$eq' | '$ne' | '$gt' | '$gte' | '$lt' | '$lte';
-type MultiComparisonOperator = '$in' | '$nin';
-type LogicalOperator = '$and' | '$or';
-
-type ComparisonCriteria<T> = {
-    [K in SingleComparisonOperator]?: T;
-} & {
-    [K in MultiComparisonOperator]?: T[];
-}
-
-type FieldMatchCriteria<TItem extends object> = {
-    [P in keyof TItem]?: ComparisonCriteria<TItem[P]>;
-}
-
-type LogicalMatchCriteria<TItem extends object> = {
-    [K in LogicalOperator]?: Array<MatchCriteria<TItem>>;
-}
-
-type MatchCriteria<TItem extends object> = FieldMatchCriteria<TItem> & LogicalMatchCriteria<TItem>;
-
-/**
- * Sample usage:
- * 
- * ```
- * $match: {
- *   id: { $eq: 1 },
- *   name: { $in: ['a', 'b'] },
- *   $or: [
- *     { id: { $lt: 2 } },
- *     { 
- *       $and: [
- *         { id: { $gt: 2 } },
- *         { id: { $lt: 5 } }
- *       ]
- *     }
- *   ]
- * }
- * ```
- */
-export type MatchParams<TItem extends object> = {
-    $match?: MatchCriteria<TItem>;
-}
+import { MatchCriteria, MatchParams } from "./db-match-types";
 
 export type QueryParams<TItem extends object> = {
     $limit?: number;
@@ -70,7 +28,40 @@ export const validateQueryParams = (params: QueryParams<any>): void => {
             throw new DBError(`Empty $or array`);
         }
     }
-    logger.debug(`$match criteria: ${JSON.stringify(params)}`);
+    logger.debug(`query criteria: ${JSON.stringify(params)}`);
+}
+
+const createLogicalPredicate = <TItem extends object>($match: MatchCriteria<TItem>, operator: keyof MatchCriteria<TItem>): (item: TItem) => boolean => {
+    const conditions = $match[operator] as Array<MatchCriteria<TItem>>;
+    const nestedPredicates = conditions.map(condition => 
+        createPredicateFromCriteria(condition)
+    );
+
+    switch (operator) {
+        case '$and':
+            return (item) => nestedPredicates.every(pred => pred(item));
+        case '$or':
+            return (item) => nestedPredicates.some(pred => pred(item));
+        case '$nor':
+            return (item) => !nestedPredicates.some(pred => pred(item));
+        case '$not':
+            return (item) => nestedPredicates.every(pred => !pred(item));
+        default:
+            throw new DBError(`Invalid logical operator: ${String(operator)}`);
+    }
+}
+
+const createEvaluationPredicate = <TItem extends object>($match: MatchCriteria<TItem>): (item: TItem) => boolean => {
+    if (!$match.$where) {
+        return () => true;
+    }
+    return (item) => $match.$where!(item);
+}
+
+const createComparisonPredicate = <TItem extends object>($match: MatchCriteria<TItem>): (item: TItem) => boolean => {
+    const predicates: Array<(item: TItem) => boolean> = [];
+    return all(predicates);
+    // FIXME: Implement this
 }
 
 export const createPredicateFromCriteria = <TItem extends object>($match: MatchCriteria<TItem>): (item: TItem) => boolean => {
@@ -80,18 +71,12 @@ export const createPredicateFromCriteria = <TItem extends object>($match: MatchC
         const value = ($match as any)[key];
         if (!value) continue;
 
-        if (key === '$and' || key === '$or') {
-            const conditions = value as Array<MatchCriteria<TItem>>;
-            const nestedPredicates = conditions.map(condition => 
-                createPredicateFromCriteria(condition)
-            );
-            
-            if (key === '$and') {
-                predicates.push((item) => nestedPredicates.every(pred => pred(item)));
-            } else { // $or
-                predicates.push((item) => nestedPredicates.some(pred => pred(item)));
-            }
-            continue;
+        if (['$and', '$or', '$nor', '$not'].includes(key)) {
+            predicates.push(createLogicalPredicate($match, key as keyof MatchCriteria<TItem>));
+        }
+
+        if (['$where'].includes(key)) {
+            predicates.push(createEvaluationPredicate($match));
         }
 
         const _value = value as any;

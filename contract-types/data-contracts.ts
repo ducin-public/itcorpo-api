@@ -403,10 +403,6 @@ export interface Project {
   startDate: string;
   /** @format date */
   endDate?: string;
-  team: {
-    id: number;
-    name: string;
-  }[];
   manager: number;
   description: string;
 }
@@ -434,6 +430,9 @@ export interface ProjectEmployeeInvolvement {
   employeeId: number;
   projectId: string;
   employeeName: string;
+  employeePosition: string;
+  /** @example "https://placekitten.com/200/200" */
+  employeeURL?: string;
   projectName: string;
   /** Status of the ongoing project's workflow */
   projectStatus: ProjectStatus;

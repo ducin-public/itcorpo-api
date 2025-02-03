@@ -1,35 +1,24 @@
 import { readFile, writeFile } from 'fs/promises';
+import { z } from 'zod';
+import { Database } from './db-connection';
 
 import { logger } from '../logger';
 import { measureTime } from '../perf';
-import { ZodSchema } from 'zod';
 import { DBError } from './db-error';
 import { DB_FILE } from '../files';
 
-// // an object type which accepts `TDatabase extends object` where keys are keys of TDatabase, but filtered: only the ones which values are an array, (2) the array item has an id property; the value of the result type is the type of an id (e.g. { employee: number, project: string, ... })
-// type CollectionIdType<TDatabase extends object> = {
-//     [K in keyof TDatabase]: TDatabase[K] extends Array<infer TItem> ? TItem extends { id: infer TId } ? TId : never : never;
-// };
-// // a union of only those keys which have 'number' values
-// type OnlyNumbers<TDatabase extends object> = {
-//     [K in keyof CollectionIdType<TDatabase>]: CollectionIdType<TDatabase>[K] extends number 
-//         ? CollectionIdType<TDatabase>[K] extends never 
-//             ? never 
-//             : K 
-//         : never;
-// }[keyof CollectionIdType<TDatabase>];
-
-type DBCollectionConfig = {
+export type CollectionConfig<TCollectionItem extends object> = {
     name: string;
-    accessMode: "R" | "RW"
-    __IN_MEMORY__?: any
-    collectionSchema: ZodSchema;
+    accessMode: "RW" | "R";
+    collectionSchema: z.ZodType<TCollectionItem>;
+    db: Database;
+    __IN_MEMORY__?: TCollectionItem[];
 };
 
-export class DBCollection<TCollection extends object> {
-    private data: TCollection | null = null;
+export abstract class DBCollection<TCollectionItem extends object> {
+    private data: TCollectionItem[] | null = null;
 
-    protected async getAll(): Promise<TCollection> {
+    protected async getAll(): Promise<TCollectionItem[]> {
         if (this.data === null) {
             await this.read();
         }
@@ -39,19 +28,19 @@ export class DBCollection<TCollection extends object> {
         return this.data;
     }
 
-    constructor(protected config: DBCollectionConfig) {
+    constructor(protected config: CollectionConfig<TCollectionItem>) {
         if (config.accessMode === 'R' && !config.__IN_MEMORY__) {
             throw new DBError(`Collection ${config.name} is in read mode but no in-memory data provided`);
         }
     }
 
-    private async getContent(): Promise<TCollection> {
+    private async getContent(): Promise<TCollectionItem[]> {
         const config = this.config
         if (config.accessMode === 'RW') {
             const content = await measureTime(() => readFile(DB_FILE(config.name), 'utf-8'), 'db-read');
             return JSON.parse(content);
         } else {
-            return config.__IN_MEMORY__;
+            return config.__IN_MEMORY__!;
         }
     }
 

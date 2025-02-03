@@ -5,7 +5,7 @@ import { logger } from "../../lib/logger";
 import { CORRELATION_ID_HEADER } from "../../middlewares/correlation-id";
 import { HTTPError } from "./HTTPError";
 
-export const getErrorGUID = () => {
+export const getErrorID = () => {
     return randomUUID();
 }
 
@@ -21,10 +21,10 @@ const ctxToString = (ctx: Record<string, unknown>) => {
 }
 
 export const handleRouterError = ({ error, req, res, publicError }: handleRouterErrorParams) => {
-    const errorGUID = getErrorGUID();
+    const errorID = getErrorID();
     const correlationId = req?.headers?.[CORRELATION_ID_HEADER];
     const ctx = {
-        errorGUID,
+        errorID,
         publicError,
         ...(correlationId && { correlationId }),
     }
@@ -32,19 +32,19 @@ export const handleRouterError = ({ error, req, res, publicError }: handleRouter
     // logger
     logger.error(ctxToString(ctx));
     if (error instanceof Error) {
-        logger.error(errorGUID, ',', error.stack);
+        logger.error(errorID, ',', error.stack);
     }
 
     if (res) {
         if (error instanceof HTTPError) {
             res.status(error.status).json({
                 message: [error.message, publicError].join('. '),
-                errorGUID
+                errorID
             });
         } else {
             res.status(500).json({
                 message: publicError,
-                errorGUID
+                errorID
             });
         }
     }

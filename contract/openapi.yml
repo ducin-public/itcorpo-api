@@ -175,6 +175,11 @@ paths:
       responses:
         '200':
           description: Successful operation
+          headers:
+            X-Total-Count:
+              $ref: '#/components/headers/XTotalCount'
+            X-Total-Pages:
+              $ref: '#/components/headers/XTotalPages'
           content:
             application/json:
               schema:
@@ -452,6 +457,11 @@ paths:
       responses:
         '200':
           description: Successful operation
+          headers:
+            X-Total-Count:
+              $ref: '#/components/headers/XTotalCount'
+            X-Total-Pages:
+              $ref: '#/components/headers/XTotalPages'
           content:
             application/json:
               schema:
@@ -732,6 +742,36 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
 
+  /employees/search-feed:
+    get:
+      summary: Get search feed for employees
+      operationId: getEmployeesSearchFeed
+      tags:
+        - Employees
+        - Search
+      parameters:
+        - $ref: '#/components/parameters/EmployeeName'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeSearchFeed'
+        '400':
+          description: >
+            Invalid employees search criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
   /employees/count:
     get:
       summary: Get total number of employees
@@ -750,6 +790,11 @@ paths:
       responses:
         '200':
           description: Successful operation
+          headers:
+            X-Total-Count:
+              $ref: '#/components/headers/XTotalCount'
+            X-Total-Pages:
+              $ref: '#/components/headers/XTotalPages'
           content:
             application/json:
               schema:
@@ -963,6 +1008,11 @@ paths:
       responses:
         '200':
           description: Successful operation
+          headers:
+            X-Total-Count:
+              $ref: '#/components/headers/XTotalCount'
+            X-Total-Pages:
+              $ref: '#/components/headers/XTotalPages'
           content:
             application/json:
               schema:
@@ -1435,9 +1485,16 @@ paths:
         - $ref: '#/components/parameters/ProjectBudgetTo'
         - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/ProjectSortBy'
+        - $ref: '#/components/parameters/SortOrder'
       responses:
         '200':
           description: Successful operation
+          headers:
+            X-Total-Count:
+              $ref: '#/components/headers/XTotalCount'
+            X-Total-Pages:
+              $ref: '#/components/headers/XTotalPages'
           content:
             application/json:
               schema:
@@ -1663,9 +1720,17 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProjectEmployeeInvolvement'
+                type: object
+                required:
+                  - project
+                  - team
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+                  team:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectEmployeeInvolvement'
         '404':
           description: Employee not found
           content:
@@ -2488,7 +2553,6 @@ components:
         - status
         - budget
         - startDate
-        - team
         - manager
         - description
       properties:
@@ -2506,18 +2570,6 @@ components:
         endDate:
           type: string
           format: date
-        team:
-          type: array
-          items:
-            type: object
-            required:
-              - id
-              - name
-            properties:
-              id:
-                type: integer
-              name:
-                type: string
         manager:
           type: integer
         description:
@@ -2583,6 +2635,7 @@ components:
         - employeeId
         - projectId
         - employeeName
+        - employeePosition
         - projectName
         - projectStatus
         - engagementLevel
@@ -2595,6 +2648,11 @@ components:
           type: string
         employeeName:
           type: string
+        employeePosition:
+          type: string
+        employeeURL:
+          type: string
+          example: "https://placekitten.com/200/200"
         projectName:
           type: string
         projectStatus:
@@ -2608,10 +2666,22 @@ components:
         duration:
           $ref: '#/components/schemas/Duration'
 
+  headers:
+    XTotalCount:
+      description: Total number of items in collection, considering request query parameters
+      schema:
+        type: integer
+        example: 156
+    XTotalPages:
+      description: Total number of pages, considering request query parameters
+      schema:
+        type: integer
+        example: 3
+
   parameters:
 
     PageNumber:
-      name: _page
+      name: page
       in: query
       required: false
       description: Specify the page number to retrieve 
@@ -2621,7 +2691,7 @@ components:
         example: 1
 
     PageSize:
-      name: _pageSize
+      name: pageSize
       in: query
       required: false
       description: Specify the number of items per page
@@ -2631,6 +2701,18 @@ components:
         maximum: 50
         description: Number of elements per page
         example: 1
+    
+    SortOrder:
+      name: sortOrder
+      in: query
+      required: false
+      description: Sort order
+      schema:
+        type: string
+        enum: ["asc", "desc"]
+        default: "asc"
+        description: Sort order
+        example: "asc"
 
     # Benefit parameters
 
@@ -2868,6 +2950,18 @@ components:
         example: "ALL"
 
     # Project parameters
+
+    ProjectSortBy:
+      name: sortBy
+      in: query
+      required: false
+      description: Sort projects by field
+      schema:
+        type: string
+        enum: ["name", "status", "startDate", "endDate", "teamSize"]
+        default: "startDate"
+        description: Sort projects by field
+        example: "startDate"
 
     ProjectName:
       name: projectName

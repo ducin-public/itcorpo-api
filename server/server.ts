@@ -53,6 +53,7 @@ export const createServer = (serverConfig: ServerConfig) => {
   app.set('x-powered-by', false);
   app.use((req, res, next) => {
     res.setHeader('X-Powered-By', 'IT Corpo');
+    res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count, X-Total-Pages');
     next();
   });
   app.use(correlationIDMiddleware);

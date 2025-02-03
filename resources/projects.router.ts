@@ -1,12 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { randomUUID } from 'crypto';
 
 import { Project, ErrorResponse, ProjectEmployeeInvolvement } from '../contract-types/data-contracts';
 import { Projects } from '../contract-types/ProjectsRoute';
 import { dbConnection } from '../lib/db/db-connection';
-import { filterProjects } from './project-filters';
-import { attachTeamToProject, attachTeamToAllProjects } from './project-data-operations';
+import { filterProjects, sortProjects } from './project-filters';
 import { handleRouterError } from './core/error';
-import { randomUUID } from 'crypto';
 import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
 import { getPaginationValues } from './core/pagination';
 import { getDuration } from './core/time';
@@ -25,15 +24,17 @@ router.get('/count', async (
     res: Response<Projects.GetProjectsCount.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const projectsPromise = dbConnection.projects.findMany();
-        const projectTeamsPromise = dbConnection.projectTeams.findMany();
+        const projectsWithTeams = await dbConnection.projects.aggregate([{
+            $lookup: {
+                from: "projectTeams" as const,
+                localField: "id",
+                foreignField: "projectId",
+                as: "team" as const
+            }
+        }]);
 
-        const filteredProjects = filterProjects(req.query, {
-            projects: await projectsPromise,
-            projectTeams: await projectTeamsPromise,
-        });
-
-        res.json(filteredProjects.length);
+        const result = filterProjects(req.query, projectsWithTeams);
+        res.json(result.length);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -53,20 +54,29 @@ router.get('/', async (
     res: Response<Projects.GetProjects.ResponseBody | ErrorResponse>
 ) => {
     try {
+        const projectsWithTeams = await dbConnection.projects.aggregate([{
+            $lookup: {
+                from: "projectTeams" as const,
+                localField: "id",
+                foreignField: "projectId",
+                as: "team" as const
+            }
+        }]);
+        let result = filterProjects(req.query, projectsWithTeams);
+        const allResultsCount = result.length;
+
+        result = sortProjects(req.query, result);
+
         const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
+        result = result.slice((page - 1) * pageSize, page * pageSize);
+        const allResultsPages = Math.ceil(allResultsCount / pageSize);
 
-        const projectsPromise = dbConnection.projects.findMany();
-        const projectTeamsPromise = dbConnection.projectTeams.findMany();
+        // headers have to be set BEFORE sending the response
+        res.setHeaders(new Headers({
+            'X-Total-Count': allResultsCount.toString(),
+            'X-Total-Pages': allResultsPages.toString()
+        })).json(result)
 
-        let filteredProjects = filterProjects(req.query, {
-            projects: await projectsPromise,
-            projectTeams: await projectTeamsPromise,
-        });
-
-        filteredProjects = filteredProjects.slice((page - 1) * pageSize, page * pageSize);
-
-        const projectsWithTeams = attachTeamToAllProjects(filteredProjects, await projectTeamsPromise);
-        res.json(projectsWithTeams);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -86,15 +96,22 @@ router.get('/:projectId', async (
     res: Response<Projects.GetProjectById.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const project = await dbConnection.projects.findOne({ $match: { id: { $eq: req.params.projectId } } });
-        
+        const [project] = await dbConnection.projects.aggregate([{
+            $match: { id: { $eq: req.params.projectId } }
+        }, {
+            $lookup: {
+                from: "projectTeams" as const,
+                localField: "id",
+                foreignField: "projectId",
+                as: "team" as const
+            }
+        }]);
+
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
-        
-        const projectTeams = await dbConnection.projectTeams.findMany({ $match: { projectId: { $eq: project.id } } });
-        const projectWithTeam = attachTeamToProject(project, projectTeams);
-        res.json(projectWithTeam);
+
+        res.json(project);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -122,10 +139,7 @@ router.post('/', async (
         const created = await dbConnection.projects.insertOne(newProject);
         await dbConnection.projects.flush();
 
-        const projectTeams = await dbConnection.projectTeams.findMany({ $match: { projectId: { $eq: created.id } } });
-        const projectWithTeam = attachTeamToProject(created, projectTeams);
-        
-        res.status(201).json(projectWithTeam);
+        res.status(201).json(created);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -222,6 +236,8 @@ router.get('/:projectId/team', async (
                 employeeId: employee.id,
                 projectId: project.id,
                 employeeName: `${employee.firstName} ${employee.lastName}`,
+                employeePosition: employee.position,
+                ...(employee.imgURL && { employeeURL: employee.imgURL }),
                 projectName: project.name,
                 projectStatus: project.status,
                 engagementLevel: involvement.engagementLevel,
@@ -234,7 +250,12 @@ router.get('/:projectId/team', async (
             };
         });
 
-        res.json(projectInvolvements);
+        const result: Projects.GetProjectTeam.ResponseBody = {
+            project,
+            team: projectInvolvements
+        }
+
+        res.json(result);
     } catch (error) {
         handleRouterError({
             error, req, res,

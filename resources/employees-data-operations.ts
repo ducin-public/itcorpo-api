@@ -1,34 +1,11 @@
-import { Employee } from "../contract-types/data-contracts";
+import e from "express";
+import { Employee, EmployeeSearchFeed } from "../contract-types/data-contracts";
 import { DBDepartment } from "../lib/db/db-zod-schemas/department.schema";
 import { DBEmployee } from "../lib/db/db-zod-schemas/employee.schema";
 import { DBOffice } from "../lib/db/db-zod-schemas/office.schema";
+import { stripObjectProps } from "./core/objects";
 import { getDuration } from "./core/time";
-
-export const mergeWithDepartment = (employee: DBEmployee, departments: DBDepartment[]) => {
-    const department = departments.find(d => d.id === employee.departmentId);
-    if (!department) {
-        throw new Error(`Department not found for ID: ${employee.departmentId}`);
-    }
-    const { departmentId, ...rest } = employee;
-    
-    return {
-        ...rest,
-        department: department.name
-    };
-}
-
-export const mergeWithOffice = (employee: DBEmployee, offices: DBOffice[]) => {
-    const office = offices.find(o => o.code === employee.officeCode);
-    if (!office) {
-        throw new Error(`Office not found for code: ${employee.officeCode}`);
-    }
-    const { officeCode, ...rest } = employee;
-
-    return {
-        ...rest,
-        office: `${office.city}, ${office.country}`
-    };
-}
+import { DBProjectTeam } from "../lib/db/db-zod-schemas/project-team.schema";
 
 export const employeeAge = (employee: DBEmployee) => {
     const age = new Date().getFullYear() - new Date(employee.personalInfo.dateOfBirth).getFullYear();
@@ -57,45 +34,36 @@ const reorderProperties = (employee: Employee): Employee => {
   return { id, nationality, department, office, keycardId, name, position, email, ...rest, personalInfo: reorderPersonalInfo(personalInfo) };
 }
 
-type FactoryParams = {
-  departments: DBDepartment[];
-  offices: DBOffice[];
+type EmployeeWithDepartmentAndOffice = DBEmployee & {
+    _department: DBDepartment[];
+    _office: DBOffice[];
+    _projectTeams?: DBProjectTeam[];
+};
+
+export const employeeDTOFactory = (employee: EmployeeWithDepartmentAndOffice): Employee => {
+    const result = {
+        ...employee,
+        department: employee._department[0].name,
+        office: `${employee._office[0].city}, ${employee._office[0].country}`,
+        name: employeeName(employee),
+        employment: {
+            ...employee.employment,
+            employedFor: employeeEmployedFor(employee)
+        },
+        personalInfo: {
+            ...stripObjectProps(employee.personalInfo, ['dateOfBirth']),
+            age: employeeAge(employee)
+        }
+    } satisfies Employee;
+
+    const stripped = stripObjectProps(result, ['_department', '_office', '_projectTeams']);
+
+    return reorderProperties(stripped);
 }
-export const employeeDTOFactory = ({ departments, offices }: FactoryParams) =>
-    (employee: DBEmployee): Employee => {
-        // department
-        const department = departments.find(d => d.id === employee.departmentId);
-        if (!department) {
-            throw new Error(`Department not found for ID: ${employee.departmentId}`);
-        }
 
-        // office
-        const office = offices.find(o => o.code === employee.officeCode);
-        if (!office) {
-            throw new Error(`Office not found for code: ${employee.officeCode}`);
-        }
-
-        const {
-            officeCode, departmentId, firstName, lastName,
-            personalInfo: { dateOfBirth, ...personalInfoRest},
-            employment,
-            ...employeeRest
-        } = employee;
-
-        const result = {
-            ...employeeRest,
-            department: department.name,
-            office: `${office.city}, ${office.country}`,
-            name: employeeName(employee),
-            employment: {
-                ...employment,
-                employedFor: employeeEmployedFor(employee)
-            },
-            personalInfo: {
-                ...personalInfoRest,
-                age: employeeAge(employee)
-            }
-        } satisfies Employee;
-
-        return reorderProperties(result);
-    }
+export const employeeSearchFeedDTOFactory = (employee: DBEmployee): EmployeeSearchFeed => {
+  return {
+    id: employee.id,
+    name: employeeName(employee),
+  }
+}

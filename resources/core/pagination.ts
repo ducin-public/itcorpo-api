@@ -1,22 +1,22 @@
 import { HTTPError } from "./HTTPError";
 
 export type PaginationParams = {
-    _page?: number;
-    _pageSize?: number;
+    page?: number;
+    pageSize?: number;
     MAX_PAGE_SIZE: number;
 }
 
-export const getPaginationValues = ({ _page, _pageSize, MAX_PAGE_SIZE }: PaginationParams) => {
+export const getPaginationValues = ({ page: qPage, pageSize: qPageSize, MAX_PAGE_SIZE }: PaginationParams) => {
     // Handle page size first
     let pageSize: number;
     
-    if (_pageSize === undefined) {
+    if (!qPageSize) {
         pageSize = MAX_PAGE_SIZE;
     } else {
-        pageSize = Number(_pageSize);
+        pageSize = Number(qPageSize);
         if (!Number.isInteger(pageSize) || pageSize < 1) {
             throw new HTTPError({
-                message: `Invalid _pageSize value: must be an integer between 1 and ${MAX_PAGE_SIZE}`,
+                message: `Invalid pageSize value: must be an integer between 1 and ${MAX_PAGE_SIZE}`,
                 status: 400
             });
         }
@@ -29,7 +29,7 @@ export const getPaginationValues = ({ _page, _pageSize, MAX_PAGE_SIZE }: Paginat
     }
 
     // Handle page number
-    const page = _page === undefined ? 1 : Number(_page);
+    const page = !qPage ? 1 : Number(qPage);
     if (!Number.isInteger(page) || page < 1) {
         throw new HTTPError({
             message: 'Invalid _page value: must be an integer greater than 0',

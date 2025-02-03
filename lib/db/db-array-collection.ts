@@ -1,12 +1,11 @@
 import { DBError } from './db-error';
-import { randomUUID } from 'crypto';
 
 import { DBCollection } from "./db-collection";
-import { MatchParams, QueryParams, validateQueryParams, createPredicateFromCriteria } from './db-query-params';
+import { QueryParams, validateQueryParams, createPredicateFromCriteria } from './db-query-params';
+import { AggregateStage, InferAggregateResult } from './db-aggregate-types';
+import { MatchParams } from './db-match-types';
 
-export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]> {
-    // private assertCollectionData(data: unknown): asserts data is TItem[];
-
+export class ArrayCollection<TCollectionItem extends object> extends DBCollection<TCollectionItem> {
     async validateInMemory() {
         const itemSchema = this.config.collectionSchema;
         const data = await this.getAll();
@@ -19,14 +18,14 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         }
     }
 
-    private getMatchPredicate({ $match }: MatchParams<TItem>) {
+    private getMatchPredicate({ $match }: MatchParams<TCollectionItem>) {
         if (!$match) {
             return () => true;
         }
         return createPredicateFromCriteria($match);
     }
 
-    async count(params: MatchParams<TItem> = {}) {
+    async count(params: MatchParams<TCollectionItem> = {}) {
         validateQueryParams(params);
         const collection = await this.getAll();
 
@@ -37,14 +36,14 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         return collection.filter($matchPredicate).length;
     }
 
-    async findOne(params: MatchParams<TItem> = {}) {
+    async findOne(params: MatchParams<TCollectionItem> = {}) {
         validateQueryParams(params);
         const $matchPredicate = this.getMatchPredicate(params);
         const collection = await this.getAll();
         return collection.find($matchPredicate);
     }
 
-    async findMany(params: QueryParams<TItem> = {}) {
+    async findMany(params: QueryParams<TCollectionItem> = {}) {
         validateQueryParams(params);
         let collection = await this.getAll();
         
@@ -64,7 +63,7 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         return collection;
     }
 
-    async replaceOne(params: QueryParams<TItem>, replaced: TItem) {
+    async replaceOne(params: QueryParams<TCollectionItem>, replaced: TCollectionItem) {
         validateQueryParams(params);
         const $matchPredicate = this.getMatchPredicate(params);
 
@@ -79,7 +78,7 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         }
     }
 
-    async updateOne(params: QueryParams<TItem>, data: Partial<TItem>) {
+    async updateOne(params: QueryParams<TCollectionItem>, data: Partial<TCollectionItem>) {
         validateQueryParams(params);
         const $matchPredicate = this.getMatchPredicate(params);
 
@@ -91,18 +90,18 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         }
     }
 
-    async insertOne(document: TItem) {
+    async insertOne(document: TCollectionItem) {
         const collection = await this.getAll();
         collection.push(document);
         return document;
     }
 
-    async insertMany(documents: TItem[]) {
+    async insertMany(documents: TCollectionItem[]) {
         const collection = await this.getAll();
         collection.push(...documents);
     }
 
-    async deleteOne(params: QueryParams<TItem> = {}) {
+    async deleteOne(params: QueryParams<TCollectionItem> = {}) {
         validateQueryParams(params);
         const $matchPredicate = this.getMatchPredicate(params);
 
@@ -116,7 +115,7 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
         }
     }
 
-    async deleteMany(params: QueryParams<TItem> = {}) {
+    async deleteMany(params: QueryParams<TCollectionItem> = {}) {
         validateQueryParams(params);
 
         let collection = await this.getAll();
@@ -136,5 +135,44 @@ export class ArrayCollection<TItem extends object> extends DBCollection<TItem[]>
                 items.splice(i, 1);
             }
         }
+    }
+
+    async aggregate<
+        TOutputKey extends string,
+        TStages extends readonly AggregateStage<TCollectionItem, TOutputKey>[]
+    >(
+        pipeline: [...TStages]
+    ): Promise<InferAggregateResult<TCollectionItem, TStages>[]> {
+        let result = await this.getAll();
+
+        for (const stage of pipeline) {
+            if ('$match' in stage) {
+                const predicate = createPredicateFromCriteria(stage.$match);
+                result = result.filter(predicate);
+            }
+            if ('$lookup' in stage) {
+                const lookup = stage.$lookup;
+                const foreignCollection = this.config.db[lookup.from];
+                const foreignData = await foreignCollection.findMany();
+
+                result = result.map(item => {
+                    const localValue = item[lookup.localField as keyof typeof item]
+                    
+                    return {
+                        ...item,
+                        [lookup.as]: foreignData.filter(foreign => {
+                            const foreignValue = foreign[lookup.foreignField as keyof typeof foreign]
+                            if (Array.isArray(localValue)) {
+                                return localValue.includes(foreignValue)
+                            } else {
+                                return localValue === foreignValue
+                            }
+                        })
+                    }
+                });
+            }
+        }
+
+        return result as InferAggregateResult<TCollectionItem, TStages>[];
     }
 }

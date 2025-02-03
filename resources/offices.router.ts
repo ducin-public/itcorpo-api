@@ -1,13 +1,12 @@
 import { Router, Request, Response } from 'express';
 
-import { Office, ErrorResponse } from '../contract-types/data-contracts';
+import { ErrorResponse } from '../contract-types/data-contracts';
 import { Offices } from '../contract-types/OfficesRoute';
 import { dbConnection } from '../lib/db/db-connection';
 import { filterOffices } from './offices-filters';
 import { handleRouterError } from './core/error';
-import { O } from 'vitest/dist/chunks/environment.LoooBwUu';
 import { DBOffice } from '../lib/db/db-zod-schemas/office.schema';
-import { stripOfficeCoordinates } from './office-data-operations';
+import { stripObjectProps } from './core/objects';
 
 const router = Router();
 
@@ -64,16 +63,26 @@ router.get('/count', async (
     res: Response<Offices.GetOfficesCount.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const officesPromise = dbConnection.offices.findMany();
-        const amenitiesPromise = dbConnection.officeAmenities.findMany();
-        const countriesPromise = dbConnection.countries.findMany();
+        const officesWithData = await dbConnection.offices.aggregate([
+            {
+                $lookup: {
+                    from: "officeAmenities" as const,
+                    localField: "amenities",
+                    foreignField: "code",
+                    as: "_amenities" as const
+                }
+            },
+            {
+                $lookup: {
+                    from: "countries" as const,
+                    localField: "country",
+                    foreignField: "name",
+                    as: "_country" as const
+                }
+            }
+        ]);
 
-        const filteredOffices = await filterOffices(req.query, {
-            offices: await officesPromise,
-            officeAmenities: await amenitiesPromise,
-            countries: await countriesPromise
-        });
-
+        const filteredOffices = await filterOffices(req.query, officesWithData);
         res.json(filteredOffices.length);
     } catch (error) {
         handleRouterError({
@@ -94,15 +103,27 @@ router.get('/', async (
     res: Response<Offices.GetOffices.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const officesPromise = dbConnection.offices.findMany();
-        const amenitiesPromise = dbConnection.officeAmenities.findMany();
-        const countriesPromise = dbConnection.countries.findMany();
+        const officesWithData = await dbConnection.offices.aggregate([
+            {
+                $lookup: {
+                    from: "officeAmenities" as const,
+                    localField: "amenities",
+                    foreignField: "name",
+                    as: "_amenities" as const
+                }
+            },
+            {
+                $lookup: {
+                    from: "countries" as const,
+                    localField: "country",
+                    foreignField: "name",
+                    as: "_country" as const
+                }
+            },
+        ]);
 
-        const resultOffices = await filterOffices(req.query, {
-            offices: await officesPromise,
-            officeAmenities: await amenitiesPromise,
-            countries: await countriesPromise
-        }).map(office => stripOfficeCoordinates(office))
+        const resultOffices = filterOffices(req.query, officesWithData)
+            .map(office => stripObjectProps(office, ['_amenities', '_country', 'coordinates']));
 
         res.json(resultOffices);
     } catch (error) {
@@ -130,7 +151,7 @@ router.get('/:officeCode', async (
             return res.status(404).json({ message: 'Office not found' });
         }
 
-        const resultOffice = stripOfficeCoordinates(officeByCode);
+        const resultOffice = stripObjectProps(officeByCode, ['coordinates']);
         
         res.json(resultOffice);
     } catch (error) {
@@ -170,7 +191,7 @@ router.post('/', async (
         await dbConnection.offices.insertOne(newOffice);
         await dbConnection.offices.flush();
 
-        const resultOffice = stripOfficeCoordinates(newOffice);
+        const resultOffice = stripObjectProps(newOffice, ['coordinates']);
         
         res.status(201).json(resultOffice);
     } catch (error) {
@@ -212,7 +233,7 @@ router.put('/:officeCode', async (
         await dbConnection.offices.replaceOne({ $match: { code: { $eq: req.params.officeCode } } }, updatedOffice);
         await dbConnection.offices.flush();
 
-        const resultOffice = stripOfficeCoordinates(updatedOffice);
+        const resultOffice = stripObjectProps(updatedOffice, ['coordinates']);
         
         res.json(resultOffice);
     } catch (error) {

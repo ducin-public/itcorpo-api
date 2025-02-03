@@ -2,6 +2,8 @@ import { Projects } from '../contract-types/ProjectsRoute';
 import { DBProjectTeam } from '../lib/db/db-zod-schemas/project-team.schema';
 import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
 
+type ProjectWithTeams = DBProject & { team: DBProjectTeam[] };
+
 /**
  * Filter projects based on provided criteria
  * 
@@ -14,19 +16,14 @@ import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
  *   - budgetFrom: Filter by minimum budget amount
  *   - budgetTo: Filter by maximum budget amount
  * 
- * @param collections - Collection of data required for filtering
- * 
+ * @param projects - Array of projects with their teams
  * @returns Filtered array of projects matching the criteria
- *   @see {@link DBProject}
  */
 export function filterProjects(
-    criteria: Projects.GetProjectsCount.RequestQuery,
-    collections: {
-        projects: DBProject[];
-        projectTeams: DBProjectTeam[];
-    }
-): DBProject[] {
-    let result = [...collections.projects];
+    criteria: Projects.GetProjects.RequestQuery,
+    projects: ProjectWithTeams[]
+): ProjectWithTeams[] {
+    let result = [...projects];
 
     // Filter by project name if provided
     if (criteria.projectName) {
@@ -62,17 +59,9 @@ export function filterProjects(
     const teamMembers = criteria.teamMembers?.split(',').map(Number);
     if (teamMembers) {
         const filtering = criteria.teamMembersFiltering || 'ANY';
-        const projectTeamsMap = new Map<string, number[]>();
-
-        // Create a map of project IDs to employee IDs
-        for (const pt of collections.projectTeams) {
-            const employees = projectTeamsMap.get(pt.projectId) || [];
-            employees.push(pt.employeeId);
-            projectTeamsMap.set(pt.projectId, employees);
-        }
 
         result = result.filter(project => {
-            const projectTeamIds = projectTeamsMap.get(project.id) || [];
+            const projectTeamIds = project.team.map(pt => pt.employeeId);
             return filtering === 'ANY'
                 ? teamMembers.some(id => projectTeamIds.includes(id))
                 : teamMembers.every(id => projectTeamIds.includes(id));
@@ -80,4 +69,29 @@ export function filterProjects(
     }
 
     return result;
+}
+
+export function sortProjects(
+    { sortBy, sortOrder }: Pick<Projects.GetProjects.RequestQuery, 'sortBy' | 'sortOrder'>,
+    projects: ProjectWithTeams[]
+): ProjectWithTeams[] {
+    const order = sortOrder === 'desc' ? -1 : 1;
+    switch (sortBy) {
+        case 'name':
+            return projects.toSorted((a, b) => order * a.name.localeCompare(b.name));
+        case 'status':
+            return projects.toSorted((a, b) => order * a.status.localeCompare(b.status));
+        case 'startDate':
+            return projects.toSorted((a, b) => order * (new Date(a.startDate).getTime() - new Date(b.startDate).getTime()));
+        case 'endDate': // optional
+            return projects.toSorted((a, b) => {
+                const endDateA = a.endDate ? new Date(a.endDate).getTime() : Number.POSITIVE_INFINITY;
+                const endDateB = b.endDate ? new Date(b.endDate).getTime() : Number.POSITIVE_INFINITY;
+                return order * (endDateA - endDateB);
+            });
+        case 'teamSize':
+            return projects.toSorted((a, b) => order * (a.team.length - b.team.length));
+        default: // unsorted
+            return projects;
+    }
 }

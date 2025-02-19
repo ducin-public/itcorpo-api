@@ -11,6 +11,11 @@ export interface EmployeesSearchCriteria {
   mode?: "STANDARD" | "SEARCH_FEED";
 }
 
+- winston?
+- remake entire README.md
+- check fixmes
+- specifying contract for /auth and /license requires attention
+
 ----------------------------------------------------------------------------
 
 type ContractEndpoint = {
@@ -110,3 +115,26 @@ describe('GET /geo', () => {
   });
 });
 ```
+
+-------
+
+
+
+the migrate/generate-benefits.ts file should export a generateBenefits(dbContent: DatabaseContent) function which returns collections of:
+
+benefit subscriptions
+benefit charges
+benefit services in a form of a dictionary (key: T[], key2: U[] etc.)
+the generator will require the employees data from dbContent as input.
+
+for each employee, there would be potentially some benefits generated. Initially lets start that benefits for employees will be generated with probability =1%.
+
+benefit services can be hardcoded. Provide all necessary data with detailed descriptions. this has to be generated independently on employee. Each has a price-per country - create such data, but don't expose it - its gonna be used when generating benefit charges.
+
+benefit subscriptions determine that an employee is using a service and pays for it regularly. Some employees will have active subscriptions, some will have cancelled ones, some will have multiple ones at the same time, some others will have renewals. include all possibilities. crate a dictionary of probabilities. The subscribedAtDate and cancelledAtDate properties are important.
+
+Once the subscriptions have been generated, proceed to BenefitCharge objects. For each subscription, look up its subscribedAtDate and cancelledAtDate properties - they determine exactly how many objects should be created (along with billingPeriodStart and billingPeriodEnd). remember that each service has a price per country.
+
+prices are in eur.
+
+ask if you need to make something more precise.

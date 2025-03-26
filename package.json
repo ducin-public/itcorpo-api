@@ -8,9 +8,9 @@
     "url": "https://ducin.dev"
   },
   "scripts": {
-    "start": "concurrently \"ts-node scripts/run-server\" \"npm run open\"",
+    "start": "concurrently \"ts-node scripts/run-server.ts\" \"npm run open\"",
     "dev": "concurrently \"npm run server:dev\" \"npm run dev:prism-proxy\" \"npm run dev:contract:generate-types\" \"npm run dev:contract:generate-schemas\" \"npm run open\"",
-    "open": "ts-node scripts/open-index",
+    "open": "ts-node scripts/open-index.ts",
     "server:dev": "nodemon --ext ts,json --watch resources --watch middlewares --watch lib --watch server scripts/run-server",
     "database:migrate": "ts-node migrate/migrate.ts",
     "contract:validate": "redocly lint contract/openapi.yml --format stylish",

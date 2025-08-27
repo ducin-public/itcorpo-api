@@ -14,6 +14,7 @@ import {
   EmployeeInput,
   EmployeeSearchFeed,
   Money,
+  Nationality,
   ProjectEmployeeInvolvement,
 } from "./data-contracts";
 
@@ -74,6 +75,11 @@ export namespace Employees {
        * @example "10000"
        */
       salaryTo?: string;
+      /**
+       * Filter employees by nationality (country code, e.g. US, PL)
+       * @example "US"
+       */
+      nationality?: Nationality;
       /**
        * Page number to retrieve
        * @example 1

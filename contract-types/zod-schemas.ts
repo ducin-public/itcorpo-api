@@ -1129,6 +1129,13 @@ export const contractEndpoints: ContractEndpoint[] = [
         schema: z.string().optional(),
       },
       {
+        name: "nationality",
+        type: "Query",
+        schema: z
+          .enum(["US", "UK", "FR", "DE", "NL", "PL", "IT", "ES", "IN"])
+          .optional(),
+      },
+      {
         name: "page",
         type: "Query",
         schema: z.number().optional(),

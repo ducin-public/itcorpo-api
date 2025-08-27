@@ -676,6 +676,7 @@ paths:
         - $ref: '#/components/parameters/EmployeeSkillsFiltering'
         - $ref: '#/components/parameters/EmployeeSalaryFrom'
         - $ref: '#/components/parameters/EmployeeSalaryTo'
+        - $ref: '#/components/parameters/Nationality'
         - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/PageSize'
       responses:
@@ -2679,6 +2680,14 @@ components:
         example: 3
 
   parameters:
+    Nationality:
+      name: nationality
+      in: query
+      description: Filter employees by nationality (country code, e.g. US, PL)
+      required: false
+      schema:
+        $ref: '#/components/schemas/Nationality'
+      example: US
 
     PageNumber:
       name: page

@@ -30,6 +30,14 @@ export function filterEmployees<TItem extends EmployeeWithDepartmentAndProjectTe
 ): TItem[] {
     let result = [...employees];
 
+    // Filter by nationality if provided
+    if (criteria.nationality) {
+        const searchNationality = criteria.nationality.toUpperCase();
+        result = result.filter(employee => 
+            employee.nationality.toUpperCase().includes(searchNationality)
+        );
+    }
+
     // Filter by employee name if provided
     if (criteria.employeeName) {
         const searchName = criteria.employeeName.toLowerCase();

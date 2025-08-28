@@ -2,7 +2,7 @@ import { Projects } from '../contract-types/ProjectsRoute';
 import { DBProjectTeam } from '../lib/db/db-zod-schemas/project-team.schema';
 import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
 
-type ProjectWithTeams = DBProject & { team: DBProjectTeam[] };
+export type ProjectWithTeams = DBProject & { team: DBProjectTeam[] };
 
 /**
  * Filter projects based on provided criteria

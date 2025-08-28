@@ -24,10 +24,10 @@
 
 - `/employees` -> `Employee[]`
 - `/employees/count` -> `number`
-- `/employees?_page=1` -> `Employee[]`
-- `/employees?_limit=10&_page=2` -> `Employee[]`
-- `/employees?name_like=Fri` -> `Employee[]`
-- `/employees?firstName_like=Fr` -> `Employee[]`
+- `/employees?page=1` -> `Employee[]`
+- `/employees?pageSize=10&page=2` -> `Employee[]`
+- `/employees?name=Fri` -> `Employee[]`
+- `/employees?nationality=UK` -> `Employee[]`
 
 ## CLI options
 
@@ -42,33 +42,6 @@
 - `t` / `tenantRequired` (*boolean*) - determines whether the `TenantID` header will be required for most resources (see [Tenants](#Tenants)). By default, this API is more permissive (header not required).
 
 - `jwtAuth` - (*boolean*) - determines whether JWT authentication is required or not, default: false
-
-# custom queries supported
-
-- `http://localhost:3000/employees?name_like=Fri` (searching by `firstName` and `lastName` only, instead of `?q=___` for full-text search on all properties)
-
-See `mw/employee_name.js` file.
-
-# manual
-
- * see [`json-server`](https://github.com/typicode/json-server) docs for standard commands
- * this API also supports each collection command `...count` subresource
- * this API limits all page sizes to 50 (unless you specify a smaller page size)
- * example calls:
-    * /employees
-    * /employees/count
-    * /employees?skills_like=html
-    * /employees/count?skills_like=html
-
-# resources:
-
- * license (requires `Accept` to be `text/plain`)
- * benefits
- * departments
- * employees
- * geo
- * offices
- * projects
 
 # Tenants
 

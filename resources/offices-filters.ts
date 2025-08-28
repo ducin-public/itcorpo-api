@@ -3,7 +3,7 @@ import { DBCountry } from '../lib/db/db-zod-schemas/country.schema';
 import { DBOfficeAmenity } from '../lib/db/db-zod-schemas/office-amenity.schema';
 import { DBOffice } from '../lib/db/db-zod-schemas/office.schema';
 
-type OfficeWithAmenitiesAndCountry = DBOffice & {
+export type OfficeWithAmenitiesAndCountry = DBOffice & {
     _amenities: DBOfficeAmenity[];
     _country: DBCountry[];
 };

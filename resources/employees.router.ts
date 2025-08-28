@@ -74,7 +74,17 @@ router.get('/', async (
     res: Response<Employees.GetEmployees.ResponseBody | ErrorResponse>
 ) => {
     try {
-        const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
+        let page: number, pageSize: number;
+        try {
+            ({ page, pageSize } = getPaginationValues({
+                page: req.query.page,
+                pageSize: req.query.pageSize,
+                MAX_PAGE_SIZE
+            }));
+        } catch (err: any) {
+            // If getPaginationValues throws HTTPError, return its status and message
+            return res.status(err.status || 400).json({ message: err.message });
+        }
 
         const employeesData = await dbConnection.employees.aggregate([
             {
@@ -102,10 +112,15 @@ router.get('/', async (
                 }
             }
         ]);
-        
+
         let filteredEmployees = filterEmployees(req.query, employeesData);
-        filteredEmployees = filteredEmployees.slice((page - 1) * pageSize, page * pageSize);
-        
+        const startIdx = (page - 1) * pageSize;
+        const endIdx = page * pageSize;
+        if (startIdx >= filteredEmployees.length) {
+            return res.json([]);
+        }
+        filteredEmployees = filteredEmployees.slice(startIdx, endIdx);
+
         const result = filteredEmployees.map(employeeDTOFactory);
         res.json(result);
     } catch (error) {

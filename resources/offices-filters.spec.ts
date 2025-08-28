@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 
 import { Offices } from '../contract-types/OfficesRoute';
 import { filterOffices } from './offices-filters'
+import type { OfficeWithAmenitiesAndCountry } from './offices-filters';
 import { mockOffice } from '../mocks/office.mock';
 import { DBOffice } from '../lib/db/db-zod-schemas/office.schema';
 import { DBOfficeAmenity } from '../lib/db/db-zod-schemas/office-amenity.schema';
@@ -19,9 +20,10 @@ describe('processOfficesSearchCriteria', () => {
         country: 'Poland',
         city: 'Warsaw',
         address: 'Złota 44',
-        estate: { 
-          owner: 'BBI Development'
-        },
+        coordinates: { lat: 52.2297, lng: 21.0122 },
+        capacity: 100,
+        monthlyRental: 10000,
+        estateOwner: { name: 'BBI Development' },
         amenities: ['Parking', 'Gym', 'Cafeteria']
       }),
       mockOffice({
@@ -29,9 +31,10 @@ describe('processOfficesSearchCriteria', () => {
         country: 'Germany',
         city: 'Berlin',
         address: 'Alexanderplatz 1',
-        estate: { 
-          owner: 'Berlin Properties'
-        },
+        coordinates: { lat: 52.5200, lng: 13.4050 },
+        capacity: 80,
+        monthlyRental: 9000,
+        estateOwner: { name: 'Berlin Properties' },
         amenities: ['Parking']
       }),
       mockOffice({
@@ -39,9 +42,10 @@ describe('processOfficesSearchCriteria', () => {
         country: 'Poland',
         city: 'Kraków',
         address: 'Rynek 1',
-        estate: { 
-          owner: 'KRK Estates'
-        },
+        coordinates: { lat: 50.0647, lng: 19.9450 },
+        capacity: 70,
+        monthlyRental: 8000,
+        estateOwner: { name: 'KRK Estates' },
         amenities: ['Parking', 'Gym', 'Conference Room']
       }),
       mockOffice({
@@ -49,9 +53,10 @@ describe('processOfficesSearchCriteria', () => {
         country: 'Spain',
         city: 'Barcelona',
         address: 'La Rambla 123',
-        estate: { 
-          owner: 'BCN Development'
-        },
+        coordinates: { lat: 41.3809, lng: 2.1735 },
+        capacity: 60,
+        monthlyRental: 7000,
+        estateOwner: { name: 'BCN Development' },
         amenities: ['Bike Storage', 'Cafeteria']
       }),
       mockOffice({
@@ -59,9 +64,10 @@ describe('processOfficesSearchCriteria', () => {
         country: 'Poland',
         city: 'Wrocław',
         address: 'Strzegomska 142',
-        estate: { 
-          owner: 'Wrocław Office'
-        },
+        coordinates: { lat: 51.1079, lng: 17.0385 },
+        capacity: 50,
+        monthlyRental: 6000,
+        estateOwner: { name: 'Wrocław Office' },
         amenities: ['Parking', 'Cafeteria', 'Conference Room']
       })
     ],
@@ -79,13 +85,21 @@ describe('processOfficesSearchCriteria', () => {
     ]
   };
 
+  function getOfficesWithAmenitiesAndCountry(): OfficeWithAmenitiesAndCountry[] {
+    return mockDataset.offices.map(office => ({
+      ...office,
+      _amenities: mockDataset.officeAmenities.filter(a => office.amenities.includes(a.name)),
+      _country: mockDataset.countries.filter(c => c.name === office.country)
+    }));
+  }
+
   it('should filter offices by single country', () => {
     // given
     const criteria: Offices.GetOffices.RequestQuery = {
       countries: 'PL'
     };
     // when
-    const results = filterOffices(criteria, mockDataset);
+    const results = filterOffices(criteria, getOfficesWithAmenitiesAndCountry());
     // then
     expect(results).toHaveLength(3);
     expect(results.map(o => o.code)).toEqual(['pl-warsaw', 'pl-krakow', 'pl-wroclaw']);
@@ -97,7 +111,7 @@ describe('processOfficesSearchCriteria', () => {
       countries: 'ES,DE'
     };
     // when
-    const results = filterOffices(criteria, mockDataset);
+    const results = filterOffices(criteria, getOfficesWithAmenitiesAndCountry());
     // then
     expect(results).toHaveLength(2);
     expect(results.map(o => o.code)).toEqual(['de-berlin', 'es-bcn']);
@@ -109,7 +123,7 @@ describe('processOfficesSearchCriteria', () => {
       amenities: 'BIKE,GYM'
     };
     // when
-    const results = filterOffices(criteria, mockDataset);
+    const results = filterOffices(criteria, getOfficesWithAmenitiesAndCountry());
     // then
     expect(results).toHaveLength(3);
     expect(results.map(o => o.code)).toEqual(['pl-warsaw', 'pl-krakow', 'es-bcn']);
@@ -122,7 +136,7 @@ describe('processOfficesSearchCriteria', () => {
       amenitiesFiltering: 'ALL'
     };
     // when
-    const results = filterOffices(criteria, mockDataset);
+    const results = filterOffices(criteria, getOfficesWithAmenitiesAndCountry());
     // then
     expect(results).toHaveLength(1);
     expect(results.map(o => o.code)).toEqual(['pl-warsaw']);
@@ -137,7 +151,7 @@ describe('processOfficesSearchCriteria', () => {
       phrase: 'central'
     };
     // when
-    const results = filterOffices(criteria, mockDataset);
+    const results = filterOffices(criteria, getOfficesWithAmenitiesAndCountry());
     // then
     expect(results).toHaveLength(0);
     expect(results.map(o => o.code)).toEqual([]);
@@ -151,7 +165,7 @@ describe('processOfficesSearchCriteria', () => {
       amenitiesFiltering: 'ALL',
     };
     // when
-    const results = filterOffices(criteria, mockDataset);
+    const results = filterOffices(criteria, getOfficesWithAmenitiesAndCountry());
     // then
     expect(results).toHaveLength(2);
     expect(results.map(o => o.code)).toEqual(['pl-warsaw', 'pl-krakow']);

@@ -3,7 +3,7 @@ import { DBDepartment } from '../lib/db/db-zod-schemas/department.schema';
 import { DBEmployee } from '../lib/db/db-zod-schemas/employee.schema';
 import { DBProjectTeam } from '../lib/db/db-zod-schemas/project-team.schema';
 
-type EmployeeWithDepartmentAndProjectTeams = DBEmployee & {
+export type EmployeeWithDepartmentAndProjectTeams = DBEmployee & {
     _department: DBDepartment[];
     _projectTeams: DBProjectTeam[];
 };

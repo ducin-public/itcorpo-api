@@ -61,6 +61,11 @@ try {
   
 ```
 
+## Tests
+
+- `npm run test:run` runs all Vitest tests in the project. Make sure you DON'T run `npm t` as it runs in watch mode and the agent would hang.
+- After making any changes, always run the tests to verify correctness.
+- Ensure all tests pass before considering a change complete.
 
 ## Conventions
 

@@ -26,10 +26,10 @@ describe('GET /employees', () => {
   const getEmployeesURL = ({ page, pageSize }: Partial<Record<'page' | 'pageSize', number>> = {}) => {
     const urlParams = new URLSearchParams();
     if (page != undefined) {
-      urlParams.set('_page', page.toString());
+      urlParams.set('page', page.toString());
     }
     if (pageSize != undefined) {
-      urlParams.set('_pageSize', pageSize.toString());
+      urlParams.set('pageSize', pageSize.toString());
     }
     return `/employees?${urlParams.toString()}`;
   }
@@ -47,7 +47,6 @@ describe('GET /employees', () => {
   });
 
   describe('with pagination', () => {
-
 
     it(`should return first page with default page size (${getEmployeesURL()})`, async () => {
       const response = await request(app)

@@ -1,4 +1,16 @@
-import e from "express";
+/**
+ * Merges an employee object with department data, assigning department name.
+ * @see {@link DBDepartment}
+ */
+export function mergeWithDepartment(employee: DBEmployee, departments: DBDepartment[]): DBEmployee & { department: string | null } {
+  const dept = departments.find(d => d.id === employee.departmentId);
+  if (!dept) {
+    // Optionally log a warning here if needed
+    return { ...employee, department: null };
+  }
+  return { ...employee, department: dept.name };
+}
+
 import { Employee, EmployeeSearchFeed } from "../contract-types/data-contracts";
 import { DBDepartment } from "../lib/db/db-zod-schemas/department.schema";
 import { DBEmployee } from "../lib/db/db-zod-schemas/employee.schema";

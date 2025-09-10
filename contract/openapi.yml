@@ -1721,17 +1721,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - project
-                  - team
-                properties:
-                  project:
-                    $ref: '#/components/schemas/Project'
-                  team:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ProjectEmployeeInvolvement'
+                $ref: '#/components/schemas/ProjectWithTeam'
         '404':
           description: Employee not found
           content:
@@ -2105,6 +2095,7 @@ components:
         - keycardId
         - account
         - office
+        - officeCode
         - name
         - position
         - email
@@ -2123,6 +2114,8 @@ components:
         keycardId:
           type: string
         office:
+          type: string
+        officeCode:
           type: string
         name:
           type: string
@@ -2556,6 +2549,7 @@ components:
         - startDate
         - manager
         - description
+        - team
       properties:
         id:
           type: string
@@ -2575,6 +2569,10 @@ components:
           type: integer
         description:
           type: string
+        team:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectEmployeeInvolvement"
       example:
         id: "579ef28f-c539-41ff-abe2-e4f6b1c1afed"
         name: "Licensed Cotton Pants"
@@ -2666,6 +2664,20 @@ components:
           $ref: "#/components/schemas/DateString"
         duration:
           $ref: '#/components/schemas/Duration'
+
+    ProjectWithTeam:
+      type: object
+      description: Project data combined with its team members
+      required:
+        - project
+        - team
+      properties:
+        project:
+          $ref: '#/components/schemas/Project'
+        team:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectEmployeeInvolvement'
 
   headers:
     XTotalCount:

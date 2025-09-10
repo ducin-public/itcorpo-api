@@ -215,6 +215,7 @@ export interface Employee {
   department: string;
   keycardId: string;
   office: string;
+  officeCode: string;
   name: string;
   position: string;
   account: string;
@@ -405,6 +406,7 @@ export interface Project {
   endDate?: string;
   manager: number;
   description: string;
+  team: ProjectEmployeeInvolvement[];
 }
 
 export interface ProjectInput {
@@ -443,4 +445,10 @@ export interface ProjectEmployeeInvolvement {
   /** ISO 8601 date-time string */
   endDate?: DateString;
   duration: Duration;
+}
+
+/** Project data combined with its team members */
+export interface ProjectWithTeam {
+  project: Project;
+  team: ProjectEmployeeInvolvement[];
 }

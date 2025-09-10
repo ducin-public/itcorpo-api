@@ -406,7 +406,7 @@ export interface Project {
   endDate?: string;
   manager: number;
   description: string;
-  team: ProjectEmployeeInvolvement[];
+  teamSize: number;
 }
 
 export interface ProjectInput {
@@ -449,6 +449,17 @@ export interface ProjectEmployeeInvolvement {
 
 /** Project data combined with its team members */
 export interface ProjectWithTeam {
-  project: Project;
+  id: string;
+  name: string;
+  /** Status of the ongoing project's workflow */
+  status: ProjectStatus;
+  /** Monetary value in EUR */
+  budget: Money;
+  /** @format date */
+  startDate: string;
+  /** @format date */
+  endDate?: string;
+  manager: number;
+  description: string;
   team: ProjectEmployeeInvolvement[];
 }

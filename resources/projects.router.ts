@@ -9,6 +9,7 @@ import { handleRouterError } from './core/error';
 import { DBProject } from '../lib/db/db-zod-schemas/project.schema';
 import { getPaginationValues } from './core/pagination';
 import { getDuration } from './core/time';
+import { teamSizeToInt } from './project-data-operations';
 
 const router = Router();
 const MAX_PAGE_SIZE = 20;
@@ -70,12 +71,13 @@ router.get('/', async (
         const { page, pageSize } = getPaginationValues({ ...req.query, MAX_PAGE_SIZE });
         result = result.slice((page - 1) * pageSize, page * pageSize);
         const allResultsPages = Math.ceil(allResultsCount / pageSize);
+        const resultWithTeamSize = result.map(proj => teamSizeToInt(proj));
 
         // headers have to be set BEFORE sending the response
         res.setHeaders(new Headers({
             'X-Total-Count': allResultsCount.toString(),
             'X-Total-Pages': allResultsPages.toString()
-        })).json(result)
+        })).json(resultWithTeamSize);
 
     } catch (error) {
         handleRouterError({
@@ -111,7 +113,9 @@ router.get('/:projectId', async (
             return res.status(404).json({ message: 'Project not found' });
         }
 
-        res.json(project);
+        const projectWithTeamSize = teamSizeToInt(project);
+
+        res.json(projectWithTeamSize);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -139,7 +143,8 @@ router.post('/', async (
         const created = await dbConnection.projects.insertOne(newProject);
         await dbConnection.projects.flush();
 
-        res.status(201).json(created);
+        const createdWithTeamSize = {...created, teamSize: 0 };
+        res.status(201).json(createdWithTeamSize);
     } catch (error) {
         handleRouterError({
             error, req, res,
@@ -168,7 +173,8 @@ router.put('/:projectId', async (
         const updatedProject: Project = {
             ...projectToUpdate,
             ...req.body,
-            id: req.params.projectId
+            id: req.params.projectId,
+            teamSize: 0,
         };
 
         await dbConnection.projects.updateOne({ $match: { id: { $eq: req.params.projectId } } }, updatedProject);
@@ -251,7 +257,7 @@ router.get('/:projectId/team', async (
         });
 
         const result: Projects.GetProjectTeam.ResponseBody = {
-            project,
+            ...project,
             team: projectInvolvements
         }
 

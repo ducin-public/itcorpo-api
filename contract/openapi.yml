@@ -2549,7 +2549,7 @@ components:
         - startDate
         - manager
         - description
-        - team
+        - teamSize
       properties:
         id:
           type: string
@@ -2569,10 +2569,8 @@ components:
           type: integer
         description:
           type: string
-        team:
-          type: array
-          items:
-            $ref: "#/components/schemas/ProjectEmployeeInvolvement"
+        teamSize:
+          type: integer
       example:
         id: "579ef28f-c539-41ff-abe2-e4f6b1c1afed"
         name: "Licensed Cotton Pants"
@@ -2669,11 +2667,33 @@ components:
       type: object
       description: Project data combined with its team members
       required:
-        - project
+        - id
+        - name
+        - status
+        - budget
+        - startDate
+        - manager
+        - description
         - team
       properties:
-        project:
-          $ref: '#/components/schemas/Project'
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          $ref: '#/components/schemas/ProjectStatus'
+        budget:
+          $ref: '#/components/schemas/Money'
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        manager:
+          type: integer
+        description:
+          type: string
         team:
           type: array
           items:

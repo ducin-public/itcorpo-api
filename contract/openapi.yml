@@ -10,6 +10,8 @@ info:
 servers:
   - url: http://localhost:3000
     description: Local development server
+  - url: https://api.itcorpo.com
+    description: Production server
 
 tags:
   - name: Auth
@@ -36,8 +38,8 @@ tags:
 paths:
   /auth:
     post:
-      summary: Get JWT authentication token
-      operationId: getAuthToken
+      summary: Issue a new JWT authentication token
+      operationId: issueAuthToken
       tags:
         - Auth
       responses:
@@ -100,14 +102,6 @@ paths:
       description: Returns the license text for the API
       tags:
         - System
-      parameters:
-        - in: header
-          name: Content-Type
-          required: true
-          schema:
-            type: string
-            enum: ["text/plain"]
-          description: Must be text/plain
       responses:
         '200':
           description: License text retrieved successfully
@@ -284,6 +278,9 @@ paths:
       responses:
         '200':
           description: Successful operation
+          links:
+            GetCharges:
+              $ref: '#/components/links/BenefitSubscriptionChargesLink'
           content:
             application/json:
               schema:
@@ -413,6 +410,9 @@ paths:
       responses:
         '200':
           description: Successful operation
+          links:
+            GetSubscription:
+              $ref: '#/components/links/BenefitSubscriptionFromChargesLink'
           content:
             application/json:
               schema:
@@ -571,6 +571,9 @@ paths:
       responses:
         '200':
           description: Successful operation
+          links:
+            GetEmployees:
+              $ref: '#/components/links/DepartmentEmployeesLink'
           content:
             application/json:
               schema:
@@ -829,6 +832,15 @@ paths:
       responses:
         '200':
           description: Successful operation
+          links:
+            GetDepartment:
+              $ref: '#/components/links/EmployeeDepartmentLink'
+            GetProjects:
+              $ref: '#/components/links/EmployeeProjectsLink'
+            GetOffice:
+              $ref: '#/components/links/EmployeeOfficeLink'
+            GetBenefits:
+              $ref: '#/components/links/EmployeeBenefitsLink'
           content:
             application/json:
               schema:
@@ -1368,6 +1380,9 @@ paths:
       responses:
         '200':
           description: Successful operation
+          links:
+            GetAmenities:
+              $ref: '#/components/links/OfficeAmenitiesLink'
           content:
             application/json:
               schema:
@@ -1599,6 +1614,11 @@ paths:
       responses:
         '200':
           description: Successful operation
+          links:
+            GetTeam:
+              $ref: '#/components/links/ProjectTeamLink'
+            GetManager:
+              $ref: '#/components/links/ProjectManagerLink'
           content:
             application/json:
               schema:
@@ -1718,6 +1738,11 @@ paths:
       responses:
         '200':
           description: Successful operation
+          links:
+            GetProject:
+              $ref: '#/components/links/ProjectFromTeamLink'
+            GetTeamMember:
+              $ref: '#/components/links/ProjectTeamMemberLink'
           content:
             application/json:
               schema:
@@ -1735,13 +1760,89 @@ paths:
 
 components:
   links:
-    HealthCheck:
-      operationId: healthCheck
+
+    BenefitSubscriptionChargesLink:
+      operationId: getBenefitSubscriptionCharges
       parameters:
-        status:
-          $ref: '#/components/schemas/HealthStatus'
-      requestBody:
-        required: false
+        benefitId: $response.body#/id
+      description: Get the list of charges for this benefit subscription
+
+    BenefitSubscriptionByIdLink:
+      operationId: getBenefitSubscriptionById
+      parameters:
+        benefitId: $response.body#/subscriptionId
+      description: Get the benefit subscription associated with the charge
+
+    BenefitChargeEmployeeLink:
+      operationId: getEmployeeById
+      parameters:
+        employeeId: $response.body#/employeeId
+      description: Get the employee associated with the charge (for array responses use $response.body#/0/employeeId)
+
+    BenefitSubscriptionFromChargesLink:
+      operationId: getBenefitSubscriptionById
+      parameters:
+        benefitId: $request.path.benefitId
+      description: Get the benefit subscription (context from path)
+
+    DepartmentEmployeesLink:
+      operationId: getEmployees
+      parameters:
+        departmentId: $response.body#/id
+      description: Get employees of this department
+
+    EmployeeProjectsLink:
+      operationId: getEmployeeProjects
+      parameters:
+        employeeId: $response.body#/id
+      description: Get projects the employee is assigned to
+
+    EmployeeDepartmentLink:
+      operationId: getDepartmentById
+      parameters:
+        departmentId: $response.body#/departmentId
+      description: Get details of the employee's department
+
+    EmployeeOfficeLink:
+      operationId: getOfficeByCode
+      parameters:
+        officeCode: $response.body#/officeCode
+      description: Get the office assigned to the employee
+
+    EmployeeBenefitsLink:
+      operationId: getBenefitSubscriptions
+      parameters:
+        employeeId: $response.body#/id
+      description: Get the employee's benefit subscriptions
+
+    OfficeAmenitiesLink:
+      operationId: getOfficeAmenities
+      description: Get the list of office amenity definitions
+
+    ProjectTeamLink:
+      operationId: getProjectTeam
+      parameters:
+        projectId: $response.body#/id
+      description: Get the project team
+
+    ProjectManagerLink:
+      operationId: getEmployeeById
+      parameters:
+        employeeId: $response.body#/manager
+      description: Get the project manager
+
+    ProjectTeamMemberLink:
+      operationId: getEmployeeById
+      parameters:
+        employeeId: $response.body#/team/0/employeeId
+      description: Get details of the first team member (team[0])
+
+    ProjectFromTeamLink:
+      operationId: getProjectById
+      parameters:
+        projectId: $response.body#/id
+      description: Get project details
+
   responses:
     NotAuthorized:
       description: The requester is unauthorized.
@@ -2111,6 +2212,10 @@ components:
           $ref: '#/components/schemas/Nationality'
         department:
           type: string
+          description: Department display name
+        departmentId:
+          type: integer
+          description: Department ID for linking to getDepartmentById (enables EmployeeDepartmentLink)
         keycardId:
           type: string
         office:
@@ -2182,7 +2287,8 @@ components:
       example:
         id: 1234
         nationality: "DE"
-        department: Marketing
+        department: "Marketing"
+        departmentId: 1
         officeCode: "de-berlin"
         keycardId: "KC-9876"
         account: "DE89 3704 0044 0532 0130 00"
@@ -2816,7 +2922,6 @@ components:
       description: Filter benefits by status
       schema:
         $ref: '#/components/schemas/BenefitSubscriptionSearchStatus'
-        example: "ACTIVE"
 
     # Benefit Charge parameters
 
@@ -2847,8 +2952,6 @@ components:
       description: Filter charges by status
       schema:
         $ref: '#/components/schemas/BenefitChargeStatus'
-        description: Filter charges by status
-        example: "PAID"
 
     BenefitBillingPeriodFrom:
       name: billingPeriodFrom
@@ -3021,7 +3124,6 @@ components:
       description: Filter projects by status
       schema:
         $ref: '#/components/schemas/ProjectStatus'
-        example: "ACTIVE"
 
     ProjectTeamMembers:
       name: teamMembers

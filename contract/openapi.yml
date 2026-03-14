@@ -35,7 +35,7 @@ tags:
 
 paths:
   /auth:
-    get:
+    post:
       summary: Get JWT authentication token
       operationId: getAuthToken
       tags:
